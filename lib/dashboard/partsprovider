@@ -10,7 +10,7 @@ class _Nav_sideState extends State<Nav_side> {
 Widget build(BuildContext context) {
 return Scaffold(
 appBar: AppBar(
-title: const Text("Dashboard"),
+title: const Text("dasboard"),
 ),
 body: const Center(
 child: Text(
