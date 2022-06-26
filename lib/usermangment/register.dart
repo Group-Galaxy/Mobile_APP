@@ -185,7 +185,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
