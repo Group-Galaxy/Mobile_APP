@@ -66,7 +66,7 @@ title: Text("My orders"),
 onTap: () {
   Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) => Myorders()));
+                context, MaterialPageRoute(builder: (_) => ()));
 
 },
 ),
@@ -76,7 +76,7 @@ title: Text("My Items"),
 onTap: () {
 Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) => Items()));
+                context, MaterialPageRoute(builder: (_) => ()));
 },
 ),
 ListTile(
@@ -92,7 +92,7 @@ title: Text("Log out"),
 onTap: () {
 Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) => WelcomePage()));
+                context, MaterialPageRoute(builder: (_) => ()));
 },
 ),
 ],
