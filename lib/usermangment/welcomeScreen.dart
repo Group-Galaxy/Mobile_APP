@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mypart/usermangment/login.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
+import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
 
 
 
@@ -22,6 +23,7 @@ class _WelcomePageState extends State<WelcomePage>
     return Scaffold(
       body: Center(
         child: Container(
+          
          
             
               
@@ -57,7 +59,7 @@ class _WelcomePageState extends State<WelcomePage>
              Navigator.pushReplacement(
   
                 context, MaterialPageRoute(builder: (_) => LoginScreen()));
-
+//user
             },
             child: new Align(
                 alignment: Alignment.bottomRight,
@@ -65,7 +67,7 @@ class _WelcomePageState extends State<WelcomePage>
                   margin: EdgeInsets.all(20),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
+                      borderRadius: BorderRadius.circular(50),
                       border: Border.all(width: 2, color: Colors.purple)),
                   child: Icon(
                     Icons.man,
@@ -76,7 +78,11 @@ class _WelcomePageState extends State<WelcomePage>
           ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text('vehicle owner'),
+                              child: Text('vehicle owner',
+                              style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold,
+                              ),
+                              ),
                             ),
                           ],
                         ),
@@ -90,6 +96,42 @@ class _WelcomePageState extends State<WelcomePage>
                 context, MaterialPageRoute(builder: (_) => PartsProviderLogin()));
 
             },
+
+            child: new Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(width: 2, color: Colors.purple)),
+                  child: Icon(
+                    Icons.key_sharp,
+                    color: Colors.purple,
+                    size: 75,
+                  ),
+                )),
+          ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('vehicle parts provider',
+                              style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold,
+                              ),),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 100,),
+                        Column(
+                          children: [
+                             GestureDetector(
+            onTap: () {
+             Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) => RepairServiceProviderLogin()));
+
+            },
+
             child: new Align(
                 alignment: Alignment.bottomRight,
                 child: Container(
@@ -107,7 +149,11 @@ class _WelcomePageState extends State<WelcomePage>
           ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text('vehicle parts provider'),
+                              child: Text('vehicle repair service provider',
+                              style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold,
+                              ),
+                              ),
                             ),
                           ],
                         ),

@@ -3,26 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mypart/usermangment/loginhome.dart';
 import 'package:mypart/usermangment/register.dart';
-import 'package:mypart/usermangment/reset.dart';
 import 'package:mypart/usermangment/welcomeScreen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ResetScreen extends StatefulWidget {
+  const ResetScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _ResetScreenState createState() => _ResetScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ResetScreenState extends State<ResetScreen> {
   // form key
   final _formKey = GlobalKey<FormState>();
 
   // editing controller
   final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
 
   // firebase
-  final _auth = FirebaseAuth.instance;
+   final _auth = FirebaseAuth.instance;
 
   // string for displaying the error Message
   String? errorMessage;
@@ -58,51 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ));
 
-    //password field
-    final passwordField = TextFormField(
-        autofocus: false,
-        controller: passwordController,
-        obscureText: true,
-        validator: (value) {
-          RegExp regex = new RegExp(r'^.{6,}$');
-          if (value!.isEmpty) {
-            return ("Password is required for login");
-          }
-          if (!regex.hasMatch(value)) {
-            return ("Enter Valid Password(Min. 6 Character)");
-          }
-        },
-        onSaved: (value) {
-          passwordController.text = value!;
-        },
-        textInputAction: TextInputAction.done,
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.vpn_key),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Password",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ));
-
-    final loginButton = Material(
-      elevation: 5,
-      borderRadius: BorderRadius.circular(30),
-      color: Colors.purple,
-      child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          minWidth: MediaQuery.of(context).size.width,
-          onPressed: () {
-            signIn(emailController.text, passwordController.text);
-          },
-          child: Text(
-            "Login",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-          )),
-    );
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -119,7 +72,6 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(36.0),
@@ -138,24 +90,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 45),
                     emailField,
                     SizedBox(height: 25),
-                    passwordField,
-                    SizedBox(height: 35),
-                    loginButton,
                     SizedBox(height: 15),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("Don't have an account? "),
+                          Text("If you wish to reset password "),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          RegistrationScreen()));
+                                      builder: (context) => ResetScreen()));
                             },
                             child: Text(
-                              "SignUp",
+                              "Don't worry!",
                               style: TextStyle(
                                   color: Colors.purple,
                                   fontWeight: FontWeight.bold,
@@ -167,60 +115,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                          child: Text('Forgot Pasword?'),
-                          onPressed: () =>Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ResetScreen()),),
-                          ),
-                      ],
-                        ),
+                          child: Text('send request'),
+                          onPressed: () {
+                            _auth.sendPasswordResetEmail(
+                                 email:'emailController');
+                            Navigator.of(context).pop();
+                          },
+                        )
                       ],
                     ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
-      
+      ),
     );
-  }
-
-  // login function
-  void signIn(String email, String password) async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await _auth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((uid) => {
-                  Fluttertoast.showToast(msg: "Login Successful"),
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeScreen())),
-                });
-      } on FirebaseAuthException catch (error) {
-        switch (error.code) {
-          case "invalid-email":
-            errorMessage = "Your email address appears to be malformed.";
-
-            break;
-          case "wrong-password":
-            errorMessage = "Your password is wrong.";
-            break;
-          case "user-not-found":
-            errorMessage = "User with this email doesn't exist.";
-            break;
-          case "user-disabled":
-            errorMessage = "User with this email has been disabled.";
-            break;
-          case "too-many-requests":
-            errorMessage = "Too many requests";
-            break;
-          case "operation-not-allowed":
-            errorMessage = "Signing in with Email and Password is not enabled.";
-            break;
-          default:
-            errorMessage = "An undefined Error happened.";
-        }
-        Fluttertoast.showToast(msg: errorMessage!);
-        print(error.code);
-      }
-    }
   }
 }

@@ -3,9 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mypart/usermangment/login.dart';
-//import 'package:mypart/usermangment/loginhome.dart';
-import 'package:mypart/usermangment/usermodel.dart';
+import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
+import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceprousermodel.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -23,24 +22,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   // our form key
   final _formKey = GlobalKey<FormState>();
   // editing Controller
-  final firstNameEditingController = new TextEditingController();
-  final secondNameEditingController = new TextEditingController();
+  final NameEditingController = new TextEditingController();
+
   final emailEditingController = new TextEditingController();
-  final contactNoEditingController = new TextEditingController();
   final passwordEditingController = new TextEditingController();
   final confirmPasswordEditingController = new TextEditingController();
+  final contactNoEditingController = new TextEditingController();
+  final locationEditingController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    //first name field
+    //name field
     final firstNameField = TextFormField(
         autofocus: false,
-        controller: firstNameEditingController,
+        controller: NameEditingController,
         keyboardType: TextInputType.name,
         validator: (value) {
           RegExp regex = new RegExp(r'^.{3,}$');
           if (value!.isEmpty) {
-            return ("First Name cannot be Empty");
+            return ("Name cannot be Empty");
           }
           if (!regex.hasMatch(value)) {
             return ("Enter Valid name(Min. 3 Character)");
@@ -48,37 +48,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           return null;
         },
         onSaved: (value) {
-          firstNameEditingController.text = value!;
+          NameEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.account_circle),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "First Name",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ));
-
-    //second name field
-    final secondNameField = TextFormField(
-        autofocus: false,
-        controller: secondNameEditingController,
-        keyboardType: TextInputType.name,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Second Name cannot be Empty");
-          }
-          return null;
-        },
-        onSaved: (value) {
-          secondNameEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.account_circle),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Second Name",
+          hintText: "Person Name/ Company Name",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -101,7 +77,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           return null;
         },
         onSaved: (value) {
-          firstNameEditingController.text = value!;
+          NameEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -116,7 +92,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     //contact number field
     final contactNoField = TextFormField(
         autofocus: false,
-        controller: contactNoEditingController,
+        controller:contactNoEditingController,
         keyboardType: TextInputType.number,
         validator: (value) {
           RegExp regex = new RegExp(r'^.{3,}$');
@@ -141,6 +117,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
         ));
 
+    //location field
+    final locationField = TextFormField(
+        autofocus: false,
+        controller: locationEditingController,
+        keyboardType: TextInputType.name,
+        validator: (value) {
+          RegExp regex = new RegExp(r'^.{3,}$');
+          if (value!.isEmpty) {
+            return ("Location cannot be Empty");
+          }
+
+          return null;
+        },
+        onSaved: (value) {
+          locationEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.location_on),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Location",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ));
+
     //password field
     final passwordField = TextFormField(
         autofocus: false,
@@ -156,7 +158,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           }
         },
         onSaved: (value) {
-          firstNameEditingController.text = value!;
+          NameEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -246,11 +248,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     SizedBox(height: 45),
                     firstNameField,
                     SizedBox(height: 20),
-                    secondNameField,
-                    SizedBox(height: 20),
                     emailField,
                     SizedBox(height: 20),
                     contactNoField,
+                    SizedBox(height: 20),
+                    locationField,
                     SizedBox(height: 20),
                     passwordField,
                     SizedBox(height: 20),
@@ -319,19 +321,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     // writing all the values
     userModel.email = user!.email;
     userModel.uid = user.uid;
-    userModel.firstName = firstNameEditingController.text;
-    userModel.secondName = secondNameEditingController.text;
+    userModel.firstName = NameEditingController.text;
     userModel.contactNO = contactNoEditingController.text;
-    
+    userModel.location = locationEditingController.text;
+
     await firebaseFirestore
-        .collection("users")
+        .collection("vehicle repair service provider")
         .doc(user.uid)
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => RepairServiceProviderLogin()),
         (route) => false);
   }
 }
