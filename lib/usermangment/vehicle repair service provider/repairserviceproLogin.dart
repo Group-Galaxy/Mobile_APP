@@ -2,20 +2,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mypart/dashboard/dashboard.dart';
 import 'package:mypart/seller/Items.dart';
-import 'package:mypart/usermangment/vehicle%20parts%20provider/partsproviregister.dart';
-import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprovloginhome.dart';
+
+import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproregister.dart';
 
 
-class PartsProviderLogin extends StatefulWidget {
-  const PartsProviderLogin({Key? key}) : super(key: key);
+
+
+class RepairServiceProviderLogin extends StatefulWidget {
+  const RepairServiceProviderLogin({Key? key}) : super(key: key);
 
   @override
-  _PartsProviderLoginState createState() => _PartsProviderLoginState();
+  _RepairServiceProviderLoginState createState() => _RepairServiceProviderLoginState();
 }
 
-class _PartsProviderLoginState extends State<PartsProviderLogin> {
+class _RepairServiceProviderLoginState extends State<RepairServiceProviderLogin> {
   // form key
   final _formKey = GlobalKey<FormState>();
 
@@ -163,7 +164,8 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
                                   fontSize: 15),
                             ),
                           )
-                        ])
+                        ]
+                        )
                   ],
                 ),
               ),
@@ -183,7 +185,7 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Nav_side(title: 'Dashboard',))),
+                      MaterialPageRoute(builder: (context) => Items())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
@@ -209,8 +211,12 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
           default:
             errorMessage = "An undefined Error happened.";
         }
+        
         Fluttertoast.showToast(msg: errorMessage!);
         print(error.code);
+
+       
+                        
       }
     }
   }

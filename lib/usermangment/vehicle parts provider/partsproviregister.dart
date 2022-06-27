@@ -29,6 +29,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final emailEditingController = new TextEditingController();
   final passwordEditingController = new TextEditingController();
   final confirmPasswordEditingController = new TextEditingController();
+  final contactNoEditingController = new TextEditingController();
+  final locationEditingController = new TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +63,60 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
         ));
 
-    //second name field
+    //contact number field
+    final contactNoField = TextFormField(
+        autofocus: false,
+        controller:contactNoEditingController,
+        keyboardType: TextInputType.number,
+        validator: (value) {
+          RegExp regex = new RegExp(r'^.{3,}$');
+          if (value!.isEmpty) {
+            return ("Contact number cannot be Empty");
+          }
+          if (!regex.hasMatch(value)) {
+            return ("Enter Valid phone number(Min. 10 Character)");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          contactNoEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.phone),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Contact number",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ));
+
+    //location field
+    final locationField = TextFormField(
+        autofocus: false,
+        controller: locationEditingController,
+        keyboardType: TextInputType.name,
+        validator: (value) {
+          RegExp regex = new RegExp(r'^.{3,}$');
+          if (value!.isEmpty) {
+            return ("Location cannot be Empty");
+          }
+
+          return null;
+        },
+        onSaved: (value) {
+          locationEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.location_on),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Location",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ));
+
     
 
     //email field
@@ -196,9 +252,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         )),
                     SizedBox(height: 45),
                     firstNameField,
-                   
                     SizedBox(height: 20),
                     emailField,
+                    SizedBox(height: 20),
+                    contactNoField,
+                    SizedBox(height: 20),
+                    locationField,
                     SizedBox(height: 20),
                     passwordField,
                     SizedBox(height: 20),
@@ -266,6 +325,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     userModel.email = user!.email;
     userModel.uid = user.uid;
     userModel.firstName = NameEditingController.text;
+    userModel.contactNO = contactNoEditingController.text;
+    userModel.location = locationEditingController.text;
+
     
 
     await firebaseFirestore
