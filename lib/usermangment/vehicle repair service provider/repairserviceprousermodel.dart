@@ -1,4 +1,4 @@
-class UserModel {
+class RepairUserModel {
   String? uid;
   String? email;
   String? firstName;
@@ -6,11 +6,17 @@ class UserModel {
   String? contactNO;
   String? location;
 
-  UserModel({this.uid, this.email, this.firstName, this.secondName, this.contactNO, this.location});
+  RepairUserModel(
+      {this.uid,
+      this.email,
+      this.firstName,
+      this.secondName,
+      this.contactNO,
+      this.location});
 
   // receiving data from server
-  factory UserModel.fromMap(map) {
-    return UserModel(
+  factory RepairUserModel.fromMap(map) {
+    return RepairUserModel(
       uid: map['uid'],
       email: map['email'],
       firstName: map['firstName'],

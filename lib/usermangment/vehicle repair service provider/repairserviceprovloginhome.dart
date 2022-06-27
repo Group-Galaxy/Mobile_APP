@@ -4,12 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/buyer/searchhome.dart';
 
-
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceprousermodel.dart';
-
-
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
+  RepairUserModel loggedInUser = RepairUserModel();
 
   @override
   void initState() {
@@ -30,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      this.loggedInUser = RepairUserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -46,9 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Padding(
           padding: EdgeInsets.all(5),
           child: Column(
-            mainAxisAlignment:MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              
               Text(
                 "Welcome Back",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -69,14 +64,10 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 15,
               ),
-             GestureDetector(
-            onTap: () {
-             
-
-            },
-            child: new Align(
-               
-                child: Container(
+              GestureDetector(
+                onTap: () {},
+                child: new Align(
+                    child: Container(
                   margin: EdgeInsets.all(20),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -88,30 +79,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 75,
                   ),
                 )),
-          ),
-                            
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Repair vehicle'),
-                            ),
-                  
-          GestureDetector(
-            onTap: () {
-             Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) =>Home ()));
-
-            },
-            
-          ),
-                           
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Repair vehicle'),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (_) => Home()));
+                },
+              ),
             ],
           ),
         ),
       ),
     );
-      
-  
   }
 
   // the logout function

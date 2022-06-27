@@ -92,7 +92,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     //contact number field
     final contactNoField = TextFormField(
         autofocus: false,
-        controller:contactNoEditingController,
+        controller: contactNoEditingController,
         keyboardType: TextInputType.number,
         validator: (value) {
           RegExp regex = new RegExp(r'^.{3,}$');
@@ -316,7 +316,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
 
-    UserModel userModel = UserModel();
+    RepairUserModel userModel = RepairUserModel();
 
     // writing all the values
     userModel.email = user!.email;
