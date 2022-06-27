@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,20 +12,15 @@ class Neworders extends StatefulWidget {
 }
 
 class _NewordersState extends State<Neworders> {
-
-   User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
-      VehicleOwnerModel CurrentUser = VehicleOwnerModel();
-       CollectionReference orders = FirebaseFirestore.instance.collection('Order Details');
+  User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
+  VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  CollectionReference orders =
+      FirebaseFirestore.instance.collection('Order Details');
 
   @override
-  
-  
-
   void initState() {
- 
-   
     super.initState();
-     FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection("users")
         .doc(orderdVehicleOwner!.uid)
         .get()
@@ -35,170 +29,167 @@ class _NewordersState extends State<Neworders> {
       setState(() {});
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 177, 172, 177),
-
-      
+      backgroundColor: Color.fromARGB(255, 235, 231, 235),
       body: Container(
- 
-        
-       child: FutureBuilder<QuerySnapshot>(
-          future: orders.where('vehicle Owner Id',isEqualTo:CurrentUser.uid,).where('Oreder Status',isEqualTo:'Pending' ).get(),
-      
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("something is wrong");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+        child: FutureBuilder<QuerySnapshot>(
+          future: orders
+              .where(
+                'vehicle Owner Id',
+                isEqualTo: CurrentUser.uid,
+              )
+              .where('Oreder Status', isEqualTo: 'Pending')
+              .get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text("something is wrong");
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-return Container(
-        child: ListView.builder(
-          itemCount: snapshot.data!.size,
-                    itemBuilder: (BuildContext context, int i) {
-                      var data = snapshot.data!.docs[i];
-                return Container(
-                   width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-            child: Card(
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0.0),
-              ),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 5.0),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            return Container(
+              child: ListView.builder(
+                itemCount: snapshot.data!.size,
+                itemBuilder: (BuildContext context, int i) {
+                  var data = snapshot.data!.docs[i];
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5.0),
+                    child: Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Row(
                           children: [
                             Column(
-                              children:  [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 8, top: 5),
-                                    child: Container(
-                                      height: 50,
-                                      child: Center(
-                                        child: Image.network(data['Imageurl']),
-                                      ),
-                                    ),
-                                  ),
-                                            
-                              ],
-                            ),
-                            Column(
-                              children:  [
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(width: 5.0),
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                                  data['Item Name'],
-                                                  style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
+                                    Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 8, left: 8, top: 5),
+                                          child: Container(
+                                            height: 50,
+                                            width: 50,
+                                            child: Center(
+                                              child: Image.network(
+                                                  data['Imageurl']),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              data['Item Name'],
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Quantity : ' + data['Item Qty'],
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Total Payble fee : 2000',
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 50,
+                                    ),
+                                     Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                             '2 min ago ',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                      height: 50,
+                                    ),
+                                        Row(
+                                          
+                                            crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {},
+                                              child: const Text(
+                                                'View More',
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.purple,
+                                                  fixedSize: const Size(100, 9),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50))),
+                                            ),
+                                          
+                                          ],
+                                        ),
+                                       
+                                      ],
+                                    ),
                                   ],
                                 ),
-                                Row(
-                         
-                          children: [
-                            
-                              
-                              
-                                 Text(
-                                                'Quantity'+data['Item Qty'],
-                                                style: TextStyle(fontSize: 12),
-                                                
-                                              ),
-                              
-                            
-                            
-                            
-                          ],
-                        ),
-                                            
+                               
                               ],
                             ),
-                            const SizedBox(
-                              width: 80,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  "2 min ago",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ],
-                            )
                           ],
                         ),
-                        
-                        Row(
-                          children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 5.0),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children:
-                          [
-                            ElevatedButton(
-                            onPressed: () {
-                              
-                            },
-                            child: const Text(
-                              'View More',
-                              style: TextStyle(fontSize: 10),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.purple,
-                                fixedSize: const Size(100, 9),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50))),
-                          ),
-              ],
-                        ),
-                      ],
+                      ),
                     ),
-
-                    const SizedBox(
-                              width: 150,
-                            ),
-                           
-                    
-                  ],
-
-
-                ),
-                      ],
-            ),
-                  ],
+                  );
+                },
+              ),
+            );
+          },
         ),
-          ),
-        ),
-          
-                );
-                
-              },
-         
-        ),
-);
-        },
       ),
-    ),
     );
   }
 }
@@ -268,49 +259,45 @@ class Todelivered extends StatelessWidget {
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
-                          
                         ],
                       ),
                       Row(
                         children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 5.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:
-                        [
-                          ElevatedButton(
-                          onPressed: () {
-                            
-                          },
-                          child: const Text(
-                            'View More',
-                            style: TextStyle(fontSize: 14),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 5.0),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'View More',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.purple,
+                                        fixedSize: const Size(100, 10),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50))),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.purple,
-                              fixedSize: const Size(100, 10),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
-                        ),
-            ],
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(
+                          const SizedBox(
                             width: 150,
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Icon(Icons.check_circle,
-                              color: Colors.green,),
-                              
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
                             ],
-                            
                           ),
                           const SizedBox(
                             width: 20,
@@ -318,23 +305,20 @@ class Todelivered extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Icon(Icons.close_outlined,
-                              color: Colors.red,),
-                              
+                              Icon(
+                                Icons.close_outlined,
+                                color: Colors.red,
+                              ),
                             ],
-                            
                           )
-                  
-                ],
-
-
-              ),
+                        ],
+                      ),
                     ],
-          ),
+                  ),
                 ],
-      ),
-        ),
-      ),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -406,49 +390,45 @@ class Finished extends StatelessWidget {
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
-                          
                         ],
                       ),
                       Row(
                         children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 5.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:
-                        [
-                          ElevatedButton(
-                          onPressed: () {
-                            
-                          },
-                          child: const Text(
-                            'View More',
-                            style: TextStyle(fontSize: 14),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 5.0),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'View More',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.purple,
+                                        fixedSize: const Size(100, 10),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50))),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.purple,
-                              fixedSize: const Size(100, 10),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
-                        ),
-            ],
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(
+                          const SizedBox(
                             width: 150,
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Icon(Icons.check_circle,
-                              color: Colors.green,),
-                              
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
                             ],
-                            
                           ),
                           const SizedBox(
                             width: 20,
@@ -456,23 +436,20 @@ class Finished extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Icon(Icons.close_outlined,
-                              color: Colors.red,),
-                              
+                              Icon(
+                                Icons.close_outlined,
+                                color: Colors.red,
+                              ),
                             ],
-                            
                           )
-                  
-                ],
-
-
-              ),
+                        ],
+                      ),
                     ],
-          ),
+                  ),
                 ],
-      ),
-        ),
-      ),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -544,49 +521,45 @@ class Cancelled extends StatelessWidget {
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
-                          
                         ],
                       ),
                       Row(
                         children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 5.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:
-                        [
-                          ElevatedButton(
-                          onPressed: () {
-                            
-                          },
-                          child: const Text(
-                            'View More',
-                            style: TextStyle(fontSize: 14),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 5.0),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'View More',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.purple,
+                                        fixedSize: const Size(100, 10),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50))),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.purple,
-                              fixedSize: const Size(100, 10),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
-                        ),
-            ],
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(
+                          const SizedBox(
                             width: 150,
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Icon(Icons.check_circle,
-                              color: Colors.green,),
-                              
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
                             ],
-                            
                           ),
                           const SizedBox(
                             width: 20,
@@ -594,23 +567,20 @@ class Cancelled extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Icon(Icons.close_outlined,
-                              color: Colors.red,),
-                              
+                              Icon(
+                                Icons.close_outlined,
+                                color: Colors.red,
+                              ),
                             ],
-                            
                           )
-                  
-                ],
-
-
-              ),
+                        ],
+                      ),
                     ],
-          ),
+                  ),
                 ],
-      ),
-        ),
-      ),
+              ),
+            ),
+          ),
         ),
       ),
     );

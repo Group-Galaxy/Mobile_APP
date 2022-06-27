@@ -6,8 +6,6 @@ import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/usermangment/login.dart';
 import 'package:mypart/usermangment/usermodel.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -18,9 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
-
- 
- 
 
   @override
   Widget build(BuildContext context) {
