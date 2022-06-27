@@ -18,19 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
 
   @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      this.loggedInUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -41,8 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Padding(
           padding: EdgeInsets.all(5),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment:MainAxisAlignment.center,
             children: <Widget>[
+              
               Text(
                 "Welcome Back",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -63,10 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 15,
               ),
-              GestureDetector(
-                onTap: () {},
-                child: new Align(
-                    child: Container(
+             GestureDetector(
+            onTap: () {
+             
+
+            },
+            child: new Align(
+               
+                child: Container(
                   margin: EdgeInsets.all(20),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -78,18 +70,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 75,
                   ),
                 )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Repair vehicle'),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (_) => Home()));
-                },
-                child: new Align(
-                    child: Container(
+          ),
+                            
+                          Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Repair vehicle'),
+                            ),
+                  
+          GestureDetector(
+            onTap: () {
+             Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) =>Home ()));
+
+            },
+            child: new Align(
+                
+                child: Container(
                   margin: EdgeInsets.all(20),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -101,16 +98,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 75,
                   ),
                 )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Buy vehicle parts'),
-              ),
+          ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Buy vehicle parts'),
+                            ),
             ],
           ),
         ),
       ),
     );
+      
+  
   }
 
   // the logout function
