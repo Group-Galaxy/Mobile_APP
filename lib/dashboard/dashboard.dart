@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:mypart/orders/ordershome.dart';
+import 'package:mypart/seller/Items.dart';
+import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
+import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
 class Nav_side extends StatefulWidget {
 const Nav_side({Key? key, required String title}) : super(key: key);
@@ -7,11 +12,26 @@ const Nav_side({Key? key, required String title}) : super(key: key);
 _Nav_sideState createState() => _Nav_sideState();
 }
 class _Nav_sideState extends State<Nav_side> {
+ User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+  
+   void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("vehicl parts providers")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
 @override
 Widget build(BuildContext context) {
 return Scaffold(
 appBar: AppBar(
-title: const Text("dasboard"),
+title: const Text("Dashboard"),
 ),
 body: const Center(
 child: Text(
@@ -22,8 +42,8 @@ drawer: Drawer(
 child: ListView(
 padding: EdgeInsets.zero,
 children: <Widget>[
-const UserAccountsDrawerHeader(
-accountName: Text("S N Motors"),
+ UserAccountsDrawerHeader(
+accountName: Text("user default"),
 accountEmail: Text("snmotors@gmail.com"),
 currentAccountPicture: CircleAvatar(
 backgroundColor: Colors.blueGrey,
@@ -47,13 +67,7 @@ onTap: () {
 Navigator.pop(context);
 },
 ),
-ListTile(
-leading: Icon(Icons.supervisor_account_rounded),
-title: Text(""),
-onTap: () {
-Navigator.pop(context);
-},
-),
+
 ListTile(
 leading: Icon(Icons.chat),
 title: Text("Chat"),
@@ -67,7 +81,7 @@ title: Text("My orders"),
 onTap: () {
   Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) => ()));
+                context, MaterialPageRoute(builder: (_) =>Myorders ()));
 
 },
 ),
@@ -77,7 +91,7 @@ title: Text("My Items"),
 onTap: () {
 Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) => ()));
+                context, MaterialPageRoute(builder: (_) => Items()));
 },
 ),
 ListTile(
@@ -93,7 +107,7 @@ title: Text("Log out"),
 onTap: () {
 Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) => ()));
+                context, MaterialPageRoute(builder: (_) =>PartsProviderLogin ()));
 },
 ),
 ],

@@ -1,14 +1,27 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/products.dart';
 import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/designs/bottombar.dart';
+import 'package:mypart/firebaseservice.dart';
+import 'package:mypart/orders/order_userside/userorderdetails.dart';
+import 'package:mypart/orders/order_userside/userordermain.dart';
+import 'package:mypart/usermangment/usermodel.dart';
+
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:quantity_input/quantity_input.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:provider/provider.dart';
+
+
 
 class productDetails extends StatefulWidget {
   @override
@@ -16,8 +29,33 @@ class productDetails extends StatefulWidget {
 }
 
 class _productDetailsState extends State<productDetails> {
+   FirebaseService _service = FirebaseService();
+  User? vehicleowner = FirebaseAuth.instance.currentUser;
+      VehicleOwnerModel loggedInUser = VehicleOwnerModel();
+       CollectionReference orders = FirebaseFirestore.instance.collection('Order Details');
 
+  @override
   
+  
+
+  void initState() {
+ 
+   
+    super.initState();
+     FirebaseFirestore.instance
+        .collection("users")
+        .doc(vehicleowner!.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = VehicleOwnerModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
+
+   int OrderQuantity = 0;
+   var today = new DateTime.now();
+   String OrderStatus="Pending";
   @override
 
  
@@ -27,8 +65,11 @@ class _productDetailsState extends State<productDetails> {
     var _productProvider=Provider.of<ProductProvider>(context);
     var data=_productProvider.ProductData;
     var _price = int.parse(data['Item Price']);
+      
+        
 
       String _FormatedPrice ='\Rs. ${_PriceFormat.format(_price)}';
+     
 
 
     return Scaffold(
@@ -77,11 +118,43 @@ class _productDetailsState extends State<productDetails> {
                   children: [
                     Row(
                       children: [
-                        Text(data['Item Name'],style: TextStyle(fontSize: 16)),
+                        Column(
+                          children: [
+                           
+                            Text(data['Item Name'],style: TextStyle(fontSize: 16)),
+                           
+                          ],
+                        ),
+                        SizedBox(
+                          width:70
+                        ),
+                        Column(
+                           
+                          children: [
+                           
+               
+                           QuantityInput(
+                            
+                  label: 'Qty',
+                  value: OrderQuantity,
+                  
+                 
+                  onChanged: (value) => setState(() => OrderQuantity = int.parse(value.replaceAll(',', ''))),
+                 
+                  
+                  
+                ),
+                
+               
+               
+                          ],
+                        ),
+
                       ],
+                      
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     
                    Row(
@@ -230,11 +303,15 @@ class _productDetailsState extends State<productDetails> {
                 ),
                  Divider(color: Colors.grey) , 
 
+
+
+                 
+
                   ],
                 ),
               ),
 
-
+          
 
             ),
 
@@ -246,8 +323,75 @@ class _productDetailsState extends State<productDetails> {
         
       ),
       
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomBar(),
+      /*floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomBar(),*/
+      bottomSheet: BottomAppBar(
+        child:Padding(
+          padding: const EdgeInsets.only(left: 16,right: 16),
+          child: Row(children: [
+            Expanded(child: NeumorphicButton(
+              style: NeumorphicStyle(color: Colors.purple),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(CupertinoIcons.chat_bubble,size:16,color:Colors.white),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text('Chat',style: TextStyle(color:Colors.white),)
+                ],
+              ),
+            )),
+            SizedBox(
+                    width: 20,
+                  ),
+             Expanded(child: NeumorphicButton(
+              
+
+              onPressed: () {
+                          
+                          today = new DateTime(today.year, today.month, today.day,today.hour,today.minute); 
+                             
+               orders.add({
+                'Item Name': data['Item Name'],
+                'Item Price': data['Item Price'],
+                'Item Qty':OrderQuantity.toString(),
+                
+                'Imageurl': data['Imageurl'],
+                'Order Date Time':today,
+                'vehicle Owner Id':loggedInUser.uid,
+               'Vehicle Owner Name': loggedInUser.firstName,
+                'Service Provider Id':data['Service Provider Id'],
+                'Service Provider Name':data['Service Provider Name'],
+                'Oreder Status':OrderStatus,
+                }
+                ).whenComplete(() {
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => Home()));
+              });
+               
+                          
+                          
+              },
+
+
+              style: NeumorphicStyle(color: Colors.purple),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(CupertinoIcons.square_list,size:16,color:Colors.white),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text('Order',style: TextStyle(color:Colors.white),)
+                  
+                ],
+              ),
+             )),
+          ],),
+        ) ),
     );
   }
 }

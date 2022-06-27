@@ -5,5 +5,7 @@ class FirebaseService{
    final CollectionReference VehicleItems = FirebaseFirestore.instance.collection('Vehicle Parts');
    final CollectionReference users = FirebaseFirestore.instance.collection('users');
    final CollectionReference VehiclePartsProviders = FirebaseFirestore.instance.collection('vehicl parts providers');
+      final CollectionReference OrderDetails = FirebaseFirestore.instance.collection('vehicl parts providers');
+
    
 }

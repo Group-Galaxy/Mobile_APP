@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mypart/dashboard/dashboard.dart';
+import 'package:mypart/firebaseservice.dart';
 import 'package:mypart/seller/addItems.dart';
+import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
 
 import 'editItems.dart';
@@ -14,8 +18,23 @@ class Items extends StatefulWidget {
 }
 
 class _ItemsState extends State<Items> {
+   User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
   
-   final CollectionReference ItemDesc = FirebaseFirestore.instance.collection('Vehicle Parts');
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("vehicl parts providers")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+  
+   FirebaseService _service = FirebaseService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +52,8 @@ class _ItemsState extends State<Items> {
         title: Text('My Items'),
          leading: ElevatedButton(
             onPressed: () {
-              
+              Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => Nav_side(title: 'Dashboard',)));
             },
             child: const Icon(
               Icons.arrow_back,
@@ -42,10 +62,11 @@ class _ItemsState extends State<Items> {
             ),
           ),
       ),
-      body: StreamBuilder(
+      body: Container(
         
+       child: FutureBuilder<QuerySnapshot>(
+          future:  _service.VehicleItems.where('Service Provider Id',isEqualTo:loggedInUser.uid).get(),
       
-       stream: FirebaseFirestore.instance.collection('Vehicle Parts').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("something is wrong");
@@ -62,8 +83,9 @@ class _ItemsState extends State<Items> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (_, index) {
+               itemCount: snapshot.data!.size,
+                    itemBuilder: (BuildContext context, int i) {
+                      var data = snapshot.data!.docs[i];
                 
                 return GestureDetector(
                   onTap: () {
@@ -71,7 +93,7 @@ class _ItemsState extends State<Items> {
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
-                            EditItem(docid: snapshot.data!.docs[index]),
+                            EditItem(docid: snapshot.data!.docs[i]),
                       ),
                     );
                   },
@@ -96,7 +118,7 @@ class _ItemsState extends State<Items> {
                           
                           title: Text(
                            
-                            snapshot.data!.docChanges[index].doc['Item Name'],
+                            data['Item Name'],
                           
                             
                             style: TextStyle(
@@ -104,7 +126,7 @@ class _ItemsState extends State<Items> {
                             ),
                           ),
                           subtitle: Text(
-                            snapshot.data!.docChanges[index].doc['Item Qty'],
+                            'Quantity'+data['Item Qty'],
                           
                             
                             style: TextStyle(
@@ -125,6 +147,7 @@ class _ItemsState extends State<Items> {
             ),
           );
         },
+      ),
       ),
     );
   }

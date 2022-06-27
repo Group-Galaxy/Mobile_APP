@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mypart/dashboard/dashboard.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsproviregister.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprovloginhome.dart';
@@ -171,7 +172,7 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Items())),
+                      MaterialPageRoute(builder: (context) => Nav_side(title: 'Dashboard',))),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

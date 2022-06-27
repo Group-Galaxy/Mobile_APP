@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypart/dashboard/dashboard.dart';
 
 
 
@@ -22,7 +23,8 @@ class _MyordersState extends State<Myorders> {
           title: const Text("Orders"),
           leading: ElevatedButton(
             onPressed: () {
-             
+             Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => Nav_side(title: 'Dashboard',)));
             },
             child: const Icon(
               Icons.arrow_back,

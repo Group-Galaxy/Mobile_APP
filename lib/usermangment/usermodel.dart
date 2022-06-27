@@ -1,14 +1,14 @@
-class UserModel {
+class VehicleOwnerModel {
   String? uid;
   String? email;
   String? firstName;
   String? secondName;
 
-  UserModel({this.uid, this.email, this.firstName, this.secondName});
+  VehicleOwnerModel({this.uid, this.email, this.firstName, this.secondName});
 
   // receiving data from server
-  factory UserModel.fromMap(map) {
-    return UserModel(
+  factory VehicleOwnerModel.fromMap(map) {
+    return VehicleOwnerModel(
       uid: map['uid'],
       email: map['email'],
       firstName: map['firstName'],

@@ -546,7 +546,7 @@ class _AddItemsState extends State<AddItems> {
                           
                     onPressed: () {
                           if (_key.currentState!.validate()){
-                   today = new DateTime(today.year, today.month, today.day);         
+                   today = new DateTime(today.year, today.month, today.day,);         
                 ref.add({
                 'Item Name': Item_Name.text,
                 'Item Price': Item_Price.text,
