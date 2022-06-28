@@ -38,16 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10,
               ),
-              Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              Text("${loggedInUser.email}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
+              
               SizedBox(
                 height: 15,
               ),
@@ -65,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(100),
                       border: Border.all(width: 2, color: Colors.purple)),
                   child: Icon(
-                    Icons.man,
+                    Icons.car_repair,
                     color: Colors.purple,
                     size: 75,
                   ),
@@ -93,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(100),
                       border: Border.all(width: 2, color: Colors.purple)),
                   child: Icon(
-                    Icons.key,
+                    Icons.shopping_cart_checkout,
                     color: Colors.purple,
                     size: 75,
                   ),

@@ -39,7 +39,7 @@ Widget build(BuildContext context) {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.network('https://firebasestorage.googleapis.com/v0/b/mypart-86d9e.appspot.com/o/logo%2Flogo2.jpg?alt=media&token=48522a8f-53fb-4763-a58f-810de3b1f591'
-              ,height: 600,width: 600,),
+              ,height: 500,width: 500,),
               const SizedBox(
                 height: 10,
               ),
