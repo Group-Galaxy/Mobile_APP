@@ -8,6 +8,7 @@ import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/categories/categoryProvider.dart';
 import 'package:mypart/dashboard/dashboard.dart';
+import 'package:mypart/gateway.dart';
 
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/temp.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: MySplashScreen(),
+      home: Gateway(),
     );
   }
 }

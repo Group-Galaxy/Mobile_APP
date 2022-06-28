@@ -9,17 +9,14 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProductList extends StatelessWidget {
-  
-
   final bool Proscreen;
-  ProductList (
-    this.Proscreen);
+  ProductList(this.Proscreen);
 
   @override
   Widget build(BuildContext context) {
     FirebaseService _service = FirebaseService();
-    var _catProvider=Provider.of<categoryprovider>(context);
-    
+    var _catProvider = Provider.of<categoryprovider>(context);
+
     final _PriceFormat = NumberFormat('##,##,##0');
 
     return Container(
@@ -27,7 +24,9 @@ class ProductList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
         child: FutureBuilder<QuerySnapshot>(
-          future:  _service.VehicleItems.orderBy('PostedDate').where('Item Category',isEqualTo: _catProvider.Selectedcategory ).get(),
+          future: _service.VehicleItems.orderBy('PostedDate')
+              .where('Item Category', isEqualTo: _catProvider.Selectedcategory)
+              .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -44,20 +43,23 @@ class ProductList extends StatelessWidget {
                 ),
               );
             }
-            if(snapshot.data!.docs.length==0){
-              return Center(child: Text("No products added to this selected category"),);
+            if (snapshot.data!.docs.length == 0) {
+              return Center(
+                child: Text("No products added to this selected category"),
+              );
             }
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (Proscreen==false)
-                Container(
-                  child: Text(
-                    'Recomoned For You',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                if (Proscreen == false)
+                  Container(
+                    child: Text(
+                      'Recomoned For You',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
                   ),
-                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -78,8 +80,7 @@ class ProductList extends StatelessWidget {
                       String _FormatedPrice =
                           '\Rs. ${_PriceFormat.format(_price)}';
 
-
-                      var _provider=Provider.of<ProductProvider>(context);
+                      var _provider = Provider.of<ProductProvider>(context);
 
                       return InkWell(
                         onTap: () {
