@@ -136,8 +136,9 @@ class _NewordersState extends State<Neworders> {
                                       children: [
                                         Row(
                                           children: [
+                                            
                                             Text(
-                                             '2 min ago ',
+                                             getTime(data['Order Date Time']),
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
@@ -191,8 +192,29 @@ class _NewordersState extends State<Neworders> {
         ),
       ),
     );
+    
+  }
+  getTime( Timestamp Time) {
+    
+    
+DateTime OrderDate = Time.toDate();
+   
+    
+    
+
+
+  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+    return "a few seconds ago";
+  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+    return "${DateTime.now().difference(OrderDate).inDays} days ago";
   }
 }
+}
+
 
 class Todelivered extends StatelessWidget {
   const Todelivered({Key? key}) : super(key: key);

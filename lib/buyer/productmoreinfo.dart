@@ -367,8 +367,28 @@ class _productDetailsState extends State<productDetails> {
                 'Oreder Status':OrderStatus,
                 }
                 ).whenComplete(() {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => Home()));
+                
+                    showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                
+                  content: const Text("Your order is placed sucessfully , Please waiting for seller response"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                          Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => Home()));
+                      },
+                      child: Container(
+                        color: Colors.green,
+                        padding: const EdgeInsets.all(14),
+                        child: const Text("okay"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+                
               });
                
                           
@@ -395,3 +415,7 @@ class _productDetailsState extends State<productDetails> {
     );
   }
 }
+
+
+
+            

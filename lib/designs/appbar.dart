@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/firebaseservice.dart';
+import 'package:provider/provider.dart';
 
 import '../services/searchService.dart';
 
@@ -20,8 +22,9 @@ class _CustomappbarState extends State<Customappbar> {
   FirebaseService _service=FirebaseService();
   SearchService _serach=SearchService();
 
-   /*void initState() {
+   void initState() {
    _service.VehicleItems.get().then((QuerySnapshot snapshot){
+    
     snapshot.docs.forEach((doc) {
       setState(() {
         items.add(
@@ -32,18 +35,20 @@ class _CustomappbarState extends State<Customappbar> {
             Item_Category:doc['Item Category'] ,
             Condition:doc['Condition'] ,
             Features:doc['Item Features'] ,
-            PostedDate: doc['PostedDate'],
+           
             )
         );
       });
     });
+    
    }
    );
     
     super.initState();
-  }*/
+  }
   @override
   Widget build(BuildContext context) {
+     var _provider=Provider.of<ProductProvider>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -59,7 +64,8 @@ class _CustomappbarState extends State<Customappbar> {
                           Expanded(
                             child: TextField(
                               onTap: (() {
-                              _serach.search(context: context,productList: items);
+                              _serach.search(context: context,productList: items
+                              );
                               }),
                               
                                 decoration: InputDecoration(

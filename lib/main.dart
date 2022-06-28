@@ -8,9 +8,10 @@ import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/categories/categoryProvider.dart';
 import 'package:mypart/dashboard/dashboard.dart';
+import 'package:mypart/gateway.dart';
 
 import 'package:mypart/seller/Items.dart';
-import 'package:mypart/temp.dart';
+
 import 'package:mypart/usermangment/splashScreen.dart';
 
 import 'package:path/path.dart' as path;
