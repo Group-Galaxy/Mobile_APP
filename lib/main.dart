@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: Gateway(),
+      home: MySplashScreen(),
     );
   }
 }
