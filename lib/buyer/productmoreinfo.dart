@@ -33,6 +33,9 @@ class _productDetailsState extends State<productDetails> {
   User? vehicleowner = FirebaseAuth.instance.currentUser;
       VehicleOwnerModel loggedInUser = VehicleOwnerModel();
        CollectionReference orders = FirebaseFirestore.instance.collection('Order Details');
+       CollectionReference user = FirebaseFirestore.instance.collection('users');
+       CollectionReference notifications = FirebaseFirestore.instance.collection('notifications');
+
 
   @override
   
@@ -352,6 +355,7 @@ class _productDetailsState extends State<productDetails> {
               onPressed: () {
                           
                           today = new DateTime(today.year, today.month, today.day,today.hour,today.minute); 
+                          String message="You have new order";
                              
                orders.add({
                 'Item Name': data['Item Name'],
@@ -366,7 +370,31 @@ class _productDetailsState extends State<productDetails> {
                 'Service Provider Name':data['Service Provider Name'],
                 'Oreder Status':OrderStatus,
                 }
-                ).whenComplete(() {
+                );
+
+                notifications.add(
+                  {
+                    'ItemName':data['Item Name'],
+                    'Sender':loggedInUser.uid,
+                    'receiver':data['Service Provider Id'],
+                    'message':message,
+                    'DateTime':today
+                  }
+                );
+                user.doc(loggedInUser.uid).collection('UserOrders').add({
+                'Item Name': data['Item Name'],
+                'Item Price': data['Item Price'],
+                'Item Qty':OrderQuantity.toString(),
+                
+                'Imageurl': data['Imageurl'],
+                'Order Date Time':today,
+                
+                'Service Provider Id':data['Service Provider Id'],
+                
+                'Oreder Status':OrderStatus,
+                })
+
+                .whenComplete(() {
                 
                     showDialog(
                 context: context,

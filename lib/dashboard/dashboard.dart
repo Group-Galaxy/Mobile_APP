@@ -6,6 +6,7 @@ import 'package:mypart/dashboard/components/card_custom.dart';
 import 'package:mypart/dashboard/components/circle_progress.dart';
 import 'package:mypart/dashboard/components/list_tile_custom.dart';
 import 'package:mypart/dashboard/themes.dart';
+import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
@@ -227,7 +228,7 @@ child: ListView(
 padding: EdgeInsets.zero,
 children: <Widget>[
  UserAccountsDrawerHeader(
-accountName: Text("user default"),
+accountName: Text(loggedInUser.firstName ?? ""),
 accountEmail: Text("snmotors@gmail.com"),
 currentAccountPicture: CircleAvatar(
 backgroundColor: Colors.blueGrey,
@@ -248,7 +249,10 @@ ListTile(
 leading: Icon(Icons.notifications),
 title: Text("Notifications"),
 onTap: () {
-Navigator.pop(context);
+  Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) =>PartsProviderNotifications ()));
+
 },
 ),
 
