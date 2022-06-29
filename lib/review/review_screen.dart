@@ -3,14 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../usermangment/usermodel.dart';
-
 class ReviewGiveScreen extends StatefulWidget {
   final String? driverId;
-  final String? category;
   const ReviewGiveScreen({
     Key? key,
-    this.driverId, this.category,
+    this.driverId,
   }) : super(key: key);
 
   @override
@@ -24,8 +21,7 @@ class _ReviewGiveScreenState extends State<ReviewGiveScreen> {
   addReview() {
     final driverId = widget.driverId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
     CollectionReference users = FirebaseFirestore.instance
-        .collection('${widget.category}/$driverId/review');
-       
+        .collection('vehicle repair service provider/$driverId/review');
     users
         .add({
           'userId': userId?.uid,
