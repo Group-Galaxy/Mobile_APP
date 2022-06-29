@@ -11,6 +11,7 @@ import 'package:mypart/categories/categoryProvider.dart';
 import 'package:mypart/dashboard/dashboard.dart';
 import 'package:mypart/gateway.dart';
 import 'package:mypart/repairservice/repairservicelist.dart';
+import 'package:mypart/seller/ItemProvider.dart';
 
 import 'package:mypart/seller/Items.dart';
 
@@ -41,6 +42,8 @@ Future<void> main() async {
     providers: [
       Provider(create: (_) => ProductProvider()),
       Provider(create: (_) => categoryprovider()),
+       Provider(create: (_) => ItemProvider()),
+      
     ],
     child: MyApp(),
   )));

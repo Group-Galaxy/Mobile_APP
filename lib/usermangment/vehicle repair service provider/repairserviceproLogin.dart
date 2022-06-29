@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mypart/dashboard/repairserviceDashboard.dart';
 import 'package:mypart/seller/Items.dart';
 
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproregister.dart';
@@ -185,7 +186,7 @@ class _RepairServiceProviderLoginState extends State<RepairServiceProviderLogin>
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Items())),
+                      MaterialPageRoute(builder: (context) => RepaiirDashboard(title: 'DashBoard',))),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

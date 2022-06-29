@@ -1,10 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mypart/buyer/productProvider.dart';
+import 'package:mypart/buyer/productmoreinfo.dart';
 import 'package:mypart/dashboard/dashboard.dart';
 import 'package:mypart/firebaseservice.dart';
+import 'package:mypart/seller/ItemProvider.dart';
+import 'package:mypart/seller/ItemsMoreInfo.dart';
 import 'package:mypart/seller/addItems.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 
 import 'editItems.dart';
@@ -33,10 +39,13 @@ class _ItemsState extends State<Items> {
       setState(() {});
     });
   }
+  final _PriceFormat = NumberFormat('##,##,##0');
   
-   FirebaseService _service = FirebaseService();
+   
   @override
   Widget build(BuildContext context) {
+    CollectionReference vehicleparts =
+      FirebaseFirestore.instance.collection('vehicl parts providers/${loggedInUser.uid}/AutoParts');
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.purple,
@@ -65,7 +74,7 @@ class _ItemsState extends State<Items> {
       body: Container(
         
        child: FutureBuilder<QuerySnapshot>(
-          future:  _service.VehicleItems.where('Service Provider Id',isEqualTo:loggedInUser.uid).get(),
+          future:  vehicleparts.get(),
       
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -78,74 +87,154 @@ class _ItemsState extends State<Items> {
           }
           
 
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListView.builder(
-               itemCount: snapshot.data!.size,
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+               
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: Text(
+                        'My Items',
+                        style:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                SizedBox(
+                  height: 10,
+                ),
+                GridView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 210,
+                      childAspectRatio: 2 / 2.1,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: snapshot.data!.size,
                     itemBuilder: (BuildContext context, int i) {
                       var data = snapshot.data!.docs[i];
-                
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            EditItem(docid: snapshot.data!.docs[i]),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 3,
-                          right: 3,
-                        ),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: Colors.black,
+                      var _price = int.parse(data['ItemPrice']);
+
+                      String _FormatedPrice =
+                          '\Rs. ${_PriceFormat.format(_price)}';
+
+                      var _provider = Provider.of<ItemProvider>(context);
+
+                      return InkWell(
+                        onTap: () {
+                          _provider.getItemDetails(data);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => ItemsDetails()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            child: Stack(
+                              children: [
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 8, left: 8, top: 8),
+                                      child: Container(
+                                        height: 85,
+                                        child: Center(
+                                          child: Image.network(data['Imageurl']),
+                                        ),
+                                      ),
+                                    ),
+                                    
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 8, left: 8, top: 8),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(1),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                data['ItemName'],
+                                                style: TextStyle(fontSize: 12),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                _FormatedPrice,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12),
+                                              ),
+                                              Text(
+                                                'Stock Qty: ' +
+                                                    data['ItemQty'],
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        
+                                       IconButton(
+                                                  icon: Icon
+                                                    (
+                                                        Icons.edit,
+                                                        color: Colors.purple,
+                                                        
+                                                    ),
+                                                    onPressed: ()
+                                                    {
+                                                        Navigator.pushReplacement(
+                                              context, MaterialPageRoute(builder: (_) => EditItem(docid: data,)));
+                                                    }
+                                                
+                                              ),
+
+                                              SizedBox(width: 20,),
+                                               IconButton(
+                                                  icon: Icon
+                                                    (
+                                                        Icons.delete,
+                                                        color: Colors.purple,
+                                                        
+                                                    ),
+                                                    onPressed: ()
+                                                    {
+                                                       data.reference.delete().whenComplete(() {
+                                                      Navigator.pushReplacement(
+                                                          context, MaterialPageRoute(builder: (_) => Items()));
+                                                       }
+                                                       );
+                                                    }
+                                                    
+                                              )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                               
+                              ],
                             ),
-                            
-                          ),
-                          
-                          title: Text(
-                           
-                            data['Item Name'],
-                          
-                            
-                            style: TextStyle(
-                              fontSize: 20,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.purple.withOpacity(.8),
+                              ),
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          subtitle: Text(
-                            'Quantity'+data['Item Qty'],
-                          
-                            
-                            style: TextStyle(
-                              fontSize: 16,
-                          ),
-                          ),
-                           
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 16,
-                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
+                      );
+                    }),
+              ],
+            );
         },
       ),
       ),
@@ -156,4 +245,6 @@ class _ItemsState extends State<Items> {
 
   
 }
+  
+
   
