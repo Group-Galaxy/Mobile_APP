@@ -12,15 +12,16 @@ import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogi
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
 class Nav_side extends StatefulWidget {
-const Nav_side({Key? key, required String title}) : super(key: key);
-@override
-_Nav_sideState createState() => _Nav_sideState();
+  const Nav_side({Key? key, required String title}) : super(key: key);
+  @override
+  _Nav_sideState createState() => _Nav_sideState();
 }
+
 class _Nav_sideState extends State<Nav_side> {
- User? user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-  
-   void initState() {
+
+  void initState() {
     super.initState();
     FirebaseFirestore.instance
         .collection("vehicl parts providers")
@@ -32,13 +33,13 @@ class _Nav_sideState extends State<Nav_side> {
     });
   }
 
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-appBar: AppBar(
-title: const Text("Dashboard"),
-),
-body:SafeArea(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Dashboard"),
+      ),
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
@@ -51,7 +52,7 @@ body:SafeArea(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                       width: MediaQuery.of(context).size.width/2.20,
+                        width: MediaQuery.of(context).size.width / 2.20,
                         child: Column(
                           children: [
                             CustomPaint(
@@ -63,13 +64,13 @@ body:SafeArea(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "LKR 65000",
-                                      style: TextStyle(fontWeight: FontWeight.bold)
-                                    ),
+                                    Text("LKR 65000",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
                                     Text(
                                       "Total earnings",
-                                     style: TextStyle(fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       crossAxisAlignment:
@@ -82,28 +83,25 @@ body:SafeArea(
                                           color: green,
                                           size: 14,
                                         ),
-                                        Text(
-                                          "per week",
-                                          style: TextStyle(fontWeight: FontWeight.bold)
-                                        ),
+                                        Text("per week",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
                                       ],
                                     )
                                   ],
                                 ),
                               ),
                             ),
-                            Text(
-                              "NEW ACHIEVMENT",
-                              style: TextStyle(fontWeight: FontWeight.bold)
-                            ),
+                            Text("NEW ACHIEVMENT",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                             //Text(
-                             // "Social Star",
-                             // style: textBold3,
-                           // ),
+                            // "Social Star",
+                            // style: textBold3,
+                            // ),
                           ],
                         ),
                       ),
-                     /* Container(
+                      /* Container(
                         width: size.width / 2 - 20,
                         height: 180,
                         decoration: BoxDecoration(
@@ -135,11 +133,13 @@ body:SafeArea(
                                   style: TextStyle(fontWeight: FontWeight.bold))
                             ]),
                       ),
-                      const SizedBox( height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         children: [
                           CardCustom(
-                           width: MediaQuery.of(context).size.width/2.23,
+                            width: MediaQuery.of(context).size.width / 2.23,
                             height: 88,
                             mLeft: 0,
                             mRight: 3,
@@ -151,7 +151,7 @@ body:SafeArea(
                             ),
                           ),
                           CardCustom(
-                           width: MediaQuery.of(context).size.width/2.23,
+                            width: MediaQuery.of(context).size.width / 2.23,
                             height: 88,
                             mLeft: 3,
                             mRight: 0,
@@ -165,17 +165,18 @@ body:SafeArea(
                         ],
                       ),
                       CardCustom(
-                        mLeft: 0, 
-                        mRight: 0, 
-                        width: MediaQuery.of(context).size.width/40,
-                        height: 211, 
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(padding: const EdgeInsets.all(20),
-                              child: Row(
-                                children: [
-                                 /* Container(
+                          mLeft: 0,
+                          mRight: 0,
+                          width: MediaQuery.of(context).size.width / 40,
+                          height: 211,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: [
+                                    /* Container(
                                     width: 8,
                                     height: 9.71,
                                     decoration: BoxDecoration(
@@ -183,37 +184,37 @@ body:SafeArea(
                                       color: blueLight
                                     ),
                                   ),*/
-                                  //SizedBox(
-                                  //  width: 5,
-                                  //),
-                                 // Text("Users",
-                                  //  style: label,
-                                 // ),
-                                  SizedBox(
-                                  width: 20,
-                                  ),
-                                  Container(
-                                    width: 20,
-                                    height: 20,
-                                    /*decoration: BoxDecoration(
+                                    //SizedBox(
+                                    //  width: 5,
+                                    //),
+                                    // Text("Users",
+                                    //  style: label,
+                                    // ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      width: 20,
+                                      height: 20,
+                                      /*decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: green
                                     ),*/
-                                  ),
-                                 // SizedBox(
-                                 //   width: 3,
-                                 // ),
-                                  //Text("Selling Items",
-                                   // style: label,
-                                 // ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                ],
+                                    ),
+                                    // SizedBox(
+                                    //   width: 3,
+                                    // ),
+                                    //Text("Selling Items",
+                                    // style: label,
+                                    // ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
                     ],
                   ),
                 ),
@@ -222,81 +223,76 @@ body:SafeArea(
           ),
         ),
       ),
-drawer: Drawer(
-child: ListView(
-padding: EdgeInsets.zero,
-children: <Widget>[
- UserAccountsDrawerHeader(
-accountName: Text("user default"),
-accountEmail: Text("snmotors@gmail.com"),
-currentAccountPicture: CircleAvatar(
-backgroundColor: Colors.blueGrey,
-child: Text(
-"S",
-style: TextStyle(fontSize: 40.0),
-),
-),
-),
-ListTile(
-leading: Icon(Icons.home),
-title: Text("Dashboard"),
-onTap: () {
-Navigator.pop(context);
-},
-),
-ListTile(
-leading: Icon(Icons.notifications),
-title: Text("Notifications"),
-onTap: () {
-Navigator.pop(context);
-},
-),
-
-ListTile(
-leading: Icon(Icons.chat),
-title: Text("Chat"),
-onTap: () {
-Navigator.pop(context);
-},
-),
-ListTile(
-leading: Icon(Icons.shop_outlined),
-title: Text("My orders"),
-onTap: () {
-  Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) =>Myorders ()));
-
-},
-),
-ListTile(
-leading: Icon(Icons.auto_graph_sharp),
-title: Text("My Items"),
-onTap: () {
-Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) => Items()));
-},
-),
-ListTile(
-leading: Icon(Icons.comment_sharp),
-title: Text("Comments & Ratings"),
-onTap: () {
-Navigator.pop(context);
-},
-),
-ListTile(
-leading: Icon(Icons.logout_sharp),
-title: Text("Log out"),
-onTap: () {
-Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) =>PartsProviderLogin ()));
-},
-),
-],
-),
-),
-);
-}
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text("user default"),
+              accountEmail: Text("snmotors@gmail.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.blueGrey,
+                child: Text(
+                  "S",
+                  style: TextStyle(fontSize: 40.0),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text("Dashboard"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.notifications),
+              title: Text("Notifications"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.chat),
+              title: Text("Chat"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.shop_outlined),
+              title: Text("My orders"),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => Myorders()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.auto_graph_sharp),
+              title: Text("My Items"),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => Items()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.comment_sharp),
+              title: Text("Comments & Ratings"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout_sharp),
+              title: Text("Log out"),
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (_) => PartsProviderLogin()));
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
