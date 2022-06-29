@@ -21,7 +21,7 @@ class _MyordersState extends State<Myorders> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           
@@ -39,6 +39,9 @@ class _MyordersState extends State<Myorders> {
                 child: Tab(text: "New\nOrders"),
               ),
               Center(
+                child: Tab(text: "To pay"),
+              ),
+              Center(
                 child: Tab(text: "To deliveres"),
               ),
               Center(
@@ -52,10 +55,13 @@ class _MyordersState extends State<Myorders> {
         ),
         body: const TabBarView(
           children: [
-            Neworders(),
-            Todelivered(),
-            Finished(),
-            Cancelled()
+           Neworders(),
+           ToPayOrders(),
+           ToDeliver(),
+           Finished(),
+           Cancelled()
+
+
           ],
         ),
       ),

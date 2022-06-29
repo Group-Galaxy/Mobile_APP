@@ -29,9 +29,11 @@ class productDetails extends StatefulWidget {
 class _productDetailsState extends State<productDetails> {
   FirebaseService _service = FirebaseService();
   User? vehicleowner = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel loggedInUser = VehicleOwnerModel();
-  CollectionReference orders =
-      FirebaseFirestore.instance.collection('Order Details');
+      VehicleOwnerModel loggedInUser = VehicleOwnerModel();
+       CollectionReference orders = FirebaseFirestore.instance.collection('Order Details');
+       CollectionReference user = FirebaseFirestore.instance.collection('users');
+       CollectionReference notifications = FirebaseFirestore.instance.collection('notifications');
+
 
   @override
   void initState() {
@@ -298,41 +300,69 @@ class _productDetailsState extends State<productDetails> {
             Expanded(
                 child: NeumorphicButton(
               onPressed: () {
-                today = new DateTime(today.year, today.month, today.day,
-                    today.hour, today.minute);
+                          
+                          today = new DateTime(today.year, today.month, today.day,today.hour,today.minute); 
+                          String message="You have new order";
+                             
+               orders.add({
+                'Item Name': data['Item Name'],
+                'Item Price': data['Item Price'],
+                'Item Qty':OrderQuantity.toString(),
+                
+                'Imageurl': data['Imageurl'],
+                'Order Date Time':today,
+                'vehicle Owner Id':loggedInUser.uid,
+               'Vehicle Owner Name': loggedInUser.firstName,
+                'Service Provider Id':data['Service Provider Id'],
+                'Service Provider Name':data['Service Provider Name'],
+                'Oreder Status':OrderStatus,
+                }
+                );
 
-                orders.add({
-                  'Item Name': data['Item Name'],
-                  'Item Price': data['Item Price'],
-                  'Item Qty': OrderQuantity.toString(),
-                  'Imageurl': data['Imageurl'],
-                  'Order Date Time': today,
-                  'vehicle Owner Id': loggedInUser.uid,
-                  'Vehicle Owner Name': loggedInUser.firstName,
-                  'Service Provider Id': data['Service Provider Id'],
-                  'Service Provider Name': data['Service Provider Name'],
-                  'Oreder Status': OrderStatus,
-                }).whenComplete(() {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      content: const Text(
-                          "Your order is placed sucessfully , Please waiting for seller response"),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (_) => Home()));
-                          },
-                          child: Container(
-                            color: Colors.green,
-                            padding: const EdgeInsets.all(14),
-                            child: const Text("okay"),
-                          ),
-                        ),
-                      ],
+                notifications.add(
+                  {
+                    'ItemName':data['Item Name'],
+                    'Sender':loggedInUser.uid,
+                    'receiver':data['Service Provider Id'],
+                    'message':message,
+                    'DateTime':today
+                  }
+                );
+                user.doc(loggedInUser.uid).collection('UserOrders').add({
+                'Item Name': data['Item Name'],
+                'Item Price': data['Item Price'],
+                'Item Qty':OrderQuantity.toString(),
+                
+                'Imageurl': data['Imageurl'],
+                'Order Date Time':today,
+                
+                'Service Provider Id':data['Service Provider Id'],
+                
+                'Oreder Status':OrderStatus,
+                })
+
+                .whenComplete(() {
+                
+                    showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                
+                  content: const Text("Your order is placed sucessfully , Please waiting for seller response"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                          Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => Home()));
+                      },
+                      child: Container(
+                        color: Colors.green,
+                        padding: const EdgeInsets.all(14),
+                        child: const Text("okay"),
+                      ),
                     ),
-                  );
+                  ]
+                ),
+                    );
                 });
               },
               style: NeumorphicStyle(color: Colors.purple),
