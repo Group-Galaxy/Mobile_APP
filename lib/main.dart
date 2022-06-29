@@ -14,6 +14,7 @@ import 'package:mypart/gateway.dart';
 import 'package:mypart/seller/Items.dart';
 
 import 'package:mypart/usermangment/splashScreen.dart';
+import 'package:mypart/usermangment/welcomeScreen.dart';
 
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: checkoutorder(),
+      home: WelcomePage(),
     );
   }
 }

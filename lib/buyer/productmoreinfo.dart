@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:mypart/Order_payment/checkout_order.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/products.dart';
 import 'package:mypart/buyer/searchhome.dart';
@@ -298,42 +299,44 @@ class _productDetailsState extends State<productDetails> {
             Expanded(
                 child: NeumorphicButton(
               onPressed: () {
-                today = new DateTime(today.year, today.month, today.day,
-                    today.hour, today.minute);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => checkoutorder()));
+                // today = new DateTime(today.year, today.month, today.day,
+                //     today.hour, today.minute);
 
-                orders.add({
-                  'Item Name': data['Item Name'],
-                  'Item Price': data['Item Price'],
-                  'Item Qty': OrderQuantity.toString(),
-                  'Imageurl': data['Imageurl'],
-                  'Order Date Time': today,
-                  'vehicle Owner Id': loggedInUser.uid,
-                  'Vehicle Owner Name': loggedInUser.firstName,
-                  'Service Provider Id': data['Service Provider Id'],
-                  'Service Provider Name': data['Service Provider Name'],
-                  'Oreder Status': OrderStatus,
-                }).whenComplete(() {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      content: const Text(
-                          "Your order is placed sucessfully , Please waiting for seller response"),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (_) => Home()));
-                          },
-                          child: Container(
-                            color: Colors.green,
-                            padding: const EdgeInsets.all(14),
-                            child: const Text("okay"),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
+                // orders.add({
+                //   'Item Name': data['Item Name'],
+                //   'Item Price': data['Item Price'],
+                //   'Item Qty': OrderQuantity.toString(),
+                //   'Imageurl': data['Imageurl'],
+                //   'Order Date Time': today,
+                //   'vehicle Owner Id': loggedInUser.uid,
+                //   'Vehicle Owner Name': loggedInUser.firstName,
+                //   'Service Provider Id': data['Service Provider Id'],
+                //   'Service Provider Name': data['Service Provider Name'],
+                //   'Oreder Status': OrderStatus,
+                // }).whenComplete(() {
+                //   showDialog(
+                //     context: context,
+                //     builder: (ctx) => AlertDialog(
+                //       content: const Text(
+                //           "Your order is placed sucessfully , Please waiting for seller response"),
+                //       actions: <Widget>[
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pushReplacement(context,
+                //         MaterialPageRoute(builder: (_) => Home()));
+                //   },
+                //   child: Container(
+                //     color: Colors.green,
+                //     padding: const EdgeInsets.all(14),
+                //     child: const Text("okay"),
+                //   ),
+                // ),
+                //       ],
+                //     ),
+                //   );
+                // });
               },
               style: NeumorphicStyle(color: Colors.purple),
               child: Row(

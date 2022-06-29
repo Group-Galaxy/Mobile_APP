@@ -95,16 +95,16 @@ class ProductList extends StatelessWidget {
                             children: [
                               Column(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, left: 8, top: 8),
-                                    child: Container(
-                                      height: 80,
-                                      child: Center(
-                                        child: Image.network(data['Imageurl']),
-                                      ),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(
+                                  //       right: 8, left: 8, top: 8),
+                                  //   child: Container(
+                                  //     height: 80,
+                                  //     child: Center(
+                                  //       child: Image.network(data['Imageurl']),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -181,7 +181,4 @@ class ProductList extends StatelessWidget {
       ),
     );
   }
-
-
-  
 }
