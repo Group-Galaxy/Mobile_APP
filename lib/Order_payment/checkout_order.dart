@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +88,7 @@ class _checkoutorderState extends State<checkoutorder> {
               .where('Oreder Status', isEqualTo: 'Pending')
               .get(),
           builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+             (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text("something is wrong");
             }
@@ -255,3 +255,4 @@ class _checkoutorderState extends State<checkoutorder> {
     await docUser.set(json);
   }
 }
+*/
