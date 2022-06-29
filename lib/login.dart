@@ -1,34 +1,31 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mypart/dashboard/dashboard.dart';
+import 'package:mypart/usermangment/loginhome.dart';
+import 'package:mypart/usermangment/register.dart';
+import 'package:mypart/usermangment/reset.dart';
+import 'package:mypart/usermangment/welcomeScreen.dart';
 
-import 'package:mypart/seller/Items.dart';
-import 'package:mypart/usermangment/vehicle%20parts%20provider/partsproviregister.dart';
-import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprovloginhome.dart';
-
-
-
-
-class PartsProviderLogin extends StatefulWidget {
-  const PartsProviderLogin({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _PartsProviderLoginState createState() => _PartsProviderLoginState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _PartsProviderLoginState extends State<PartsProviderLogin> {
+class _LoginScreenState extends State<LoginScreen> {
+  // form key
+  
   // form key
   final _formKey = GlobalKey<FormState>();
 
   // editing controller
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   // firebase
   final _auth = FirebaseAuth.instance;
-  
+
   // string for displaying the error Message
   String? errorMessage;
 
@@ -55,8 +52,8 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.mail),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -69,21 +66,22 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
         controller: passwordController,
         obscureText: true,
         validator: (value) {
-          RegExp regex = new RegExp(r'^.{6,}$');
+          RegExp regex = RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
             return ("Password is required for login");
           }
           if (!regex.hasMatch(value)) {
             return ("Enter Valid Password(Min. 6 Character)");
           }
+          return null;
         },
         onSaved: (value) {
           passwordController.text = value!;
         },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.vpn_key),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.vpn_key),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -95,12 +93,12 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
       borderRadius: BorderRadius.circular(30),
       color: Colors.purple,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
             signIn(emailController.text, passwordController.text);
           },
-          child: Text(
+          child: const Text(
             "Login",
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -114,7 +112,7 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.purple),
+          icon: const Icon(Icons.arrow_back, color: Colors.purple),
           onPressed: () {
             // passing this to our root
             Navigator.of(context).pop();
@@ -139,26 +137,26 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
                           'https://firebasestorage.googleapis.com/v0/b/mypart-86d9e.appspot.com/o/logo%2Flogo2.jpg?alt=media&token=48522a8f-53fb-4763-a58f-810de3b1f591',
                           fit: BoxFit.contain,
                         )),
-                    SizedBox(height: 45),
+                    const SizedBox(height: 45),
                     emailField,
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     passwordField,
-                    SizedBox(height: 35),
+                    const SizedBox(height: 35),
                     loginButton,
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("Don't have an account? "),
+                          const Text("Don't have an account? "),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          RegistrationScreen()));
+                                          const RegistrationScreen()));
                             },
-                            child: Text(
+                            child: const Text(
                               "SignUp",
                               style: TextStyle(
                                   color: Colors.purple,
@@ -166,7 +164,19 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
                                   fontSize: 15),
                             ),
                           )
-                        ])
+                        ]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          child: const Text('Forgot Pasword?'),
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const ResetScreen()),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -185,9 +195,9 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Nav_side(title: 'Dashboard',))),
                 });
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":
@@ -217,4 +227,4 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
       }
     }
   }
-}
+  }

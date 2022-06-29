@@ -5,13 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:mypart/usermangment/welcomeScreen.dart';
-import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
-
-
-
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
@@ -36,7 +31,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       Navigator.pushReplacement(
           context,
           CupertinoPageRoute(
-              builder: (_) =>WelcomePage(
+              builder: (_) => WelcomePage(
                     isDriver: isDriver,
                     ismechanic: ismechanic,
                     isparts: isparts,

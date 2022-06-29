@@ -1,15 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+
 class CommentsWidget extends StatefulWidget {
-  final String? getterId;
-  final String? getter;
-  final ScrollController scrollController;
-  const CommentsWidget(
-      {Key? key, this.getterId, required this.scrollController, this.getter})
-      : super(key: key);
+  final String? driverId;
+final ScrollController scrollController;
+  const CommentsWidget({Key? key, this.driverId, required this.scrollController}) : super(key: key);
 
   @override
   State<CommentsWidget> createState() => _CommentsWidgetState();
@@ -18,10 +15,10 @@ class CommentsWidget extends StatefulWidget {
 class _CommentsWidgetState extends State<CommentsWidget> {
   @override
   Widget build(BuildContext context) {
-   // final driverId = widget.getterId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
+    final driverId = widget.driverId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
 
     final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
-        .collection('${widget.getter}/${widget.getterId}/review')
+        .collection('vehicle repair service provider/$driverId/review')
         .orderBy('time', descending: true)
         .snapshots();
     return Padding(
@@ -54,22 +51,11 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                   children: [
                     Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: CircleAvatar(
-                            radius: 30.0,
-                            backgroundColor: Colors.grey,
-                            child: CachedNetworkImage(
-                              height: 100,
-                              width: 100,
-                              imageUrl: data['imgUrl'],
-                              placeholder: (context, url) => const SizedBox(
-                                child:
-                                    Center(child: CircularProgressIndicator()),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.account_circle_outlined),
-                            ),
+                            maxRadius: 35,
+                            backgroundColor: Colors.red,
                           ),
                         ),
                         Padding(
@@ -119,3 +105,4 @@ class _CommentsWidgetState extends State<CommentsWidget> {
     );
   }
 }
+

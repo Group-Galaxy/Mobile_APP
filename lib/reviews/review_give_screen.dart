@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../usermangment/usermodel.dart';
-
 class ReviewGiveScreen extends StatefulWidget {
-  final String? driverId;
-  final String? category;
+  final String? getterId;
+  final String? getter;
+
   const ReviewGiveScreen({
     Key? key,
-    this.driverId, this.category,
+    this.getterId,
+    this.getter,
   }) : super(key: key);
 
   @override
@@ -22,10 +22,10 @@ class _ReviewGiveScreenState extends State<ReviewGiveScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final userId = FirebaseAuth.instance.currentUser;
   addReview() {
-    final driverId = widget.driverId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
+    //final driverId = widget.driverId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
     CollectionReference users = FirebaseFirestore.instance
-        .collection('${widget.category}/$driverId/review');
-       
+        .collection('${widget.getter}/${widget.getterId}/review');
+
     users
         .add({
           'userId': userId?.uid,
@@ -33,7 +33,7 @@ class _ReviewGiveScreenState extends State<ReviewGiveScreen> {
           'comment': _textEditingController.text.trim(),
           'time': FieldValue.serverTimestamp(),
           'userName': userId?.displayName ?? "No name",
-          'photourl': userId?.photoURL
+          'imgUrl': userId?.photoURL ?? ""
         })
         .then((value) => print("User Review"))
         .catchError((error) => print("Failed to add review: $error"));

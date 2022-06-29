@@ -1,21 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:mypart/chat/chat_page.dart';
 
 class ProfileWidegt extends StatefulWidget {
-  final String? getterId;
-  final String? getter;
-  final String? sender;
+  final String? driverId;
   final ScrollController scrollController;
-  const ProfileWidegt(
-      {Key? key,
-      this.getterId,
-      required this.scrollController,
-      this.getter,
-      this.sender})
-      : super(key: key);
+  const ProfileWidegt({Key? key, this.driverId, required this.scrollController}) : super(key: key);
 
   @override
   State<ProfileWidegt> createState() => _ProfileWidegtState();
@@ -24,13 +14,11 @@ class ProfileWidegt extends StatefulWidget {
 class _ProfileWidegtState extends State<ProfileWidegt> {
   @override
   Widget build(BuildContext context) {
-    // final driverId = widget.getterId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
-    final fs = FirebaseFirestore.instance;
-    final curr = FirebaseAuth.instance.currentUser;
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('${widget.getter}');
+    final driverId = widget.driverId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
+    CollectionReference users = FirebaseFirestore.instance
+        .collection('vehicle repair service provider');
     return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(widget.getterId).get(),
+      future: users.doc(driverId).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -115,38 +103,7 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
-                              onPressed: () {
-                                fs
-                                    .collection(
-                                        '${widget.sender}/${curr?.uid}/MessagesList')
-                                    .doc(data['uid'])
-                                    .set({
-                                  "name": curr?.displayName ?? "No name",
-                                  'lastMsgTime': FieldValue.serverTimestamp(),
-                                  'isRespone': true,
-                                  "senderId": curr?.uid,
-                                });
-                                fs
-                                    .collection(
-                                        '${data['myCategory']}/${data['uid']}/MessagesList')
-                                    .doc(curr?.uid)
-                                    .set({
-                                  "name": curr?.displayName ?? "No name",
-                                  'lastMsgTime': FieldValue.serverTimestamp(),
-                                  'isRespone': true,
-                                  "getterId": data['uid']
-                                });
-
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Chatpage(
-                                              getter: data['myCategory'],
-                                              sender: widget.sender ?? "",
-                                              getterId: data['uid'],
-                                            )));
-                              },
-                              child: const Text("Chat")),
+                              onPressed: () {}, child: const Text("Chat")),
                         ),
                       ],
                     ),
