@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:mypart/Order_payment/checkout_order.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/categories/categoryProvider.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: MySplashScreen(),
+      home: checkoutorder(),
     );
   }
 }
