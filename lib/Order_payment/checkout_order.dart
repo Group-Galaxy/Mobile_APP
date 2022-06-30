@@ -8,10 +8,37 @@ import 'package:mypart/usermangment/usermodel.dart';
 import 'package:getwidget/getwidget.dart';
 
 class checkoutorder extends StatefulWidget {
-  const checkoutorder({Key? key}) : super(key: key);
+  //String Date,
+  // ServiceProviderID,
+  // UserName,
+  // Item,
+  //  Quantity,
+  // ContactNumber,
+  //  SubTotal;
+  // DiliveryFee,
+  // Discount,
+  // Balance;
+
+  /*checkoutorder(
+      {Key? mykey,
+      required this.Date,
+      required this.ServiceProviderID,
+      required this.Item,
+      required this.Quantity,
+      required this.SubTotal})
+      : super(key: mykey);*/
+
+  var date;
+  var price;
+  var providerName;
+  var qty;
+
+  checkoutorder(
+      {Key? mykey, this.date, this.price, this.providerName, this.qty})
+      : super(key: mykey);
 
   @override
-  State<checkoutorder> createState() => _checkoutorderState();
+  _checkoutorderState createState() => _checkoutorderState();
 }
 
 class _checkoutorderState extends State<checkoutorder> {
@@ -71,46 +98,8 @@ class _checkoutorderState extends State<checkoutorder> {
 
   //}
 
-  /*String Date,
-      ServiceProviderID,
-      // UserName,
-      Item,
-      Quantity,
-      ContactNumber,
-      SubTotal;
-  //DiliveryFee,
-  // Discount,
-  // Balance;
-
-  checkoutorder({
-    required this.Date,
-    required this.ServiceProviderID,
-   // required this.UserName,
-    required this.Item,
-    required this.Quantity,
-    required this.ContactNumber,
-    required this.SubTotal,
-    //required this.DiliveryFee,
-   // required this.Discount,
-  //  required this.Balance,
-  });
-*/
   Widget build(BuildContext context) {
     print("uid " + user!.uid);
-
-    /* Text('Date : ${Date}');
-    Text('Service Provider ID : ${ServiceProviderID}');
-    //Text('User Name : ${UserName}');
-    Text('Item : ${Item}');
-    Text('Item : ${Quantity}');
-    Text('Contact Number : ${ContactNumber}');
-    SizedBox(
-      height: 20,
-    );
-    Text('Sub Total : ${SubTotal}');
-    // Text('Dilivery Fee : ${DiliveryFee}');
-    //Text('Discount : ${Discount}');
-    // Text('Balance : ${Balance}');*/
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 245, 213, 249),
@@ -121,7 +110,7 @@ class _checkoutorderState extends State<checkoutorder> {
         ),
         body: SingleChildScrollView(
             child: Column(children: [
-          DateTimePicker(
+          /*DateTimePicker(
             initialValue: DateTime.now().toString(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2100),
@@ -138,7 +127,7 @@ class _checkoutorderState extends State<checkoutorder> {
               return null;
             },
             onSaved: (val) {},
-          ),
+          ),*/
           // FutureBuilder<QuerySnapshot>(
           //   future: orders
           //       .where(
@@ -158,17 +147,25 @@ class _checkoutorderState extends State<checkoutorder> {
           //       );
           //     }
 
-          TextField(
+          /* TextField(
               controller: _ServiceProviderID,
               decoration: InputDecoration(
                   icon: Icon(Icons.people),
-                  labelText: ' Service Provider Name')),
+                  labelText: ' Service Provider Name')),*/
+          Text("${widget.date}"),
 
           GFListTile(
-            color: GFColors.LIGHT,
-            titleText: 'UserNmae: ${currentUser['firstName']}',
+            color: GFColors.WHITE,
+            titleText: 'User Name : ${currentUser['firstName']}',
           ),
-          Padding(
+
+          Text("${widget.price}"),
+
+          Text("${widget.providerName}"),
+
+          Text("${widget.qty}"),
+
+          /* Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
                   controller: _Item,
@@ -216,7 +213,7 @@ class _checkoutorderState extends State<checkoutorder> {
           Divider(color: Colors.black),
           SizedBox(
             height: 20,
-          ),
+          ),*/
           ButtonBar(
             children: [
               RaisedButton(

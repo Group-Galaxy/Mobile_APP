@@ -30,17 +30,6 @@ class productDetails extends StatefulWidget {
 }
 
 class _productDetailsState extends State<productDetails> {
-  var _date = DateTime.now().toString();
-  TextEditingController _SellerDetails = new TextEditingController();
-  //TextEditingController _UserName = new TextEditingController();
-  TextEditingController _ItemName = new TextEditingController();
-  TextEditingController _Qty = new TextEditingController();
-  TextEditingController _ContactNo = new TextEditingController();
-  TextEditingController _ItemPrice = new TextEditingController();
-  // TextEditingController _DiliveryFee = new TextEditingController();
-  //TextEditingController _Discount = new TextEditingController();
-  //TextEditingController _balance = new TextEditingController();
-
   FirebaseService _service = FirebaseService();
   User? vehicleowner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
@@ -316,18 +305,12 @@ class _productDetailsState extends State<productDetails> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => checkoutorder(
-                            // ServiceProviderID: _SellerDetails.text,
-                            //           UserName: _UserName.text,
-                            // Item: _ItemName.text,
-                            // Quantity: _Qty.text,
-                            // ContactNumber: _ContactNo.text,
-                            // SubTotal: _ItemPrice.text,
-                            //           DiliveryFee: _DiliveryFee.text,
-                            //           Discount: _Discount.text,
-                            //           Balance: resultValue.toString(),
-                            //  Date: _date,
-                            //         )));
+                              date: today,
+                              price: _price,
+                              providerName: _productProvider,
+                              qty: QuantityInput,
                             )));
+
                 // today = new DateTime(today.year, today.month, today.day,
                 //     today.hour, today.minute);
 
