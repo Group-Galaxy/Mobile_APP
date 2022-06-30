@@ -7,6 +7,15 @@ import 'package:mypart/gateway.dart';
 import 'package:mypart/usermangment/usermodel.dart';
 import 'package:getwidget/getwidget.dart';
 
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:mypart/controller/payment_controller.dart';
+
 class checkoutorder extends StatefulWidget {
   //String Date,
   // ServiceProviderID,
@@ -54,6 +63,7 @@ class _checkoutorderState extends State<checkoutorder> {
   TextEditingController _Item = new TextEditingController();
   TextEditingController _Quantity = new TextEditingController();
   TextEditingController _ContactNumber = new TextEditingController();
+  TextEditingController _Address = new TextEditingController();
   TextEditingController _SubTotal = new TextEditingController();
   TextEditingController _DiliveryFee = new TextEditingController();
   TextEditingController _Discount = new TextEditingController();
@@ -99,6 +109,8 @@ class _checkoutorderState extends State<checkoutorder> {
   //}
 
   Widget build(BuildContext context) {
+    final PaymentController controller = Get.put(PaymentController());
+
     print("uid " + user!.uid);
 
     return Scaffold(
@@ -152,26 +164,47 @@ class _checkoutorderState extends State<checkoutorder> {
               decoration: InputDecoration(
                   icon: Icon(Icons.people),
                   labelText: ' Service Provider Name')),*/
-          Text("${widget.date}"),
+          //Text("${widget.date}"),
+
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText: 'Date : ${widget.date}',
+          ),
 
           GFListTile(
             color: GFColors.WHITE,
             titleText: 'User Name : ${currentUser['firstName']}',
           ),
 
-          Text("${widget.price}"),
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText: 'Parts Provider Name : ${widget.providerName}',
+          ),
 
-          Text("${widget.providerName}"),
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText: 'Unit Price : ${widget.price}',
+          ),
 
-          Text("${widget.qty}"),
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText: 'Quantity : ${widget.qty}',
+          ),
 
-          /* Padding(
+          // Text("${widget.price}"),
+
+          // Text("${widget.providerName}"),
+
+          // Text("${widget.qty}"),
+
+          Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
-                  controller: _Item,
+                  controller: _Address,
                   decoration: InputDecoration(
-                      icon: Icon(Icons.description), labelText: 'Item '))),
-          Padding(
+                      icon: Icon(Icons.description), labelText: 'Address '))),
+
+          /* Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
                   controller: _Quantity,
@@ -221,6 +254,9 @@ class _checkoutorderState extends State<checkoutorder> {
                 textColor: Colors.white,
                 color: Colors.purple,
                 onPressed: () {
+                  controller.makePayment(
+                      amount: '${widget.price}', currency: 'LKR');
+
                   // subTotal = double.parse(_SubTotal.text);
                   // diliveryFee = double.parse(_DiliveryFee.text);
                   // discountValue = double.parse(_Discount.text);
@@ -256,8 +292,10 @@ class _checkoutorderState extends State<checkoutorder> {
                   // );
 
                   // print("the selected date is ${_date}");
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Gateway()));
+                  // Navigator.of(context)
+                  //  .push(MaterialPageRoute(builder: (context) => Gateway(
+
+                  //   )));
                   //           ServiceProviderID: _ServiceProviderID.text,
                   //           UserName: _UserName.text,
                   //           Item: _Item.text,

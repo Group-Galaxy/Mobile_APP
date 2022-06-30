@@ -308,7 +308,7 @@ class _productDetailsState extends State<productDetails> {
                               date: today,
                               price: _price,
                               providerName: _productProvider,
-                              qty: QuantityInput,
+                              qty: OrderQuantity,
                             )));
 
                 // today = new DateTime(today.year, today.month, today.day,
