@@ -58,7 +58,7 @@ class _productDetailsState extends State<productDetails> {
     var _productProvider = Provider.of<ProductProvider>(context);
     var data = _productProvider.ProductData;
     var _price = int.parse(data['Item Price']);
-
+    print(data);
     String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
     return Scaffold(
@@ -206,7 +206,8 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text('J K Motors', style: TextStyle(fontSize: 12)),
+                          Text(data['Service Provider Name'],
+                              style: TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
@@ -307,8 +308,10 @@ class _productDetailsState extends State<productDetails> {
                         builder: (context) => checkoutorder(
                               date: today,
                               price: _price,
-                              providerName: _productProvider,
+                              providerName: data['Service Provider Name'],
                               qty: OrderQuantity,
+                              item: data['Item Name'],
+                              service_provider_id: data['Service Provider Id'],
                             )));
 
                 // today = new DateTime(today.year, today.month, today.day,

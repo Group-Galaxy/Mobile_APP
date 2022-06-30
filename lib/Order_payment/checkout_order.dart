@@ -41,9 +41,17 @@ class checkoutorder extends StatefulWidget {
   var price;
   var providerName;
   var qty;
+  var service_provider_id;
+  String? item;
 
   checkoutorder(
-      {Key? mykey, this.date, this.price, this.providerName, this.qty})
+      {Key? mykey,
+      this.date,
+      this.price,
+      this.providerName,
+      this.qty,
+      required this.item,
+      required this.service_provider_id})
       : super(key: mykey);
 
   @override
@@ -110,7 +118,7 @@ class _checkoutorderState extends State<checkoutorder> {
 
   Widget build(BuildContext context) {
     final PaymentController controller = Get.put(PaymentController());
-
+    final delivery_fee = 500;
     print("uid " + user!.uid);
 
     return Scaffold(
@@ -165,15 +173,22 @@ class _checkoutorderState extends State<checkoutorder> {
                   icon: Icon(Icons.people),
                   labelText: ' Service Provider Name')),*/
           //Text("${widget.date}"),
-
           GFListTile(
             color: GFColors.WHITE,
-            titleText: 'Date : ${widget.date}',
+            titleText: 'Item : ${widget.item}',
+          ),
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText: 'Date : ${widget.date.toString().substring(0, 10)}',
           ),
 
           GFListTile(
             color: GFColors.WHITE,
             titleText: 'User Name : ${currentUser['firstName']}',
+          ),
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText: 'Contact No : ${currentUser['contactNo']}',
           ),
 
           GFListTile(
@@ -189,6 +204,18 @@ class _checkoutorderState extends State<checkoutorder> {
           GFListTile(
             color: GFColors.WHITE,
             titleText: 'Quantity : ${widget.qty}',
+          ),
+
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText:
+                'Delivery fee : ${(widget.qty == 1) ? delivery_fee : (widget.qty == 2) ? 750 : 1000}',
+          ),
+
+          GFListTile(
+            color: GFColors.WHITE,
+            titleText:
+                'Total : ${widget.price * widget.qty + ((widget.qty == 1) ? delivery_fee : (widget.qty == 2) ? 750 : 1000)}/=',
           ),
 
           // Text("${widget.price}"),
@@ -253,9 +280,30 @@ class _checkoutorderState extends State<checkoutorder> {
                 child: Text("Pay Now"),
                 textColor: Colors.white,
                 color: Colors.purple,
-                onPressed: () {
-                  controller.makePayment(
+                onPressed: () async {
+                  await controller.makePayment(
                       amount: '${widget.price}', currency: 'LKR');
+                  await controller.addpaymentDataToDb(
+                      userName: currentUser['firstName'],
+                      serviceProviderID: widget.service_provider_id,
+                      date: widget.date.toString(),
+                      balance: (widget.price * widget.qty +
+                              ((widget.qty == 1)
+                                  ? delivery_fee
+                                  : (widget.qty == 2)
+                                      ? 750
+                                      : 1000))
+                          .toString(),
+                      subTotal: widget.price.toString(),
+                      quantity: widget.qty.toString(),
+                      item: widget.item!,
+                      delivery_fee: ((widget.qty == 1)
+                              ? delivery_fee
+                              : (widget.qty == 2)
+                                  ? 750
+                                  : 1000)
+                          .toString(),
+                      contactNo: currentUser['contactNo'].toString());
 
                   // subTotal = double.parse(_SubTotal.text);
                   // diliveryFee = double.parse(_DiliveryFee.text);
