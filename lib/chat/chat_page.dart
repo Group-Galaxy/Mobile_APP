@@ -12,12 +12,12 @@ class Chatpage extends StatefulWidget {
   final String getterId;
   final String sender;
   final String getter;
-  final String? name;
+  final String? getterName;
   const Chatpage({
     Key? key,
     required this.getterId,
     required this.getter,
-    this.name,
+    this.getterName,
     required this.sender,
   }) : super(key: key);
   @override
@@ -37,7 +37,7 @@ class _ChatpageState extends State<Chatpage> {
     final curr = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name ?? "No name "),
+        title: Text(widget.getterName ?? "No name "),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -98,10 +98,9 @@ class _ChatpageState extends State<Chatpage> {
                             .add({
                           'message': "Image",
                           'time': FieldValue.serverTimestamp(),
-                          "driver": widget.getterId,
-                          'userId': curr?.uid,
+                        
+                          'getterId': curr?.uid,
                           "name": curr?.displayName ?? "No name",
-                          "driverName": widget.name,
                           "isMe": false,
                           "imgUrl": imgUrl,
                           "isImage": true
@@ -111,10 +110,10 @@ class _ChatpageState extends State<Chatpage> {
                                 '${widget.getter}/${widget.getterId}/MessagesList')
                             .doc(curr?.uid)
                             .set({
-                          "name": curr?.displayName ?? "No name",
+                          //"name": curr?.displayName ?? "No name",
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': "Image",
-                          'isRespone': false
+                          'isRespone': true
                         });
                         fs
                             .collection(
@@ -122,10 +121,9 @@ class _ChatpageState extends State<Chatpage> {
                             .add({
                           'message': message.text.trim(),
                           'time': FieldValue.serverTimestamp(),
-                          "driver": widget.getterId,
-                          'userId': curr?.uid,
-                          "name": curr?.displayName ?? "No name",
-                          "driverName": widget.name,
+                          "getterId": widget.getterId,
+                          
+                          "name": widget.getterName ?? "NO Name",
                           "isMe": true,
                           "isImage": true,
                           "imgUrl": imgUrl,
@@ -135,10 +133,10 @@ class _ChatpageState extends State<Chatpage> {
                                 '${widget.sender}/${curr?.uid}/MessagesList')
                             .doc(widget.getterId)
                             .set({
-                          "name": curr?.displayName ?? "No name",
+                          //"name": curr?.displayName ?? "No name",
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': "Image",
-                          'isRespone': false
+                          'isRespone': true
                         });
                         message.clear();
                       },
@@ -181,11 +179,10 @@ class _ChatpageState extends State<Chatpage> {
                             .add({
                           'message': message.text.trim(),
                           'time': FieldValue.serverTimestamp(),
-                          "driver": widget.getterId,
-                          'userId': curr?.uid,
+                          
+                          'getterId': curr?.uid,
                           "name": curr?.displayName ?? "No name",
-                          "driverName": widget.name,
-                          "isDriver": false,
+                         
                           "isImage": false,
                           "imgUrl": "",
                           "isMe": false,
@@ -195,21 +192,20 @@ class _ChatpageState extends State<Chatpage> {
                                 '${widget.getter}/${widget.getterId}/MessagesList')
                             .doc(curr?.uid)
                             .set({
-                          "name": curr?.displayName ?? "No name",
+                          //"name": curr?.displayName ?? "No name",
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': message.text.trim(),
-                          'isRespone': false
-                        });
+                          'isRespone': true
+                        }, SetOptions(merge: true));
                         fs
                             .collection(
                                 '${widget.sender}/${curr?.uid}/MessagesList/${widget.getterId}/Messages')
                             .add({
                           'message': message.text.trim(),
                           'time': FieldValue.serverTimestamp(),
-                          "driver": widget.getterId,
-                          'userId': curr?.uid,
-                          "name": curr?.displayName ?? "No name",
-                          "driverName": widget.name,
+                          "getterId": widget.getterId,
+                          
+                          "name":  widget.getterName ?? "NO Name",
                           "isMe": true,
                           "isImage": false,
                           "imgUrl": "",
@@ -219,11 +215,11 @@ class _ChatpageState extends State<Chatpage> {
                                 '${widget.sender}/${curr?.uid}/MessagesList')
                             .doc(widget.getterId)
                             .set({
-                          "name": curr?.displayName ?? "No name",
+                          //"name": widget.getterName ?? "No name",
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': message.text.trim(),
-                          'isRespone': false
-                        });
+                          'isRespone': true
+                        }, SetOptions(merge: true));
                         message.clear();
                       }
                     },

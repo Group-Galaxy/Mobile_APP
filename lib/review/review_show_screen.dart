@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypart/review/profile_widget.dart';
 
-
-
 import 'comments_widget.dart';
 
 class ReviewShowScreen extends StatefulWidget {

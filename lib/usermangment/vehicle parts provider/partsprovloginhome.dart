@@ -6,9 +6,6 @@ import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
-
-
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -28,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -42,96 +39,84 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Column(
-            mainAxisAlignment:MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              
-              Text(
+              const Text(
                 "Welcome Back",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
                   )),
               Text("${loggedInUser.email}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-             GestureDetector(
-            onTap: () {
-             
-
-            },
-            child: new Align(
-               
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  padding: EdgeInsets.all(10),
+              GestureDetector(
+                onTap: () {},
+                child: Align(
+                    child: Container(
+                  margin: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       border: Border.all(width: 2, color: Colors.purple)),
-                  child: Icon(
+                  child: const Icon(
                     Icons.man,
                     color: Colors.purple,
                     size: 75,
                   ),
                 )),
-          ),
-                            
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Repair vehicle'),
-                            ),
-                  
-          GestureDetector(
-            onTap: () {
-             Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) =>Home ()));
-
-            },
-            child: new Align(
-                
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  padding: EdgeInsets.all(10),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Repair vehicle'),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (_) => Home()));
+                },
+                child: Align(
+                    child: Container(
+                  margin: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       border: Border.all(width: 2, color: Colors.purple)),
-                  child: Icon(
+                  child: const Icon(
                     Icons.key,
                     color: Colors.purple,
                     size: 75,
                   ),
                 )),
-          ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Buy vehicle parts'),
-                            ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Buy vehicle parts'),
+              ),
             ],
           ),
         ),
       ),
     );
-      
-  
   }
 
   // the logout function
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => PartsProviderLogin()));
+        MaterialPageRoute(builder: (context) => const PartsProviderLogin()));
   }
 }

@@ -27,7 +27,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     ismechanic = prefs.getBool('ismechanic') ?? false;
     isparts = prefs.getBool('isparts') ?? false;
 
-    Timer(const Duration(seconds: 8), () {
+    Timer(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
           context,
           CupertinoPageRoute(
