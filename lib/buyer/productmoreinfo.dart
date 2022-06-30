@@ -1,5 +1,7 @@
 //import 'dart:async';
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,6 +30,17 @@ class productDetails extends StatefulWidget {
 }
 
 class _productDetailsState extends State<productDetails> {
+  var _date = DateTime.now().toString();
+  TextEditingController _SellerDetails = new TextEditingController();
+  //TextEditingController _UserName = new TextEditingController();
+  TextEditingController _ItemName = new TextEditingController();
+  TextEditingController _Qty = new TextEditingController();
+  TextEditingController _ContactNo = new TextEditingController();
+  TextEditingController _ItemPrice = new TextEditingController();
+  // TextEditingController _DiliveryFee = new TextEditingController();
+  //TextEditingController _Discount = new TextEditingController();
+  //TextEditingController _balance = new TextEditingController();
+
   FirebaseService _service = FirebaseService();
   User? vehicleowner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
@@ -107,7 +120,7 @@ class _productDetailsState extends State<productDetails> {
                                 style: TextStyle(fontSize: 16)),
                           ],
                         ),
-                        SizedBox(width: 70),
+                        SizedBox(width: 10),
                         Column(
                           children: [
                             QuantityInput(
@@ -299,8 +312,22 @@ class _productDetailsState extends State<productDetails> {
             Expanded(
                 child: NeumorphicButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => checkoutorder()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => checkoutorder(
+                            // ServiceProviderID: _SellerDetails.text,
+                            //           UserName: _UserName.text,
+                            // Item: _ItemName.text,
+                            // Quantity: _Qty.text,
+                            // ContactNumber: _ContactNo.text,
+                            // SubTotal: _ItemPrice.text,
+                            //           DiliveryFee: _DiliveryFee.text,
+                            //           Discount: _Discount.text,
+                            //           Balance: resultValue.toString(),
+                            //  Date: _date,
+                            //         )));
+                            )));
                 // today = new DateTime(today.year, today.month, today.day,
                 //     today.hour, today.minute);
 

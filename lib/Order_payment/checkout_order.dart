@@ -3,6 +3,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/Order_payment/checkout_receipt.dart';
+import 'package:mypart/gateway.dart';
 import 'package:mypart/usermangment/usermodel.dart';
 import 'package:getwidget/getwidget.dart';
 
@@ -40,6 +41,7 @@ class _checkoutorderState extends State<checkoutorder> {
   double resultValue = 0.0;
 
   double balanceValue = 0.0;
+
   var currentUser = {};
   @override
   void initState() {
@@ -68,8 +70,47 @@ class _checkoutorderState extends State<checkoutorder> {
   // void getUser()async{
 
   //}
+
+  /*String Date,
+      ServiceProviderID,
+      // UserName,
+      Item,
+      Quantity,
+      ContactNumber,
+      SubTotal;
+  //DiliveryFee,
+  // Discount,
+  // Balance;
+
+  checkoutorder({
+    required this.Date,
+    required this.ServiceProviderID,
+   // required this.UserName,
+    required this.Item,
+    required this.Quantity,
+    required this.ContactNumber,
+    required this.SubTotal,
+    //required this.DiliveryFee,
+   // required this.Discount,
+  //  required this.Balance,
+  });
+*/
   Widget build(BuildContext context) {
     print("uid " + user!.uid);
+
+    /* Text('Date : ${Date}');
+    Text('Service Provider ID : ${ServiceProviderID}');
+    //Text('User Name : ${UserName}');
+    Text('Item : ${Item}');
+    Text('Item : ${Quantity}');
+    Text('Contact Number : ${ContactNumber}');
+    SizedBox(
+      height: 20,
+    );
+    Text('Sub Total : ${SubTotal}');
+    // Text('Dilivery Fee : ${DiliveryFee}');
+    //Text('Discount : ${Discount}');
+    // Text('Balance : ${Balance}');*/
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 245, 213, 249),
@@ -218,8 +259,8 @@ class _checkoutorderState extends State<checkoutorder> {
                   // );
 
                   // print("the selected date is ${_date}");
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => checkoutreceipt(
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Gateway()));
                   //           ServiceProviderID: _ServiceProviderID.text,
                   //           UserName: _UserName.text,
                   //           Item: _Item.text,
