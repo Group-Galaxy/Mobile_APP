@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mypart/usermangment/loginhome.dart';
 import 'package:mypart/usermangment/register.dart';
 import 'package:mypart/usermangment/reset.dart';
-import 'package:mypart/usermangment/welcomeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   // form key
-  
+
   // form key
   final _formKey = GlobalKey<FormState>();
 
@@ -196,6 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                 });
+
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const HomeScreen()));
       } on FirebaseAuthException catch (error) {
@@ -227,4 +227,4 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-  }
+}

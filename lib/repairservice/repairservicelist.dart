@@ -14,7 +14,7 @@ class _MyHomePageState extends State<MyHomePage> {
   
 
   @override
-   FirebaseService _service = FirebaseService();
+   final CollectionReference RepairServiceProvider = FirebaseFirestore.instance.collection('vehicle repair service provider');
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Container(
            child: FutureBuilder<QuerySnapshot>(
-          future:  _service.RepairServiceProvider.get(),
+          future: RepairServiceProvider.get(),
       
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {

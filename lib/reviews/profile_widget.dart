@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -56,13 +57,26 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                 children: [
                   Row(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          maxRadius: 50,
-                          backgroundColor: Colors.red,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            radius: 30.0,
+                            backgroundColor: Colors.grey,
+                            child: CachedNetworkImage(
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.fill,
+                              imageUrl: data['imgUrl'],
+                              placeholder: (context, url) => const CircleAvatar(
+                                radius: 30.0,
+                                child:
+                                    Center(child: CircularProgressIndicator()),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.account_circle_outlined),
+                            ),
+                          ),
                         ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -124,8 +138,11 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                                   "name": curr?.displayName ?? "No name",
                                   'lastMsgTime': FieldValue.serverTimestamp(),
                                   'isRespone': true,
-                                  "senderId": curr?.uid,
-                                });
+                                  "getterId": widget.getterId,
+                                  'imgUrl': data['imgUrl'] ?? "",
+                                  "sender": "users",
+                                  "getter": "vehicle repair service provider"
+                                }, SetOptions(merge: true));
                                 fs
                                     .collection(
                                         '${data['myCategory']}/${data['uid']}/MessagesList')
@@ -134,8 +151,11 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                                   "name": curr?.displayName ?? "No name",
                                   'lastMsgTime': FieldValue.serverTimestamp(),
                                   'isRespone': true,
-                                  "getterId": data['uid']
-                                });
+                                  "getterId": data['uid'],
+                                  'imgUrl': curr?.photoURL ?? "",
+                                  "getter": "users",
+                                  "sender": "vehicle repair service provider"
+                                }, SetOptions(merge: true));
 
                                 Navigator.push(
                                     context,
@@ -144,6 +164,7 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                                               getter: data['myCategory'],
                                               sender: widget.sender ?? "",
                                               getterId: data['uid'],
+                                              getterName: data['firstName'],
                                             )));
                               },
                               child: const Text("Chat")),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypart/dashboard/dashboard.dart';
 
-
-
 import 'orderdetails.dart';
 
 class Myorders extends StatefulWidget {
@@ -19,16 +17,19 @@ class _MyordersState extends State<Myorders> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          
           title: const Text("Orders"),
           leading: ElevatedButton(
             onPressed: () {
-             Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => Nav_side(title: 'Dashboard',)));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const NavSide(
+                            title: 'Dashboard',
+                          )));
             },
             child: const Icon(
               Icons.arrow_back,
-              size:30,
+              size: 30,
               color: Colors.white,
             ),
           ),
@@ -122,8 +123,7 @@ class Request extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text("",
-                              style: TextStyle(color: Colors.grey)),
+                          Text("", style: TextStyle(color: Colors.grey)),
                         ],
                       ),
                     ],

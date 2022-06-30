@@ -62,7 +62,7 @@ class _ItemsState extends State<Items> {
          leading: ElevatedButton(
             onPressed: () {
               Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => Nav_side(title: 'Dashboard',)));
+              context, MaterialPageRoute(builder: (_) => NavSide(title: 'Dashboard',)));
             },
             child: const Icon(
               Icons.arrow_back,

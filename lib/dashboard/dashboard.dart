@@ -1,58 +1,74 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mypart/chat/chat_home.dart';
 import 'package:mypart/dashboard/components/card_custom.dart';
 import 'package:mypart/dashboard/components/circle_progress.dart';
 import 'package:mypart/dashboard/components/list_tile_custom.dart';
 import 'package:mypart/dashboard/themes.dart';
-import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Nav_side extends StatefulWidget {
-const Nav_side({Key? key, required String title}) : super(key: key);
-@override
-_Nav_sideState createState() => _Nav_sideState();
+import '../usermangment/splashScreen.dart';
+
+class NavSide extends StatefulWidget {
+  const NavSide({Key? key, required String title}) : super(key: key);
+  @override
+  _NavSideState createState() => _NavSideState();
 }
-class _Nav_sideState extends State<Nav_side> {
- User? user = FirebaseAuth.instance.currentUser;
+
+class _NavSideState extends State<NavSide> {
+  User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-  
-   void initState() {
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
     super.initState();
+    setAc();
     FirebaseFirestore.instance
         .collection("vehicl parts providers")
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
 
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-appBar: AppBar(
-title: const Text("Dashboard"),
-),
-body:SafeArea(
+  setAc() async {
+    prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDriver', false);
+    await prefs.setBool('ismechanic', false);
+    await prefs.setBool('isparts', true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Dashboard"),
+      ),
+      body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                       width: MediaQuery.of(context).size.width/2.20,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .7,
                         child: Column(
                           children: [
                             CustomPaint(
@@ -64,13 +80,13 @@ body:SafeArea(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "LKR 65000",
-                                      style: TextStyle(fontWeight: FontWeight.bold)
-                                    ),
-                                    Text(
+                                    const Text("LKR 65000",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    const Text(
                                       "Total earnings",
-                                     style: TextStyle(fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       crossAxisAlignment:
@@ -83,28 +99,25 @@ body:SafeArea(
                                           color: green,
                                           size: 14,
                                         ),
-                                        Text(
-                                          "per week",
-                                          style: TextStyle(fontWeight: FontWeight.bold)
-                                        ),
+                                        const Text("per week",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
                                       ],
                                     )
                                   ],
                                 ),
                               ),
                             ),
-                            Text(
-                              "NEW ACHIEVMENT",
-                              style: TextStyle(fontWeight: FontWeight.bold)
-                            ),
+                            const Text("NEW ACHIEVMENT",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                             //Text(
-                             // "Social Star",
-                             // style: textBold3,
-                           // ),
+                            // "Social Star",
+                            // style: textBold3,
+                            // ),
                           ],
                         ),
                       ),
-                     /* Container(
+                      /* Container(
                         width: size.width / 2 - 20,
                         height: 180,
                         decoration: BoxDecoration(
@@ -120,7 +133,7 @@ body:SafeArea(
                   color: sparatorColor,
                 ),
                 Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
                       RichText(
@@ -136,12 +149,14 @@ body:SafeArea(
                                   style: TextStyle(fontWeight: FontWeight.bold))
                             ]),
                       ),
-                      const SizedBox( height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         children: [
                           CardCustom(
-                           width: MediaQuery.of(context).size.width/2.23,
-                            height: 88,
+                            width: MediaQuery.of(context).size.width * .4,
+                            height: MediaQuery.of(context).size.height * .2,
                             mLeft: 0,
                             mRight: 3,
                             child: ListTileCustom(
@@ -152,8 +167,8 @@ body:SafeArea(
                             ),
                           ),
                           CardCustom(
-                           width: MediaQuery.of(context).size.width/2.23,
-                            height: 88,
+                            width: MediaQuery.of(context).size.width * .4,
+                            height: MediaQuery.of(context).size.height * .2,
                             mLeft: 3,
                             mRight: 0,
                             child: ListTileCustom(
@@ -166,17 +181,18 @@ body:SafeArea(
                         ],
                       ),
                       CardCustom(
-                        mLeft: 0, 
-                        mRight: 0, 
-                        width: MediaQuery.of(context).size.width/40,
-                        height: 211, 
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(padding: const EdgeInsets.all(20),
-                              child: Row(
-                                children: [
-                                 /* Container(
+                          mLeft: 0,
+                          mRight: 0,
+                          width: MediaQuery.of(context).size.width * .4,
+                          height: MediaQuery.of(context).size.height * .2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: const [
+                                    /* Container(
                                     width: 8,
                                     height: 9.71,
                                     decoration: BoxDecoration(
@@ -184,37 +200,37 @@ body:SafeArea(
                                       color: blueLight
                                     ),
                                   ),*/
-                                  //SizedBox(
-                                  //  width: 5,
-                                  //),
-                                 // Text("Users",
-                                  //  style: label,
-                                 // ),
-                                  SizedBox(
-                                  width: 20,
-                                  ),
-                                  Container(
-                                    width: 20,
-                                    height: 20,
-                                    /*decoration: BoxDecoration(
+                                    //SizedBox(
+                                    //  width: 5,
+                                    //),
+                                    // Text("Users",
+                                    //  style: label,
+                                    // ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      /*decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: green
                                     ),*/
-                                  ),
-                                 // SizedBox(
-                                 //   width: 3,
-                                 // ),
-                                  //Text("Selling Items",
-                                   // style: label,
-                                 // ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                ],
+                                    ),
+                                    // SizedBox(
+                                    //   width: 3,
+                                    // ),
+                                    //Text("Selling Items",
+                                    // style: label,
+                                    // ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
                     ],
                   ),
                 ),
@@ -223,84 +239,101 @@ body:SafeArea(
           ),
         ),
       ),
-drawer: Drawer(
-child: ListView(
-padding: EdgeInsets.zero,
-children: <Widget>[
- UserAccountsDrawerHeader(
-accountName: Text(loggedInUser.firstName ?? ""),
-accountEmail: Text("snmotors@gmail.com"),
-currentAccountPicture: CircleAvatar(
-backgroundColor: Colors.blueGrey,
-child: Text(
-"S",
-style: TextStyle(fontSize: 40.0),
-),
-),
-),
-ListTile(
-leading: Icon(Icons.home),
-title: Text("Dashboard"),
-onTap: () {
-Navigator.pop(context);
-},
-),
-ListTile(
-leading: Icon(Icons.notifications),
-title: Text("Notifications"),
-onTap: () {
-  Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) =>PartsProviderNotifications ()));
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const UserAccountsDrawerHeader(
+              accountName: Text("user default"),
+              accountEmail: Text("snmotors@gmail.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.blueGrey,
+                child: Text(
+                  "S",
+                  style: TextStyle(fontSize: 40.0),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text("Dashboard"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.notifications),
+              title: const Text("Notifications"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.chat),
+              title: const Text("Chat"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const ChatHome(
+                              sender: "vehicl parts providers",
+                            )));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.shop_outlined),
+              title: const Text("My orders"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const Myorders()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.auto_graph_sharp),
+              title: const Text("My Items"),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) =>  Items()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.comment_sharp),
+              title: const Text("Comments & Ratings"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout_sharp),
+              title: const Text("Log out"),
+              onTap: () {
+                prefs.setBool('isDriver', false);
+                prefs.setBool('ismechanic', false);
+                prefs.setBool('isparts', false);
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(context,
+                    CupertinoPageRoute(builder: (_) => const MySplashScreen()));
 
-},
-),
-
-ListTile(
-leading: Icon(Icons.chat),
-title: Text("Chat"),
-onTap: () {
-Navigator.pop(context);
-},
-),
-ListTile(
-leading: Icon(Icons.shop_outlined),
-title: Text("My orders"),
-onTap: () {
-  Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) =>Myorders ()));
-
-},
-),
-ListTile(
-leading: Icon(Icons.auto_graph_sharp),
-title: Text("My Items"),
-onTap: () {
-Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) => Items()));
-},
-),
-ListTile(
-leading: Icon(Icons.comment_sharp),
-title: Text("Comments & Ratings"),
-onTap: () {
-Navigator.pop(context);
-},
-),
-ListTile(
-leading: Icon(Icons.logout_sharp),
-title: Text("Log out"),
-onTap: () {
-Navigator.pushReplacement(
-  
-                context, MaterialPageRoute(builder: (_) =>PartsProviderLogin ()));
-},
-),
-],
-),
-),
-);
-}
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (_) => const PartsProviderLogin()));
+              },
+            ),
+            TextButton(
+              onPressed: () {
+                prefs.setBool('isDriver', false);
+                prefs.setBool('ismechanic', false);
+                prefs.setBool('isparts', false);
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(context,
+                    CupertinoPageRoute(builder: (_) => const MySplashScreen()));
+              },
+              child: const Text("Log Out"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

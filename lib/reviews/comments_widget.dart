@@ -18,7 +18,7 @@ class CommentsWidget extends StatefulWidget {
 class _CommentsWidgetState extends State<CommentsWidget> {
   @override
   Widget build(BuildContext context) {
-   // final driverId = widget.getterId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
+    // final driverId = widget.getterId ?? "3hQPIZQq1lPVtjWoAW3shKBCTtf1";
 
     final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
         .collection('${widget.getter}/${widget.getterId}/review')
@@ -62,8 +62,10 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                             child: CachedNetworkImage(
                               height: 100,
                               width: 100,
+                              fit: BoxFit.fill,
                               imageUrl: data['imgUrl'],
-                              placeholder: (context, url) => const SizedBox(
+                              placeholder: (context, url) => const CircleAvatar(
+                                radius: 30.0,
                                 child:
                                     Center(child: CircularProgressIndicator()),
                               ),

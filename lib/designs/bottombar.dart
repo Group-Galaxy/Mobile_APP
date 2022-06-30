@@ -1,22 +1,21 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/orders/order_userside/userordermain.dart';
+
+import '../chat/chat_home.dart';
 
 class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 6.0,
         color: Colors.transparent,
-       
         elevation: 9.0,
         clipBehavior: Clip.antiAlias,
         child: Container(
             height: 50.0,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25.0),
                     topRight: Radius.circular(25.0)),
@@ -24,9 +23,9 @@ class BottomBar extends StatelessWidget {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
                       height: 50.0,
-                      width: MediaQuery.of(context).size.width ,
+                      width: MediaQuery.of(context).size.width,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -41,16 +40,24 @@ class BottomBar extends StatelessWidget {
                             tooltip: 'Orders',
                             color: Colors.white,
                             onPressed: () {
-                               Navigator.pushReplacement(
-  
-                               context, MaterialPageRoute(builder: (_) =>Myorders ()));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const Myorders()));
                             },
                           ),
                           IconButton(
                             icon: const Icon(Icons.chat),
                             tooltip: 'chat',
                             color: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const ChatHome(
+                                            sender: "users",
+                                          )));
+                            },
                           ),
                           IconButton(
                             icon: const Icon(Icons.favorite),
@@ -64,7 +71,6 @@ class BottomBar extends StatelessWidget {
                             color: Colors.white,
                             onPressed: () {},
                           ),
-                         
                         ],
                       )),
                   /*Container(
@@ -87,7 +93,6 @@ class BottomBar extends StatelessWidget {
                           ),
                         ],
                       )),*/
-                ])
-                ));
+                ])));
   }
 }

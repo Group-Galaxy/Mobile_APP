@@ -2,14 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/buyer/searchhome.dart';
-
-import 'package:mypart/reviews/review_show_screen.dart';
-import 'package:mypart/reviews/review_give_screen.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/usermodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+import '../reviews/review_give_screen.dart';
+import '../reviews/review_show_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -81,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                       context, MaterialPageRoute(builder: (_) => Home()));
                 },
                 child: Align(

@@ -7,13 +7,13 @@ import 'chat_page.dart';
 
 class ChatHome extends StatefulWidget {
   final String? talkId;
-  final String? colName;
+  final String? sender;
   final String? imgUrl;
-  const ChatHome({Key? key, this.talkId, this.colName, this.imgUrl})
+  const ChatHome({Key? key, this.talkId, this.sender, this.imgUrl})
       : super(key: key);
   @override
   _ChatHomeState createState() =>
-      _ChatHomeState(talkId: talkId, category: colName);
+      _ChatHomeState(talkId: talkId, category: sender);
 }
 
 class _ChatHomeState extends State<ChatHome> {
@@ -26,10 +26,13 @@ class _ChatHomeState extends State<ChatHome> {
     final curr = FirebaseAuth.instance.currentUser;
 
     final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
-        .collection('${widget.colName}/$talkId/MessagesList')
+        .collection('${widget.sender}/${curr?.uid}/MessagesList')
         .orderBy('lastMsgTime')
         .snapshots();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Chat"),
+      ),
       body: StreamBuilder(
         stream: messageStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -64,11 +67,10 @@ class _ChatHomeState extends State<ChatHome> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Chatpage(
-                                        getter: qs['colName'] ??
-                                            "vehicle repair service provider",
-                                        sender: widget.colName ?? "",
-                                        name: qs['driverName'],
-                                        getterId: qs['driverId'],
+                                        getter: qs['getter'],
+                                        sender: qs['sender'],
+                                        getterName: qs['name'],
+                                        getterId: qs['getterId'],
                                       )));
                         },
                         child: Column(

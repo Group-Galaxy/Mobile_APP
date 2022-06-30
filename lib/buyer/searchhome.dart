@@ -1,11 +1,7 @@
 //import 'dart:html';
 
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/buyer/products.dart';
 import 'package:mypart/categories/categories.dart';
@@ -13,13 +9,11 @@ import 'package:mypart/categories/categoryProvider.dart';
 import 'package:mypart/designs/appbar.dart';
 
 import 'package:mypart/designs/bottombar.dart';
-import 'package:mypart/seller/Items.dart';
 import 'package:intl/intl.dart';
 import 'package:mypart/services/searchService.dart';
 import 'package:provider/provider.dart';
 
 import '../firebaseservice.dart';
-import 'productmoreinfo.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -27,29 +21,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<String> _carouselImages = [];
-  var _dotPosition = 0;
-  List _products = [];
-  var _firestoreInstance = FirebaseFirestore.instance;
-  FirebaseService _service = FirebaseService();
-  SearchService _serach = SearchService();
+  final List<String> _carouselImages = [];
+  final _dotPosition = 0;
+  final List _products = [];
+  final _firestoreInstance = FirebaseFirestore.instance;
+  final FirebaseService _service = FirebaseService();
+  final SearchService _serach = SearchService();
 
   static List<VehicleParts> items = [];
 
   @override
   @override
   Widget build(BuildContext context) {
-    final _formate = NumberFormat('##,##,##0');
+    final formate = NumberFormat('##,##,##0');
 
-    var _catProvider = Provider.of<categoryprovider>(context);
-    _catProvider.ClearSelectedCategory();
+    var catProvider = Provider.of<categoryprovider>(context);
+    catProvider.ClearSelectedCategory();
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: SafeArea(child: Customappbar()),
       ),
       body: SingleChildScrollView(
-        physics: ScrollPhysics(),
+        physics: const ScrollPhysics(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -58,7 +52,7 @@ class _HomeState extends State<Home> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
                 child: Column(
-                  children: [
+                  children: const [
                     SizedBox(
                       height: 10.0,
                     ),
@@ -70,7 +64,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ProductList(false),
