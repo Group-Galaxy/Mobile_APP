@@ -11,7 +11,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mypart/controller/payment_controller.dart';
@@ -94,7 +94,7 @@ class _checkoutorderState extends State<checkoutorder> {
           centerTitle: true,
           backgroundColor: Colors.purple,
         ),
-        body: Center(
+        body: Card(
           child: SingleChildScrollView(
               child: Column(children: [
             GFListTile(
