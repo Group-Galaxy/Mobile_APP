@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
- import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/categories/categoryProvider.dart';
 import 'package:mypart/seller/ItemProvider.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
+import 'package:mypart/usermangment/welcomeScreen.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -42,7 +43,7 @@ Future<void> main() async {
     providers: [
       Provider(create: (_) => ProductProvider()),
       Provider(create: (_) => categoryprovider()),
-       Provider(create: (_) => ItemProvider())
+      Provider(create: (_) => ItemProvider())
     ],
     child: const MyApp(),
   )));
@@ -74,9 +75,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.purple,
-        ),
-        home: const MySplashScreen());
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: WelcomePage(),
+    );
   }
 }

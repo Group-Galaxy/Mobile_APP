@@ -285,9 +285,8 @@ class _NavSideState extends State<NavSide> {
             UserAccountsDrawerHeader(
               accountName: Text(loggedInUser.firstName ?? ""),
               accountEmail: Text(loggedInUser.email ?? ""),
-              currentAccountPicture:  CircleAvatar(
-                
-                 child: Image.network(loggedInUser.imgUrl ?? ""),
+              currentAccountPicture: CircleAvatar(
+                child: Image.network(loggedInUser.imgUrl ?? ""),
               ),
             ),
             ListTile(
@@ -301,11 +300,11 @@ class _NavSideState extends State<NavSide> {
               leading: const Icon(Icons.notifications),
               title: const Text("Notifications"),
               onTap: () {
-              //   Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (_) => const PartsProviderNotifications()));
-               },
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (_) => const PartsProviderNotifications()));
+              },
             ),
             ListTile(
               leading: const Icon(Icons.chat),

@@ -1,10 +1,13 @@
 //import 'dart:async';
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:mypart/Order_payment/checkout_order.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/products.dart';
 import 'package:mypart/buyer/vehicle_parts_home.dart';
@@ -35,28 +38,26 @@ class _productDetailsState extends State<productDetails> {
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
-  CollectionReference user = FirebaseFirestore.instance.collection('VehicleOwner');
-  
+  CollectionReference user =
+      FirebaseFirestore.instance.collection('VehicleOwner');
+
   CollectionReference notifications =
       FirebaseFirestore.instance.collection('notifications');
-       
 
   @override
-  
   int OrderQuantity = 0;
   var today = DateTime.now();
   String OrderStatus = "Pending";
   @override
   Widget build(BuildContext context) {
-    final PriceFormat = NumberFormat('##,##,##0');
-    var productProvider = Provider.of<ProductProvider>(context);
-    var data = productProvider.ProductData;
-    var price = int.parse(data['Item Price']);
+    final _PriceFormat = NumberFormat('##,##,##0');
+    var _productProvider = Provider.of<ProductProvider>(context);
+    var data = _productProvider.ProductData;
+    var _price = int.parse(data['Item Price']);
+    print(data);
+    String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
-
-
-
-    String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
+    //String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
 
     final fs = FirebaseFirestore.instance;
     return Scaffold(
@@ -107,7 +108,7 @@ class _productDetailsState extends State<productDetails> {
                                 style: const TextStyle(fontSize: 16)),
                           ],
                         ),
-                        const SizedBox(width: 50),
+                        SizedBox(width: 5),
                         Column(
                           children: [
                             QuantityInput(
@@ -126,7 +127,7 @@ class _productDetailsState extends State<productDetails> {
                     ),
                     Row(
                       children: [
-                        Text(FormatedPrice,
+                        Text(_FormatedPrice,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
                       ],
@@ -195,7 +196,7 @@ class _productDetailsState extends State<productDetails> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children:  [
+                        children: [
                           Text('Seller Details: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -204,18 +205,15 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-
                           Text(data['Service Provider Name'],
-                              style: const TextStyle(fontSize: 12)),
-                              
-                          
+                              style: TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        children:  [
+                        children: [
                           SizedBox(
                             width: 20,
                           ),
@@ -223,7 +221,7 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                           Text('', style: TextStyle(fontSize: 12)),
+                          Text('', style: TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
@@ -343,80 +341,54 @@ class _productDetailsState extends State<productDetails> {
             Expanded(
                 child: NeumorphicButton(
               onPressed: () {
-                today = DateTime(today.year, today.month, today.day, today.hour,
-                    today.minute);
-                String message = "You have new order";
-                final curr = FirebaseAuth.instance.currentUser;
-                CollectionReference ordersProvider = FirebaseFirestore.instance.collection('vehicl parts providers/${data['Service Provider Id']}/Order');
-                ordersProvider.add({
-                  'Item Name': data['Item Name'],
-                  'Item Price': data['Item Price'],
-                  'Item Qty': OrderQuantity.toString(),
-                  'Imageurl': data['Imageurl'],
-                  'Order Date Time': today,
-                  'vehicle Owner Id': curr?.uid,
-                  'Vehicle Owner Name': curr?.displayName,
-                  'Service Provider Id': data['Service Provider Id'],
-                 
-                  'Oreder Status': OrderStatus,
-                  "Ordernew": true
-                });
-                
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => checkoutorder(
+                              date: today,
+                              price: _price,
+                              providerName: data['Service Provider Name'],
+                              qty: OrderQuantity,
+                              item: data['Item Name'],
+                              service_provider_id: data['Service Provider Id'],
+                            )));
 
-                orders.add({
-                  'Item Name': data['Item Name'],
-                  'Item Price': data['Item Price'],
-                  'Item Qty': OrderQuantity.toString(),
-                  'Imageurl': data['Imageurl'],
-                  'Order Date Time': today,
-                  'vehicle Owner Id': curr?.uid,
-                  'Vehicle Owner Name': curr?.displayName,
-                  'Service Provider Id': data['Service Provider Id'],
-                  'Service Provider Name': data['Service Provider Name'],
-                  'Oreder Status': OrderStatus,
-                  "Ordernew": true
-                });
+                // today = new DateTime(today.year, today.month, today.day,
+                //     today.hour, today.minute);
 
-                notifications.add({
-                  'ItemName': data['Item Name'],
-                  'Sender': curr?.uid,
-                  'receiver': data['Service Provider Id'],
-                  'message': message,
-                  'DateTime': today,
-                  "Ordernew": true
-                });
-                user.doc(curr!.uid).collection('UserOrders').add({
-                  'Item Name': data['Item Name'],
-                  'Item Price': data['Item Price'],
-                  'Item Qty': OrderQuantity.toString(),
-                  'Imageurl': data['Imageurl'],
-                  'Order Date Time': today,
-                  'Service Provider Id': data['Service Provider Id'],
-                  'Oreder Status': OrderStatus,
-                  "Ordernew": true
-                }).whenComplete(() {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                        content: const Text(
-                            "Your order is placed sucessfully , Please waiting for seller response"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => VehiclePartsHome()));
-                            },
-                            child: Container(
-                              color: Colors.green,
-                              padding: const EdgeInsets.all(14),
-                              child: const Text("okay"),
-                            ),
-                          ),
-                        ]),
-                  );
-                });
+                // orders.add({
+                //   'Item Name': data['Item Name'],
+                //   'Item Price': data['Item Price'],
+                //   'Item Qty': OrderQuantity.toString(),
+                //   'Imageurl': data['Imageurl'],
+                //   'Order Date Time': today,
+                //   'vehicle Owner Id': loggedInUser.uid,
+                //   'Vehicle Owner Name': loggedInUser.firstName,
+                //   'Service Provider Id': data['Service Provider Id'],
+                //   'Service Provider Name': data['Service Provider Name'],
+                //   'Oreder Status': OrderStatus,
+                // }).whenComplete(() {
+                //   showDialog(
+                //     context: context,
+                //     builder: (ctx) => AlertDialog(
+                //       content: const Text(
+                //           "Your order is placed sucessfully , Please waiting for seller response"),
+                //       actions: <Widget>[
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pushReplacement(context,
+                //         MaterialPageRoute(builder: (_) => Home()));
+                //   },
+                //   child: Container(
+                //     color: Colors.green,
+                //     padding: const EdgeInsets.all(14),
+                //     child: const Text("okay"),
+                //   ),
+                // ),
+                //       ],
+                //     ),
+                //   );
+                // });
               },
               style: const NeumorphicStyle(color: Colors.purple),
               child: Row(
