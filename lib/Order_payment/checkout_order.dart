@@ -143,9 +143,15 @@ class _checkoutorderState extends State<checkoutorder> {
             Padding(
                 padding: const EdgeInsets.all(0.0),
                 child: TextField(
+                    //style: TextStyle(color: Colors.black),
                     controller: _Address,
                     decoration: InputDecoration(
-                        icon: Icon(Icons.description), labelText: 'Address '))),
+                        icon: Icon(
+                          Icons.description,
+                          color: Colors.black,
+                        ),
+                        labelText: 'Address ',
+                        labelStyle: TextStyle(color: Colors.black)))),
             ButtonBar(
               children: [
                 RaisedButton(
@@ -175,12 +181,19 @@ class _checkoutorderState extends State<checkoutorder> {
                                     ? 750
                                     : 1000)
                             .toString(),
-                        contactNo: currentUser['contactNo'].toString());
+                        contactNo: currentUser['contactNo'].toString(),
+                        address: _Address.text);
                   },
                 ),
               ],
             ),
           ])),
+          elevation: 8,
+          shadowColor: Colors.purple,
+          margin: EdgeInsets.all(15),
+          shape: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.purple, width: 2)),
         ));
   }
 }

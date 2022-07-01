@@ -41,7 +41,8 @@ class PaymentController extends GetxController {
       required String quantity,
       required String item,
       required String delivery_fee,
-      required String contactNo}) async {
+      required String contactNo,
+      required String address}) async {
     Map<String, dynamic> body = {
       "userName": userName,
       "serviceProviderID": serviceProviderID,
@@ -52,7 +53,8 @@ class PaymentController extends GetxController {
       "Quantity": quantity,
       "Item": item,
       "DeliveryFee": delivery_fee,
-      "Contatctnumber": contactNo
+      "Contatctnumber": contactNo,
+      "Address": address
     };
     try {
       await FirebaseFirestore.instance

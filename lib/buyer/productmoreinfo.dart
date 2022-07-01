@@ -108,7 +108,7 @@ class _productDetailsState extends State<productDetails> {
                                 style: const TextStyle(fontSize: 16)),
                           ],
                         ),
-                        SizedBox(width: 50),
+                        SizedBox(width: 5),
                         Column(
                           children: [
                             QuantityInput(
