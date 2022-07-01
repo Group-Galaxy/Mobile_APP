@@ -65,7 +65,7 @@ class _checkoutorderState extends State<checkoutorder> {
     super.initState();
 
     final data = FirebaseFirestore.instance
-        .collection('users')
+        .collection('VehicleOwner')
         .where("uid", isEqualTo: user!.uid)
         .get()
         .then((res) {
@@ -84,6 +84,12 @@ class _checkoutorderState extends State<checkoutorder> {
     final PaymentController controller = Get.put(PaymentController());
 
     final delivery_fee = 500;
+    final total_fee = widget.price * widget.qty +
+        ((widget.qty == 1)
+            ? delivery_fee
+            : (widget.qty == 2)
+                ? 750
+                : 1000);
 
     print("uid " + user!.uid);
 
@@ -132,8 +138,7 @@ class _checkoutorderState extends State<checkoutorder> {
             ),
             GFListTile(
               color: GFColors.WHITE,
-              titleText:
-                  'Total : ${widget.price * widget.qty + ((widget.qty == 1) ? delivery_fee : (widget.qty == 2) ? 750 : 1000)}/=',
+              titleText: 'Total : ${total_fee}/=',
             ),
             Padding(
                 padding: const EdgeInsets.all(0.0),
@@ -149,7 +154,7 @@ class _checkoutorderState extends State<checkoutorder> {
                   color: Colors.purple,
                   onPressed: () async {
                     await controller.makePayment(
-                        amount: '${widget.price}', currency: 'LKR');
+                        amount: '${total_fee}', currency: 'LKR');
                     await controller.addpaymentDataToDb(
                         userName: currentUser['firstName'],
                         serviceProviderID: widget.service_provider_id,
