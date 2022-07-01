@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mypart/buyer/searchhome.dart';
+import 'package:mypart/buyer/vehicle_parts_home.dart';
+import 'package:mypart/repairservice/repairhome.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/usermodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,14 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../reviews/review_give_screen.dart';
 import '../reviews/review_show_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class DriverHome extends StatefulWidget {
+  const DriverHome({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _DriverHomeState createState() => _DriverHomeState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DriverHomeState extends State<DriverHome> {
   User? user = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
   late SharedPreferences prefs;
@@ -58,7 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 15,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                 Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => RepairHomeScreen()));
+                },
                 child: Align(
                     child: Container(
                   margin: const EdgeInsets.all(20),
@@ -80,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => Home()));
+                      context, MaterialPageRoute(builder: (_) => VehiclePartsHome()));
                 },
                 child: Align(
                     child: Container(
@@ -119,8 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (_) => const ReviewGiveScreen(
-                                getter: "vehicle repair service provider",
-                                getterId: "3hQPIZQq1lPVtjWoAW3shKBCTtf1",
+                                getter: "vehicl parts providers",
+                                getterId: "KI5m6ByIHZRGxNuMIhJmbu0f7bk2",
                               )));
                 },
                 child: const Text("Review put"),
@@ -131,9 +135,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (_) => const ReviewShowScreen(
-                          getter: "vehicle repair service provider",
+                          getter: "vehicl parts providers",
                           sender: "users",
-                          getterId: "3hQPIZQq1lPVtjWoAW3shKBCTtf1",
+                          getterId: "KI5m6ByIHZRGxNuMIhJmbu0f7bk2",
                         ),
                       ));
                 },

@@ -12,7 +12,6 @@ import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RepaiirDashboard extends StatefulWidget {
 const RepaiirDashboard({Key? key, required String title}) : super(key: key);
@@ -23,29 +22,16 @@ class _RepaiirDashboardState extends State<RepaiirDashboard> {
  User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
   
-  
-
-   late SharedPreferences prefs;
-
-  @override
-  void initState() {
+   void initState() {
     super.initState();
-    setAc();
     FirebaseFirestore.instance
         .collection("vehicle repair service provider")
         .doc(user!.uid)
         .get()
         .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
+      this.loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
-  }
-
-  setAc() async {
-    prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDriver', false);
-    await prefs.setBool('ismechanic', true);
-    await prefs.setBool('isparts', false);
   }
 
 @override
@@ -174,7 +160,7 @@ body:SafeArea(
                             child: ListTileCustom(
                               bgColor: greenLight,
                               pathIcon: "thumb_up.svg",
-                              title: "Selling items",
+                              title: "Finished Jobs",
                               subTitle: "654",
                             ),
                           ),

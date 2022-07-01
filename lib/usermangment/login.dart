@@ -191,13 +191,14 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         await _auth
-            .signInWithEmailAndPassword(email: email, password: password)
+            .signInWithEmailAndPassword(
+                email: email.trim(), password: password.trim())
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                 });
 
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+            MaterialPageRoute(builder: (context) => const DriverHome()));
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":

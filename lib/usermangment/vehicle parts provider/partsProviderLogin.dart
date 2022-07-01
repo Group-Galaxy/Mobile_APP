@@ -177,7 +177,7 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
     if (_formKey.currentState!.validate()) {
       try {
         await _auth
-            .signInWithEmailAndPassword(email: email, password: password)
+            .signInWithEmailAndPassword(email: email.trim(), password: password.trim())
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(MaterialPageRoute(

@@ -140,28 +140,28 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                                   'isRespone': true,
                                   "getterId": widget.getterId,
                                   'imgUrl': data['imgUrl'] ?? "",
-                                  "sender": "users",
-                                  "getter": "vehicle repair service provider"
+                                  "sender": widget.sender,
+                                  "getter": widget.getter
                                 }, SetOptions(merge: true));
                                 fs
                                     .collection(
-                                        '${data['myCategory']}/${data['uid']}/MessagesList')
+                                        '${widget.getter}/${data['uid']}/MessagesList')
                                     .doc(curr?.uid)
                                     .set({
                                   "name": curr?.displayName ?? "No name",
                                   'lastMsgTime': FieldValue.serverTimestamp(),
                                   'isRespone': true,
-                                  "getterId": data['uid'],
+                                  "getterId": curr?.uid,
                                   'imgUrl': curr?.photoURL ?? "",
-                                  "getter": "users",
-                                  "sender": "vehicle repair service provider"
+                                  "getter": widget.sender,
+                                  "sender": widget.getter
                                 }, SetOptions(merge: true));
 
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => Chatpage(
-                                              getter: data['myCategory'],
+                                              getter: widget.getter ??"",
                                               sender: widget.sender ?? "",
                                               getterId: data['uid'],
                                               getterName: data['firstName'],

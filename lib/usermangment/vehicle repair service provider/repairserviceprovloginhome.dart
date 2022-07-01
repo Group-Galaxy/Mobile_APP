@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mypart/buyer/searchhome.dart';
+import 'package:mypart/buyer/vehicle_parts_home.dart';
 
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceprousermodel.dart';
@@ -86,8 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (_) => Home()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => VehiclePartsHome()));
                 },
               ),
             ],

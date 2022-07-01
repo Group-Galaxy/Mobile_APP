@@ -336,7 +336,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         await _auth
-            .createUserWithEmailAndPassword(email: email, password: password)
+            .createUserWithEmailAndPassword(email: email.trim(), password: password.trim())
             .then((value) => {postDetailsToFirestore()})
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);

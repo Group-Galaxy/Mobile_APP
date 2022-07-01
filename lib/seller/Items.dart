@@ -12,22 +12,18 @@ import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
 import 'editItems.dart';
 
-
-
 class Items extends StatefulWidget {
-  
   @override
   State<Items> createState() => _ItemsState();
 }
 
 class _ItemsState extends State<Items> {
-   User? user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
-  
+  @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance
@@ -35,17 +31,17 @@ class _ItemsState extends State<Items> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
+
   final _PriceFormat = NumberFormat('##,##,##0');
-  
-   
+
   @override
   Widget build(BuildContext context) {
-    CollectionReference vehicleparts =
-      FirebaseFirestore.instance.collection('vehicl parts providers/${loggedInUser.uid}/AutoParts');
+   CollectionReference vehicleparts = FirebaseFirestore.instance.collection('VehicleParts');
+       
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.purple,
@@ -53,61 +49,63 @@ class _ItemsState extends State<Items> {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => AddItems()));
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
         ),
       ),
       appBar: AppBar(
-        title: Text('My Items'),
-         leading: ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => NavSide(title: 'Dashboard',)));
-            },
-            child: const Icon(
-              Icons.arrow_back,
-              size:30,
-              color: Colors.white,
-            ),
+        title: const Text('My Items'),
+        leading: ElevatedButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const NavSide(
+                          title: 'Dashboard',
+                        )));
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            size: 30,
+            color: Colors.white,
           ),
+        ),
       ),
       body: Container(
-        
-       child: FutureBuilder<QuerySnapshot>(
-          future:  vehicleparts.get(),
-      
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("something is wrong");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          
+        child: FutureBuilder<QuerySnapshot>(
+          future: vehicleparts.where('Service Provider Id', isEqualTo: loggedInUser.uid).get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text("something is wrong");
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-          return Column(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      child: Text(
-                        'My Items',
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: const Text(
+                      'My Items',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
-                SizedBox(
+                ),
+                const SizedBox(
                   height: 10,
                 ),
                 GridView.builder(
                     shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    physics: const ScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 210,
                       childAspectRatio: 2 / 2.1,
                       crossAxisSpacing: 8,
@@ -116,16 +114,16 @@ class _ItemsState extends State<Items> {
                     itemCount: snapshot.data!.size,
                     itemBuilder: (BuildContext context, int i) {
                       var data = snapshot.data!.docs[i];
-                      var _price = int.parse(data['ItemPrice']);
+                      var price = int.parse(data['Item Price']);
 
-                      String _FormatedPrice =
-                          '\Rs. ${_PriceFormat.format(_price)}';
+                      String FormatedPrice =
+                          'Rs. ${_PriceFormat.format(price)}';
 
-                      var _provider = Provider.of<ItemProvider>(context);
+                      var provider = Provider.of<ItemProvider>(context);
 
                       return InkWell(
                         onTap: () {
-                          _provider.getItemDetails(data);
+                          provider.getItemDetails(data);
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -134,6 +132,12 @@ class _ItemsState extends State<Items> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.purple.withOpacity(.8),
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                             child: Stack(
                               children: [
                                 Column(
@@ -141,14 +145,14 @@ class _ItemsState extends State<Items> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           right: 8, left: 8, top: 8),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 85,
                                         child: Center(
-                                          child: Image.network(data['Imageurl']),
+                                          child:
+                                              Image.network(data['Imageurl']),
                                         ),
                                       ),
                                     ),
-                                    
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           right: 8, left: 8, top: 8),
@@ -158,21 +162,22 @@ class _ItemsState extends State<Items> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                data['ItemName'],
-                                                style: TextStyle(fontSize: 12),
+                                                data['Item Name'],
+                                                style: const TextStyle(
+                                                    fontSize: 12),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                _FormatedPrice,
-                                                style: TextStyle(
+                                                FormatedPrice,
+                                                style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 12),
                                               ),
                                               Text(
-                                                'Stock Qty: ' +
-                                                    data['ItemQty'],
-                                                style: TextStyle(fontSize: 12),
+                                                'Stock Qty: ' + data['StockQty'],
+                                                style: const TextStyle(
+                                                    fontSize: 12),
                                               ),
                                             ],
                                           ),
@@ -180,54 +185,46 @@ class _ItemsState extends State<Items> {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        
-                                       IconButton(
-                                                  icon: Icon
-                                                    (
-                                                        Icons.edit,
-                                                        color: Colors.purple,
-                                                        
-                                                    ),
-                                                    onPressed: ()
-                                                    {
-                                                        Navigator.pushReplacement(
-                                              context, MaterialPageRoute(builder: (_) => EditItem(docid: data,)));
-                                                    }
-                                                
-                                              ),
-
-                                              SizedBox(width: 20,),
-                                               IconButton(
-                                                  icon: Icon
-                                                    (
-                                                        Icons.delete,
-                                                        color: Colors.purple,
-                                                        
-                                                    ),
-                                                    onPressed: ()
-                                                    {
-                                                       data.reference.delete().whenComplete(() {
-                                                      Navigator.pushReplacement(
-                                                          context, MaterialPageRoute(builder: (_) => Items()));
-                                                       }
-                                                       );
-                                                    }
-                                                    
-                                              )
+                                        IconButton(
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              color: Colors.purple,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) => EditItem(
+                                                            docid: data,
+                                                          )));
+                                            }),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        IconButton(
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.purple,
+                                            ),
+                                            onPressed: () {
+                                              data.reference
+                                                  .delete()
+                                                  .whenComplete(() {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            Items()));
+                                              });
+                                            })
                                       ],
                                     )
                                   ],
                                 ),
-                               
                               ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.purple.withOpacity(.8),
-                              ),
-                              borderRadius: BorderRadius.circular(5),
                             ),
                           ),
                         ),
@@ -235,16 +232,9 @@ class _ItemsState extends State<Items> {
                     }),
               ],
             );
-        },
-      ),
+          },
+        ),
       ),
     );
   }
-
-  
-
-  
 }
-  
-
-  
