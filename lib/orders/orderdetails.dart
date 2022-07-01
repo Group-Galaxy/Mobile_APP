@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
 import '../../usermangment/usermodel.dart';
@@ -34,7 +35,7 @@ class _NewordersState extends State<Neworders> {
         .doc(currentAutoPartsProvider!.uid)
         .get()
         .then((value) {
-      this.CurrentServiceprovider = UserModel.fromMap(value.data());
+      CurrentServiceprovider = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -42,7 +43,7 @@ class _NewordersState extends State<Neworders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
@@ -55,10 +56,10 @@ class _NewordersState extends State<Neworders> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text("something is wrong");
+              return const Text("something is wrong");
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -85,172 +86,150 @@ class _NewordersState extends State<Neworders> {
                         borderRadius: BorderRadius.circular(0.0),
                       ),
                       child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: 
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8, left: 8, top: 5),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Center(
-                                              child: Image.network(
-                                                  data['Imageurl']),
+                       
+                       
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 10.0),
+                          child: 
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8, left: 8, top: 5),
+                                            child: SizedBox(
+                                              height: 50,
+                                              width: 50,
+                                              child: Center(
+                                                child: Image.network(
+                                                    data['Imageurl']),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Total Payble fee : 2000',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 50,
-                                    ),
-                                     Column(
-                                      children: [
-                                        Row(
-                                         
-                                          children: [
-                                            Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            
-                                            )
-
-                                            
-                                          ],
-                                        ),
-
-                                        Row(
-                                         
-                                          children: [
-                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children:  [
-                                                IconButton(
-                                                  icon: Icon
-                                                    (
-                                                        Icons.check_circle_outline_rounded,
-                                                        color: isaccepted ? Colors.green : Colors.grey
-                                                    ),
-                                                    onPressed: ()
-                                                    {
-                                                        setState(() 
-                                                        {
-                                                            isaccepted = !isaccepted;
-                                                        });
-                                                    }
-                                                
-                                              )
-                                                
-                                              ],
-                                              
-                                            ),
-                                              const SizedBox(
-                                                width: 20,
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data['Item Name'],
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children:  [
-                                                IconButton(
-                                                  icon: Icon
-                                                    (
-                                                        Icons.close_outlined,
-                                                        color: isrejected ? Colors.red : Colors.grey
-                                                    ),
-                                                    onPressed: ()
-                                                    {
-                                                        setState(() 
-                                                        {
-                                                            isrejected = !isrejected;
-                                                        });
-                                                    }
-                                                
-                                              )
-                                                
-                                              ],
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Quantity : ' + data['Item Qty'],
+                                                style: const TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: const [
+                                              Text(
+                                                'Total Payble fee : 2000',
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        width: 50,
+                                      ),
+                                       Column(
+                                        children: [
+                                          Row(
+                                           
+                                            children: [
+                                              Text(getTime(data['Order Date Time']),
+                                               style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               
-                                            ),
+                                              )
 
-                                            
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                      height: 20,
-
-
+                                              
+                                            ],
+                                          ),
+                                          Row(
+                                             
+                                children: 
+                                  [
+                                    CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: LikeButton(
                                       
+                                      likeBuilder: (bool isLiked) {
+                                        return Icon(
+                                          Icons.check_circle_outline_rounded,
+                                          color: isLiked
+                                              ? Colors.green
+                                              : Colors.grey,
+                                        );
+                                      },
                                     ),
-                                        Row(
-                                          
-                                            crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: LikeButton(
+                                      
+                                      likeBuilder: (bool isLiked) {
+                                        return Icon(
+                                          Icons.close_outlined,
+                                          color: isLiked
+                                              ? Colors.red
+                                              : Colors.grey,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              
+                                          ),
+                                         Row(
+                                            
+                                              crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.purple,
+                                                    fixedSize: const Size(100, 9),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                50))),
+                                                child: const Text(
+                                                  'View More',
+                                                  style: TextStyle(fontSize: 10),
+                                                ),
                                               ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                            ),
-                                          
-                                          ],
-                                        ),
-                                       
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                               
-                          
-                      ),
+                                            
+                                            ],
+                                          ),
+                                         
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                 
+                            
+                        
+                      )
                     ),
                   );
                 },
@@ -298,49 +277,37 @@ class ToPayOrders extends StatefulWidget {
 
 class _ToPayOrdersState extends State<ToPayOrders> {
   @override
-  User? currentAutoPartsProvider = FirebaseAuth.instance.currentUser;
-  UserModel CurrentServiceprovider = UserModel();
-  CollectionReference orders =
-      FirebaseFirestore.instance.collection('Order Details');
+  
 
      bool isaccepted=false;
      bool isrejected=false;
  
   
    
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("vehicl parts providers")
-        .doc(currentAutoPartsProvider!.uid)
-        .get()
-        .then((value) {
-      this.CurrentServiceprovider = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
+     final PartsProvider = FirebaseAuth.instance.currentUser;
+
+
+   CollectionReference orders =
+      FirebaseFirestore.instance.collection('VehicleOwner/${PartsProvider!.uid}/UserOrders');
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-              .where(
-                'Service Provider Id',
-                isEqualTo: CurrentServiceprovider.uid,
-              )
+              
               .where('Oreder Status', isEqualTo: 'accepted')
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text("something is wrong");
+              return const Text("something is wrong");
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -362,117 +329,116 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 5.0),
                     child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
                       child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: 
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8, left: 8, top: 5),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Center(
-                                              child: Image.network(
-                                                  data['Imageurl']),
+                       
+                       
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 10.0),
+                          child: 
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8, left: 8, top: 5),
+                                            child: SizedBox(
+                                              height: 50,
+                                              width: 50,
+                                              child: Center(
+                                                child: Image.network(
+                                                    data['Imageurl']),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Total Payble fee : 2000',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 50,
-                                    ),
-                                     Column(
-                                      children: [
-                                        Row(
-                                         
-                                          children: [
-                                            Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            
-                                            )
-
-                                            
-                                          ],
-                                        ),
-
-                                       Row(
-                                          
-                                            crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data['Item Name'],
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                            ),
-                                          
-                                          ],
-                                        ),
-                                       
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                               
-                          
-                      ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Quantity : ' + data['Item Qty'],
+                                                style: const TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: const [
+                                              Text(
+                                                'Total Payble fee : 2000',
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        width: 50,
+                                      ),
+                                       Column(
+                                        children: [
+                                          Row(
+                                           
+                                            children: [
+                                              Text(getTime(data['Order Date Time']),
+                                               style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              
+                                              )
+
+                                              
+                                            ],
+                                          ),
+
+                                         Row(
+                                            
+                                              crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.purple,
+                                                    fixedSize: const Size(100, 9),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                50))),
+                                                child: const Text(
+                                                  'View More',
+                                                  style: TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            
+                                            ],
+                                          ),
+                                         
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                 
+                            
+                        
+                      )
                     ),
                   );
                 },
@@ -535,7 +501,7 @@ class _ToDeliverState extends State<ToDeliver> {
         .doc(currentAutoPartsProvider!.uid)
         .get()
         .then((value) {
-      this.CurrentServiceprovider = UserModel.fromMap(value.data());
+      CurrentServiceprovider = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -543,7 +509,7 @@ class _ToDeliverState extends State<ToDeliver> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
@@ -556,10 +522,10 @@ class _ToDeliverState extends State<ToDeliver> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text("something is wrong");
+              return const Text("something is wrong");
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -598,7 +564,7 @@ class _ToDeliverState extends State<ToDeliver> {
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: 8, left: 8, top: 5),
-                                          child: Container(
+                                          child: SizedBox(
                                             height: 50,
                                             width: 50,
                                             child: Center(
@@ -615,7 +581,7 @@ class _ToDeliverState extends State<ToDeliver> {
                                           children: [
                                             Text(
                                               data['Item Name'],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
                                               maxLines: 1,
@@ -627,12 +593,12 @@ class _ToDeliverState extends State<ToDeliver> {
                                           children: [
                                             Text(
                                               'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
+                                              style: const TextStyle(fontSize: 12),
                                             ),
                                           ],
                                         ),
                                         Row(
-                                          children: [
+                                          children: const [
                                             Text(
                                               'Total Payble fee : 2000',
                                               style: TextStyle(fontSize: 12),
@@ -650,7 +616,7 @@ class _ToDeliverState extends State<ToDeliver> {
                                          
                                           children: [
                                             Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
+                                             style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
                                               maxLines: 1,
@@ -669,10 +635,6 @@ class _ToDeliverState extends State<ToDeliver> {
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                   primary: Colors.purple,
                                                   fixedSize: const Size(100, 9),
@@ -680,6 +642,10 @@ class _ToDeliverState extends State<ToDeliver> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               50))),
+                                              child: const Text(
+                                                'View More',
+                                                style: TextStyle(fontSize: 10),
+                                              ),
                                             ),
                                           
                                           ],
@@ -755,7 +721,7 @@ class _FinishedState extends State<Finished> {
         .doc(currentAutoPartsProvider!.uid)
         .get()
         .then((value) {
-      this.CurrentServiceprovider = UserModel.fromMap(value.data());
+      CurrentServiceprovider = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -763,7 +729,7 @@ class _FinishedState extends State<Finished> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
@@ -776,10 +742,10 @@ class _FinishedState extends State<Finished> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text("something is wrong");
+              return const Text("something is wrong");
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -818,7 +784,7 @@ class _FinishedState extends State<Finished> {
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: 8, left: 8, top: 5),
-                                          child: Container(
+                                          child: SizedBox(
                                             height: 50,
                                             width: 50,
                                             child: Center(
@@ -835,7 +801,7 @@ class _FinishedState extends State<Finished> {
                                           children: [
                                             Text(
                                               data['Item Name'],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
                                               maxLines: 1,
@@ -847,12 +813,12 @@ class _FinishedState extends State<Finished> {
                                           children: [
                                             Text(
                                               'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
+                                              style: const TextStyle(fontSize: 12),
                                             ),
                                           ],
                                         ),
                                         Row(
-                                          children: [
+                                          children: const [
                                             Text(
                                               'Total Payble fee : 2000',
                                               style: TextStyle(fontSize: 12),
@@ -870,7 +836,7 @@ class _FinishedState extends State<Finished> {
                                          
                                           children: [
                                             Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
+                                             style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
                                               maxLines: 1,
@@ -889,10 +855,6 @@ class _FinishedState extends State<Finished> {
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                   primary: Colors.purple,
                                                   fixedSize: const Size(100, 9),
@@ -900,6 +862,10 @@ class _FinishedState extends State<Finished> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               50))),
+                                              child: const Text(
+                                                'View More',
+                                                style: TextStyle(fontSize: 10),
+                                              ),
                                             ),
                                           
                                           ],
@@ -976,7 +942,7 @@ class _CancelledState extends State<Cancelled> {
         .doc(currentAutoPartsProvider!.uid)
         .get()
         .then((value) {
-      this.CurrentServiceprovider = UserModel.fromMap(value.data());
+      CurrentServiceprovider = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -984,7 +950,7 @@ class _CancelledState extends State<Cancelled> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
@@ -997,10 +963,10 @@ class _CancelledState extends State<Cancelled> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text("something is wrong");
+              return const Text("something is wrong");
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -1039,7 +1005,7 @@ class _CancelledState extends State<Cancelled> {
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: 8, left: 8, top: 5),
-                                          child: Container(
+                                          child: SizedBox(
                                             height: 50,
                                             width: 50,
                                             child: Center(
@@ -1056,7 +1022,7 @@ class _CancelledState extends State<Cancelled> {
                                           children: [
                                             Text(
                                               data['Item Name'],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
                                               maxLines: 1,
@@ -1068,12 +1034,12 @@ class _CancelledState extends State<Cancelled> {
                                           children: [
                                             Text(
                                               'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
+                                              style: const TextStyle(fontSize: 12),
                                             ),
                                           ],
                                         ),
                                         Row(
-                                          children: [
+                                          children: const [
                                             Text(
                                               'Total Payble fee : 2000',
                                               style: TextStyle(fontSize: 12),
@@ -1091,7 +1057,7 @@ class _CancelledState extends State<Cancelled> {
                                          
                                           children: [
                                             Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
+                                             style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
                                               maxLines: 1,
@@ -1110,10 +1076,6 @@ class _CancelledState extends State<Cancelled> {
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                   primary: Colors.purple,
                                                   fixedSize: const Size(100, 9),
@@ -1121,6 +1083,10 @@ class _CancelledState extends State<Cancelled> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               50))),
+                                              child: const Text(
+                                                'View More',
+                                                style: TextStyle(fontSize: 10),
+                                              ),
                                             ),
                                           
                                           ],

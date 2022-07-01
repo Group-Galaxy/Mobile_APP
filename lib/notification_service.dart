@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-import '../main.dart';
+import 'main.dart';
 
 
 class NotificationService {
@@ -68,4 +68,4 @@ class NotificationService {
   }
 
   
-}
+ }

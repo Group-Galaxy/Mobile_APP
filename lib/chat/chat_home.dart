@@ -67,7 +67,7 @@ class _ChatHomeState extends State<ChatHome> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Chatpage(
-                                        getter: qs['getter'],
+                                        getter: qs['getter'] ,
                                         sender: qs['sender'],
                                         getterName: qs['name'],
                                         getterId: qs['getterId'],

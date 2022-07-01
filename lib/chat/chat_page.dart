@@ -114,7 +114,7 @@ class _ChatpageState extends State<Chatpage> {
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': "Image",
                           'isRespone': true
-                        });
+                        }, SetOptions(merge: true));
                         fs
                             .collection(
                                 '${widget.sender}/${curr?.uid}/MessagesList/${widget.getterId}/Messages')
@@ -137,7 +137,7 @@ class _ChatpageState extends State<Chatpage> {
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': "Image",
                           'isRespone': true
-                        });
+                        }, SetOptions(merge: true));
                         message.clear();
                       },
                       icon: const Icon(Icons.attach_file),

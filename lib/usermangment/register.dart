@@ -209,8 +209,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
-            signUp(emailEditingController.text, passwordEditingController.text,
-                firstNameEditingController.text);
+            signUp(emailEditingController.text.trim(), passwordEditingController.text.trim(),
+                firstNameEditingController.text.trim());
           },
           child: const Text(
             "SignUp",
@@ -369,9 +369,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   postDetailsToFirestore() async {
-    // calling our firestore
-    // calling our user model
-    // sedning these values
+   
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
@@ -386,7 +384,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     userModel.contactNO = contactNoEditingController.text;
     userModel.imgUrl = imgUrl;
     await firebaseFirestore
-        .collection("users")
+        .collection("VehicleOwner")
         .doc(user.uid)
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");

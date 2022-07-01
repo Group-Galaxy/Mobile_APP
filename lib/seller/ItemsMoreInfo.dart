@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/products.dart';
-import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/designs/bottombar.dart';
 import 'package:mypart/firebaseservice.dart';
 import 'package:mypart/orders/order_userside/userorderdetails.dart';

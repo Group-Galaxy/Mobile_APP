@@ -1,14 +1,6 @@
-
-
-
-  import 'package:flutter/material.dart';
-import 'package:mypart/buyer/searchhome.dart';
+import 'package:flutter/material.dart';
+import 'package:mypart/buyer/vehicle_parts_home.dart';
 import 'package:mypart/orders/order_userside/userorderdetails.dart';
-
-
-
-
-
 
 class Myorders extends StatefulWidget {
   const Myorders({Key? key}) : super(key: key);
@@ -24,15 +16,14 @@ class _MyordersState extends State<Myorders> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          
           title: const Text(" My Orders"),
-          leading: new IconButton(
-          icon: new Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => Home()));
-          },
-        ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) => VehiclePartsHome()));
+            },
+          ),
           bottom: const TabBar(
             tabs: [
               Center(
@@ -55,17 +46,14 @@ class _MyordersState extends State<Myorders> {
         ),
         body: const TabBarView(
           children: [
-           Neworders(),
-           ToPayOrders(),
-           ToDeliver(),
-           Finished(),
-           Cancelled()
-
-
+            Neworders(),
+            ToPayOrders(),
+            ToDeliver(),
+            Finished(),
+            Cancelled()
           ],
         ),
       ),
     );
   }
 }
-

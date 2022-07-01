@@ -35,7 +35,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final confirmPasswordEditingController = TextEditingController();
   final contactNoEditingController = TextEditingController();
   final locationEditingController = TextEditingController();
-  String imgUrl = "";
+  String imgUrl = " ";
   @override
   Widget build(BuildContext context) {
     //first name field
@@ -335,7 +335,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         await _auth
-            .createUserWithEmailAndPassword(email: email, password: password)
+            .createUserWithEmailAndPassword(email: email.trim(), password: password.trim())
             .then((value) => {postDetailsToFirestore()})
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);

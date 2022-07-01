@@ -14,29 +14,18 @@ class Neworders extends StatefulWidget {
 }
 
 class _NewordersState extends State<Neworders> {
-  final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  
   
       
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+
 
     
   @override
   Widget build(BuildContext context) {
+    final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
      CollectionReference orders =
-      FirebaseFirestore.instance.collection('users/${CurrentUser.uid}/UserOrders');
+      FirebaseFirestore.instance.collection('VehicleOwner/${orderdVehicleOwner!.uid}/UserOrders');
       
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 235, 231, 235),

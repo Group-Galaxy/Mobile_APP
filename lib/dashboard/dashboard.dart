@@ -1,20 +1,22 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mypart/chat/chat_home.dart';
 import 'package:mypart/dashboard/components/card_custom.dart';
 import 'package:mypart/dashboard/components/circle_progress.dart';
 import 'package:mypart/dashboard/components/list_tile_custom.dart';
 import 'package:mypart/dashboard/themes.dart';
+import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
 import 'package:mypart/seller/Items.dart';
-import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
+import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../usermangment/splashScreen.dart';
+import '../chat/chat_home.dart';
 
 class NavSide extends StatefulWidget {
   const NavSide({Key? key, required String title}) : super(key: key);
@@ -37,7 +39,42 @@ class _NavSideState extends State<NavSide> {
         .get()
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
+      notification();
       setState(() {});
+    });
+  }
+
+  notification() async {
+    final db = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+
+    final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
+        .collection('vehicl parts providers/${user?.uid}/Order')
+        .snapshots();
+
+    messageStream.forEach((element) {
+      debugPrint(element.docs.length.toString());
+      for (var element in element.docs) {
+        debugPrint(element["Ordernew"].toString());
+        if (element["Ordernew"]) {
+          Fluttertoast.showToast(
+              msg: "${element["Service Provider Name"]} has new order",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          final fs = FirebaseFirestore.instance;
+
+          fs
+              .collection('vehicl parts providers/${user?.uid}/Order')
+              .doc(element.id)
+              .set({
+            "Ordernew": false,
+          }, SetOptions(merge: true));
+        }
+      }
     });
   }
 
@@ -50,6 +87,8 @@ class _NavSideState extends State<NavSide> {
 
   @override
   Widget build(BuildContext context) {
+    final fs = FirebaseFirestore.instance;
+    final curr = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dashboard"),
@@ -68,7 +107,7 @@ class _NavSideState extends State<NavSide> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * .7,
+                        width: MediaQuery.of(context).size.width / 2.20,
                         child: Column(
                           children: [
                             CustomPaint(
@@ -155,8 +194,8 @@ class _NavSideState extends State<NavSide> {
                       Row(
                         children: [
                           CardCustom(
-                            width: MediaQuery.of(context).size.width * .4,
-                            height: MediaQuery.of(context).size.height * .2,
+                            width: MediaQuery.of(context).size.width * .42,
+                            height: 88,
                             mLeft: 0,
                             mRight: 3,
                             child: ListTileCustom(
@@ -167,8 +206,8 @@ class _NavSideState extends State<NavSide> {
                             ),
                           ),
                           CardCustom(
-                            width: MediaQuery.of(context).size.width * .4,
-                            height: MediaQuery.of(context).size.height * .2,
+                            width: MediaQuery.of(context).size.width * .42,
+                            height: 88,
                             mLeft: 3,
                             mRight: 0,
                             child: ListTileCustom(
@@ -183,8 +222,8 @@ class _NavSideState extends State<NavSide> {
                       CardCustom(
                           mLeft: 0,
                           mRight: 0,
-                          width: MediaQuery.of(context).size.width * .4,
-                          height: MediaQuery.of(context).size.height * .2,
+                          width: MediaQuery.of(context).size.width * .42,
+                          height: 211,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -243,15 +282,12 @@ class _NavSideState extends State<NavSide> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const UserAccountsDrawerHeader(
-              accountName: Text("user default"),
-              accountEmail: Text("snmotors@gmail.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.blueGrey,
-                child: Text(
-                  "S",
-                  style: TextStyle(fontSize: 40.0),
-                ),
+            UserAccountsDrawerHeader(
+              accountName: Text(loggedInUser.firstName ?? ""),
+              accountEmail: Text(loggedInUser.email ?? ""),
+              currentAccountPicture:  CircleAvatar(
+                
+                 child: Image.network(loggedInUser.imgUrl ?? ""),
               ),
             ),
             ListTile(
@@ -265,8 +301,11 @@ class _NavSideState extends State<NavSide> {
               leading: const Icon(Icons.notifications),
               title: const Text("Notifications"),
               onTap: () {
-                Navigator.pop(context);
-              },
+              //   Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (_) => const PartsProviderNotifications()));
+               },
             ),
             ListTile(
               leading: const Icon(Icons.chat),
@@ -284,7 +323,7 @@ class _NavSideState extends State<NavSide> {
               leading: const Icon(Icons.shop_outlined),
               title: const Text("My orders"),
               onTap: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (_) => const Myorders()));
               },
             ),
@@ -292,8 +331,8 @@ class _NavSideState extends State<NavSide> {
               leading: const Icon(Icons.auto_graph_sharp),
               title: const Text("My Items"),
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) =>  Items()));
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => Items()));
               },
             ),
             ListTile(
@@ -306,30 +345,13 @@ class _NavSideState extends State<NavSide> {
             ListTile(
               leading: const Icon(Icons.logout_sharp),
               title: const Text("Log out"),
-              onTap: () {
+              onTap: () async {
                 prefs.setBool('isDriver', false);
                 prefs.setBool('ismechanic', false);
                 prefs.setBool('isparts', false);
-                FirebaseAuth.instance.signOut();
                 Navigator.pushReplacement(context,
-                    CupertinoPageRoute(builder: (_) => const MySplashScreen()));
-
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (_) => const PartsProviderLogin()));
+                    MaterialPageRoute(builder: (_) => const MySplashScreen()));
               },
-            ),
-            TextButton(
-              onPressed: () {
-                prefs.setBool('isDriver', false);
-                prefs.setBool('ismechanic', false);
-                prefs.setBool('isparts', false);
-                FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(context,
-                    CupertinoPageRoute(builder: (_) => const MySplashScreen()));
-              },
-              child: const Text("Log Out"),
             ),
           ],
         ),

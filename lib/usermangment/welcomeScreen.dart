@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/dashboard/dashboard.dart';
-import 'package:mypart/dashboard/repairserviceDashboard.dart';
 import 'package:mypart/seller/Items.dart';
 
 import 'package:mypart/usermangment/login.dart';
 import 'package:mypart/usermangment/loginhome.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
+
+import '../dashboard/repairserviceDashboard.dart';
 
 class WelcomePage extends StatefulWidget {
   final bool? isDriver;
@@ -30,7 +31,7 @@ class _WelcomePageState extends State<WelcomePage> {
     bool ispartsn = widget.isparts ?? false;
 
     if (isDrivern) {
-      return const HomeScreen();
+      return const DriverHome();
     }
     if (ismechanicn) {
       return  RepaiirDashboard(title: 'Dashboard',);
@@ -157,7 +158,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                     child: Container(
                                       margin: const EdgeInsets.all(20),
                                       padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration( 
+                                      decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(100),
                                           border: Border.all(

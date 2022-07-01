@@ -39,6 +39,8 @@ class _AddItemsState extends State<AddItems> {
   TextEditingController Item_Qty = TextEditingController();
   TextEditingController ItemFeatures=TextEditingController();
   TextEditingController Item_Brand=TextEditingController();
+  TextEditingController SuitableTypes=TextEditingController();
+  
   
   var  Selected_category;
   var Selected_period;
@@ -88,7 +90,7 @@ class _AddItemsState extends State<AddItems> {
   
 
 
-  CollectionReference ref = FirebaseFirestore.instance.collection('Vehicle Parts');
+  CollectionReference ref = FirebaseFirestore.instance.collection('VehicleParts');
   final CollectionReference users = FirebaseFirestore.instance.collection('vehicl parts providers');
    
   @override
@@ -120,7 +122,7 @@ class _AddItemsState extends State<AddItems> {
   Widget build(BuildContext context) {
 
     
-  
+ 
    return Scaffold(
    
    
@@ -172,9 +174,7 @@ class _AddItemsState extends State<AddItems> {
                       ),
                       ),
                      ),
-                 SizedBox(
-                  height:20,
-                 ),
+                
                    Padding(
                     padding: EdgeInsets.only(left: 10, right:10,bottom:5,top: 20),
                     child: TextFormField( //Item Brand
@@ -427,7 +427,35 @@ class _AddItemsState extends State<AddItems> {
                   ),
                         
                           labelText: 'Item Features',
-                          counterText: 'eg :capacity,power out, vehicle types ',
+                          counterText: 'eg :capacity,power out ',
+                          
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize:16,
+                             ),
+                        ),
+                        ),
+                 ),
+                     
+                      SizedBox(
+                  height:20,
+                 ),
+                    Padding(
+                    padding: EdgeInsets.only(left: 10, right:10,bottom:5),
+                   child: TextFormField(
+                        controller: SuitableTypes,
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.purple, width: 2.0),
+                    borderRadius: BorderRadius.circular(100.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, width: 2.0),
+                     borderRadius: BorderRadius.circular(100.0),
+                  ),
+                        
+                          labelText: 'Suitable Vehicle Types',
+                          counterText: 'eg :Daewoo Matitz,Hyundai Santro-Xing,',
                           
                           labelStyle: TextStyle(
                             color: Colors.black,
@@ -577,32 +605,34 @@ class _AddItemsState extends State<AddItems> {
                 'Item Name': Item_Name.text,
                 'ItemBrand':Item_Brand.text,
                 'Item Price': Item_Price.text,
-                'Item Qty':Item_Qty.text,
+                'StockQty':Item_Qty.text,
                 'Item Features':ItemFeatures.text,
                 'Item Category':  Selected_category.toString(),
                 'Condition':Selected_condition.toString(),
                 'Warenty Period':  Selected_period.toString(),
                 'Imageurl':Downloadurl.toString(),
                 'PostedDate':today,
+                'SuitableTypes':SuitableTypes.text,
                 'Service Provider Id':loggedInUser.uid,
                 'Service Provider Name':loggedInUser.firstName,
                  
                 
               }
-              );
-              users.doc(loggedInUser.uid).collection('AutoParts').add({
+              )
+             /* users.doc(loggedInUser.uid).collection('MyAutoParts').add({
                 'ItemName': Item_Name.text,
                 'ItemBrand':Item_Brand.text,
                 'ItemPrice': Item_Price.text,
-                'ItemQty':Item_Qty.text,
+                'StockQty':Item_Qty.text,
                 'ItemFeatures':ItemFeatures.text,
                 'ItemCategory':  Selected_category.toString(),
                 'Condition':Selected_condition.toString(),
                 'WarentyPeriod':  Selected_period.toString(),
+                'SuitableTypes':SuitableTypes.text,
                 'Imageurl':Downloadurl.toString(),
                 'PostedDate':today,
                 
-              }).
+              })*/.
               whenComplete(() {
                 showDialog(
                 context: context,

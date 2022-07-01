@@ -37,7 +37,7 @@ class _ChatpageState extends State<Chatpage> {
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.79,
-            /*  child: Messages(
+             /* child: Messages(
                 talkId: widget.talkId,
                 category: widget.category,
               ),*/

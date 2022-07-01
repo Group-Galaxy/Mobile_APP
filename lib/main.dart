@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/categories/categoryProvider.dart';
@@ -42,7 +42,7 @@ Future<void> main() async {
     providers: [
       Provider(create: (_) => ProductProvider()),
       Provider(create: (_) => categoryprovider()),
-      Provider(create: (_) => ItemProvider()),
+       Provider(create: (_) => ItemProvider())
     ],
     child: const MyApp(),
   )));
