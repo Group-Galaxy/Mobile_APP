@@ -57,7 +57,7 @@ class _productDetailsState extends State<productDetails> {
     print(data);
     String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
-    String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
+    //String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
 
     final fs = FirebaseFirestore.instance;
     return Scaffold(
@@ -127,7 +127,7 @@ class _productDetailsState extends State<productDetails> {
                     ),
                     Row(
                       children: [
-                        Text(FormatedPrice,
+                        Text(_FormatedPrice,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
                       ],
