@@ -4,6 +4,8 @@ class VehicleOwnerModel {
   String? firstName;
   String? secondName;
   String? contactNO;
+  String? imgUrl;
+  //String myCategory;
 
   VehicleOwnerModel(
       {this.uid, this.email, this.firstName, this.secondName, this.contactNO});
@@ -26,6 +28,7 @@ class VehicleOwnerModel {
       'firstName': firstName,
       'secondName': secondName,
       'contactNO': contactNO,
+      'imgUrl': imgUrl
     };
   }
 }

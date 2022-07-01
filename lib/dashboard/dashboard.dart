@@ -1,57 +1,112 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mypart/dashboard/components/card_custom.dart';
 import 'package:mypart/dashboard/components/circle_progress.dart';
 import 'package:mypart/dashboard/components/list_tile_custom.dart';
 import 'package:mypart/dashboard/themes.dart';
+import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
 import 'package:mypart/seller/Items.dart';
-import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
+import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Nav_side extends StatefulWidget {
-  const Nav_side({Key? key, required String title}) : super(key: key);
+import '../chat/chat_home.dart';
+
+class NavSide extends StatefulWidget {
+  const NavSide({Key? key, required String title}) : super(key: key);
   @override
-  _Nav_sideState createState() => _Nav_sideState();
+  _NavSideState createState() => _NavSideState();
 }
 
-class _Nav_sideState extends State<Nav_side> {
+class _NavSideState extends State<NavSide> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  late SharedPreferences prefs;
 
+  @override
   void initState() {
     super.initState();
+    setAc();
     FirebaseFirestore.instance
         .collection("vehicl parts providers")
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
+      notification();
       setState(() {});
     });
   }
 
+  notification() async {
+    final db = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+
+    final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
+        .collection('vehicl parts providers/${user?.uid}/Order')
+        .snapshots();
+
+    messageStream.forEach((element) {
+      debugPrint(element.docs.length.toString());
+      for (var element in element.docs) {
+        debugPrint(element["Ordernew"].toString());
+        if (element["Ordernew"]) {
+          Fluttertoast.showToast(
+              msg: "${element["Service Provider Name"]} has new order",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          final fs = FirebaseFirestore.instance;
+
+          fs
+              .collection('vehicl parts providers/${user?.uid}/Order')
+              .doc(element.id)
+              .set({
+            "Ordernew": false,
+          }, SetOptions(merge: true));
+        }
+      }
+    });
+  }
+
+  setAc() async {
+    prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDriver', false);
+    await prefs.setBool('ismechanic', false);
+    await prefs.setBool('isparts', true);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final fs = FirebaseFirestore.instance;
+    final curr = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dashboard"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width / 2.20,
                         child: Column(
                           children: [
@@ -64,10 +119,10 @@ class _Nav_sideState extends State<Nav_side> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("LKR 65000",
+                                    const Text("LKR 65000",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
-                                    Text(
+                                    const Text(
                                       "Total earnings",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
@@ -83,7 +138,7 @@ class _Nav_sideState extends State<Nav_side> {
                                           color: green,
                                           size: 14,
                                         ),
-                                        Text("per week",
+                                        const Text("per week",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold)),
                                       ],
@@ -92,7 +147,7 @@ class _Nav_sideState extends State<Nav_side> {
                                 ),
                               ),
                             ),
-                            Text("NEW ACHIEVMENT",
+                            const Text("NEW ACHIEVMENT",
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             //Text(
                             // "Social Star",
@@ -117,7 +172,7 @@ class _Nav_sideState extends State<Nav_side> {
                   color: sparatorColor,
                 ),
                 Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
                       RichText(
@@ -139,7 +194,7 @@ class _Nav_sideState extends State<Nav_side> {
                       Row(
                         children: [
                           CardCustom(
-                            width: MediaQuery.of(context).size.width / 2.23,
+                            width: MediaQuery.of(context).size.width * .42,
                             height: 88,
                             mLeft: 0,
                             mRight: 3,
@@ -151,7 +206,7 @@ class _Nav_sideState extends State<Nav_side> {
                             ),
                           ),
                           CardCustom(
-                            width: MediaQuery.of(context).size.width / 2.23,
+                            width: MediaQuery.of(context).size.width * .42,
                             height: 88,
                             mLeft: 3,
                             mRight: 0,
@@ -167,7 +222,7 @@ class _Nav_sideState extends State<Nav_side> {
                       CardCustom(
                           mLeft: 0,
                           mRight: 0,
-                          width: MediaQuery.of(context).size.width / 40,
+                          width: MediaQuery.of(context).size.width * .42,
                           height: 211,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,7 +230,7 @@ class _Nav_sideState extends State<Nav_side> {
                               Padding(
                                 padding: const EdgeInsets.all(20),
                                 child: Row(
-                                  children: [
+                                  children: const [
                                     /* Container(
                                     width: 8,
                                     height: 9.71,
@@ -193,7 +248,7 @@ class _Nav_sideState extends State<Nav_side> {
                                     SizedBox(
                                       width: 20,
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: 20,
                                       height: 20,
                                       /*decoration: BoxDecoration(
@@ -228,66 +283,73 @@ class _Nav_sideState extends State<Nav_side> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("user default"),
-              accountEmail: Text("snmotors@gmail.com"),
+              accountName: Text(loggedInUser.firstName ?? ""),
+              accountEmail: Text(loggedInUser.email ?? ""),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.blueGrey,
-                child: Text(
-                  "S",
-                  style: TextStyle(fontSize: 40.0),
-                ),
+                child: Image.network(loggedInUser.imgUrl ?? ""),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Dashboard"),
+              leading: const Icon(Icons.home),
+              title: const Text("Dashboard"),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.notifications),
-              title: Text("Notifications"),
+              leading: const Icon(Icons.notifications),
+              title: const Text("Notifications"),
               onTap: () {
-                Navigator.pop(context);
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (_) => const PartsProviderNotifications()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.chat),
-              title: Text("Chat"),
+              leading: const Icon(Icons.chat),
+              title: const Text("Chat"),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const ChatHome(
+                              sender: "vehicl parts providers",
+                            )));
               },
             ),
             ListTile(
-              leading: Icon(Icons.shop_outlined),
-              title: Text("My orders"),
+              leading: const Icon(Icons.shop_outlined),
+              title: const Text("My orders"),
               onTap: () {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => Myorders()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (_) => const Myorders()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.auto_graph_sharp),
-              title: Text("My Items"),
+              leading: const Icon(Icons.auto_graph_sharp),
+              title: const Text("My Items"),
               onTap: () {
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (_) => Items()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.comment_sharp),
-              title: Text("Comments & Ratings"),
+              leading: const Icon(Icons.comment_sharp),
+              title: const Text("Comments & Ratings"),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout_sharp),
-              title: Text("Log out"),
-              onTap: () {
+              leading: const Icon(Icons.logout_sharp),
+              title: const Text("Log out"),
+              onTap: () async {
+                prefs.setBool('isDriver', false);
+                prefs.setBool('ismechanic', false);
+                prefs.setBool('isparts', false);
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => PartsProviderLogin()));
+                    MaterialPageRoute(builder: (_) => const MySplashScreen()));
               },
             ),
           ],

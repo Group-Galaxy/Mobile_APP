@@ -46,9 +46,10 @@ class _CustomappbarState extends State<Customappbar> {
     
     super.initState();
   }
+ 
   @override
   Widget build(BuildContext context) {
-     var _provider=Provider.of<ProductProvider>(context);
+      var provider=Provider.of<ProductProvider>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -64,7 +65,8 @@ class _CustomappbarState extends State<Customappbar> {
                           Expanded(
                             child: TextField(
                               onTap: (() {
-                              _serach.search(context: context,productList: items
+                              _serach.search(context: context,productList: items,
+                              provider: provider,
                               );
                               }),
                               

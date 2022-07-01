@@ -20,6 +20,15 @@ class _EditItemState extends State<EditItem> {
   Widget build(BuildContext context) {
     return Scaffold(
     appBar: AppBar(
+       leading: new IconButton(
+    icon: new Icon(Icons.arrow_back, color: Colors.white),
+    onPressed: () {
+      Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) => Items()));
+    },
+  ), 
+     
       title: Text("Edit Item"),
        
         actions: [

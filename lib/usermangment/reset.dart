@@ -14,13 +14,14 @@ class ResetScreen extends StatefulWidget {
 
 class _ResetScreenState extends State<ResetScreen> {
   // form key
+   // form key
   final _formKey = GlobalKey<FormState>();
 
   // editing controller
-  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   // firebase
-   final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
 
   // string for displaying the error Message
   String? errorMessage;
@@ -48,8 +49,8 @@ class _ResetScreenState extends State<ResetScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.mail),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -62,7 +63,7 @@ class _ResetScreenState extends State<ResetScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.purple),
+          icon: const Icon(Icons.arrow_back, color: Colors.purple),
           onPressed: () {
             // passing this to our root
             Navigator.of(context).pop();
@@ -87,22 +88,23 @@ class _ResetScreenState extends State<ResetScreen> {
                           'https://firebasestorage.googleapis.com/v0/b/mypart-86d9e.appspot.com/o/logo%2Flogo2.jpg?alt=media&token=48522a8f-53fb-4763-a58f-810de3b1f591',
                           fit: BoxFit.contain,
                         )),
-                    SizedBox(height: 45),
+                    const SizedBox(height: 45),
                     emailField,
-                    SizedBox(height: 25),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 25),
+                    const SizedBox(height: 15),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("If you wish to reset password "),
+                          const Text("If you wish to reset password "),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ResetScreen()));
+                                      builder: (context) =>
+                                          const ResetScreen()));
                             },
-                            child: Text(
+                            child: const Text(
                               "Don't worry!",
                               style: TextStyle(
                                   color: Colors.purple,
@@ -115,10 +117,10 @@ class _ResetScreenState extends State<ResetScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                          child: Text('send request'),
+                          child: const Text('send request'),
                           onPressed: () {
                             _auth.sendPasswordResetEmail(
-                                 email:'emailController');
+                                email: emailController.text);
                             Navigator.of(context).pop();
                           },
                         )

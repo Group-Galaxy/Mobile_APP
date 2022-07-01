@@ -10,12 +10,13 @@ import 'package:like_button/like_button.dart';
 import 'package:mypart/Order_payment/checkout_order.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/products.dart';
-import 'package:mypart/buyer/searchhome.dart';
+import 'package:mypart/buyer/vehicle_parts_home.dart';
 import 'package:mypart/designs/bottombar.dart';
 import 'package:mypart/firebaseservice.dart';
 import 'package:mypart/orders/order_userside/userorderdetails.dart';
 import 'package:mypart/orders/order_userside/userordermain.dart';
 import 'package:mypart/usermangment/usermodel.dart';
+import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
@@ -24,33 +25,28 @@ import 'package:quantity_input/quantity_input.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 
+import '../chat/chat_page.dart';
+
 class productDetails extends StatefulWidget {
   @override
   State<productDetails> createState() => _productDetailsState();
 }
 
 class _productDetailsState extends State<productDetails> {
-  FirebaseService _service = FirebaseService();
+  final FirebaseService _service = FirebaseService();
   User? vehicleowner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
+  CollectionReference user =
+      FirebaseFirestore.instance.collection('VehicleOwner');
+
+  CollectionReference notifications =
+      FirebaseFirestore.instance.collection('notifications');
 
   @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(vehicleowner!.uid)
-        .get()
-        .then((value) {
-      this.loggedInUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
-
   int OrderQuantity = 0;
-  var today = new DateTime.now();
+  var today = DateTime.now();
   String OrderStatus = "Pending";
   @override
   Widget build(BuildContext context) {
@@ -61,14 +57,17 @@ class _productDetailsState extends State<productDetails> {
     print(data);
     String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
+    String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
+
+    final fs = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back, color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => Home()));
+                context, MaterialPageRoute(builder: (_) => VehiclePartsHome()));
           },
         ),
         actions: [
@@ -89,12 +88,12 @@ class _productDetailsState extends State<productDetails> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: 300,
-              color: Color.fromARGB(255, 222, 219, 219),
+              color: const Color.fromARGB(255, 222, 219, 219),
               child: PhotoView(
                 imageProvider: NetworkImage(data['Imageurl']),
               ),
             ),
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -106,10 +105,10 @@ class _productDetailsState extends State<productDetails> {
                         Column(
                           children: [
                             Text(data['Item Name'],
-                                style: TextStyle(fontSize: 16)),
+                                style: const TextStyle(fontSize: 16)),
                           ],
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 50),
                         Column(
                           children: [
                             QuantityInput(
@@ -123,17 +122,17 @@ class _productDetailsState extends State<productDetails> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
                       children: [
-                        Text(_FormatedPrice,
-                            style: TextStyle(
+                        Text(FormatedPrice,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Padding(
@@ -141,58 +140,58 @@ class _productDetailsState extends State<productDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Warrenty: ',
+                          const Text('Warrenty: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                   color: Color.fromARGB(255, 115, 113, 113))),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Text(data['Warenty Period'],
-                              style: TextStyle(fontSize: 12)),
+                              style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
-                    Divider(color: Colors.grey),
+                    const Divider(color: Colors.grey),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Condition: ',
+                          const Text('Condition: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                   color: Color.fromARGB(255, 115, 113, 113))),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Text(data['Condition'],
-                              style: TextStyle(fontSize: 12)),
+                              style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
-                    Divider(color: Colors.grey),
+                    const Divider(color: Colors.grey),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Features: ',
+                          const Text('Features: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                   color: Color.fromARGB(255, 115, 113, 113))),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Text(data['Item Features'],
-                              style: TextStyle(fontSize: 12)),
+                              style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
-                    Divider(color: Colors.grey),
+                    const Divider(color: Colors.grey),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -218,18 +217,18 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text('Contact No: ', style: TextStyle(fontSize: 12)),
+                          Text('Contact No', style: TextStyle(fontSize: 12)),
                           SizedBox(
                             width: 20,
                           ),
-                          Text('0715978410', style: TextStyle(fontSize: 12)),
+                          Text('', style: TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        children: [
+                        children: const [
                           SizedBox(
                             width: 20,
                           ),
@@ -247,12 +246,12 @@ class _productDetailsState extends State<productDetails> {
                         ],
                       ),
                     ),
-                    Divider(color: Colors.grey),
+                    const Divider(color: Colors.grey),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text('Ratings & Comments: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -261,7 +260,7 @@ class _productDetailsState extends State<productDetails> {
                         ],
                       ),
                     ),
-                    Divider(color: Colors.grey),
+                    const Divider(color: Colors.grey),
                   ],
                 ),
               ),
@@ -279,24 +278,64 @@ class _productDetailsState extends State<productDetails> {
           children: [
             Expanded(
                 child: NeumorphicButton(
-              style: NeumorphicStyle(color: Colors.purple),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(CupertinoIcons.chat_bubble,
-                      size: 16, color: Colors.white),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Chat',
-                    style: TextStyle(color: Colors.white),
-                  )
-                ],
+              style: const NeumorphicStyle(color: Colors.purple),
+              child: GestureDetector(
+                onTap: () {
+                  final curr = FirebaseAuth.instance.currentUser;
+                  fs
+                      .collection('VehicleOwner/${curr?.uid}/MessagesList')
+                      .doc(data['Service Provider Id'])
+                      .set({
+                    "name": curr?.displayName ?? "No name",
+                    'lastMsgTime': FieldValue.serverTimestamp(),
+                    'isRespone': true,
+                    "getterId": data['Service Provider Id'],
+                    'imgUrl': "",
+                    "sender": "VehicleOwner",
+                    "getter": "vehicl parts providers"
+                  }, SetOptions(merge: true));
+                  fs
+                      .collection(
+                          'vehicl parts providers/${data['Service Provider Id']}/MessagesList')
+                      .doc(curr?.uid)
+                      .set({
+                    "name": curr?.displayName ?? "No name",
+                    'lastMsgTime': FieldValue.serverTimestamp(),
+                    'isRespone': true,
+                    "getterId": curr?.uid,
+                    'imgUrl': curr?.photoURL ?? "",
+                    "getter": "vehicl parts providers",
+                    "sender": "VehicleOwner"
+                  }, SetOptions(merge: true));
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Chatpage(
+                                getter: "vehicl parts providers",
+                                sender: "VehicleOwner",
+                                getterId: data['Service Provider Id'],
+                                getterName: data['Service Provider Name'],
+                              )));
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(CupertinoIcons.chat_bubble,
+                        size: 16, color: Colors.white),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Chat',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
               ),
             )),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Expanded(
@@ -351,11 +390,11 @@ class _productDetailsState extends State<productDetails> {
                 //   );
                 // });
               },
-              style: NeumorphicStyle(color: Colors.purple),
+              style: const NeumorphicStyle(color: Colors.purple),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Icon(CupertinoIcons.square_list,
                       size: 16, color: Colors.white),
                   SizedBox(

@@ -4,12 +4,15 @@ import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/productmoreinfo.dart';
 import 'package:mypart/buyer/products.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 import 'package:search_page/search_page.dart';
 import 'package:intl/intl.dart';
 class VehicleParts {
   final String Item_Name, Item_Category,Condition,price,Features;
  
   final DocumentSnapshot document;
+  
+
 
 VehicleParts({
   required this.Item_Name,required this.Item_Category,required this.Condition,required this.price,required this.Features, required this.document
@@ -19,7 +22,7 @@ VehicleParts({
 }
 
 class SearchService{
-  search({context, productList}){
+  search({context, productList,provider}){
     showSearch(
           context: context,
           delegate: SearchPage<VehicleParts>(
@@ -31,6 +34,7 @@ class SearchService{
               child: Text('No item found :'),
             ),
             filter: (VehicleParts) => [
+
               VehicleParts.Item_Name,
               VehicleParts.Item_Category,
               VehicleParts.Features,
@@ -44,15 +48,19 @@ class SearchService{
 
                       String _FormatedPrice =
                           '\Rs. ${_PriceFormat.format(_price)}';
-
+            
+   var _provider=Provider.of<ProductProvider>(context);
 
               return InkWell(
-                onTap: () {
-                  
-                },
-                child: Container(
-                  height: 120,
-                  width: MediaQuery.of(context).size.width,
+                 onTap: () {
+                   
+                         provider.getProductDetails(VehicleParts.document);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => productDetails()));
+                        
+                 },
                   child: Card(
                     elevation: 4,
                  child: Padding(
@@ -84,8 +92,8 @@ class SearchService{
                    ),
                  ),
                   ),
-                ),
-              );
+                );
+              
           
             }
           ),

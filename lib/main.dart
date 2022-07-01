@@ -1,27 +1,20 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:mypart/Order_payment/checkout_order.dart';
 import 'package:mypart/buyer/productProvider.dart';
-import 'package:mypart/buyer/searchhome.dart';
 import 'package:mypart/categories/categoryProvider.dart';
-import 'package:mypart/dashboard/dashboard.dart';
-import 'package:mypart/gateway.dart';
-
-import 'package:mypart/seller/Items.dart';
-
+import 'package:mypart/seller/ItemProvider.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/welcomeScreen.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
-import 'package:path/path.dart' as path;
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'usermangment/login.dart';
-
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -36,14 +29,44 @@ Future<void> main() async {
       projectId: "mypart-86d9e",
     ),
   );
+  await _configureLocalTimeZone();
+  const initializationSettingsAndroid =
+      AndroidInitializationSettings('icon_main');
+  final initializationSettingsIOS = IOSInitializationSettings(
+      onDidReceiveLocalNotification:
+          (int id, String? title, String? body, String? payload) async {});
+  final initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  await _notificationInitMethod(initializationSettings);
   Provider.debugCheckInvalidValueType = null;
   runApp((MultiProvider(
     providers: [
       Provider(create: (_) => ProductProvider()),
       Provider(create: (_) => categoryprovider()),
+      Provider(create: (_) => ItemProvider())
     ],
-    child: MyApp(),
+    child: const MyApp(),
   )));
+}
+
+Future<void> _notificationInitMethod(
+    InitializationSettings initializationSettings) async {
+  try {
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (String? payload) async {
+      if (payload != null) {
+        debugPrint('notipfication payload: $payload');
+      }
+    });
+  } catch (e) {
+    debugPrint("$e");
+  }
+}
+
+Future<void> _configureLocalTimeZone() async {
+  tz.initializeTimeZones();
+  final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
 }
 
 class MyApp extends StatelessWidget {

@@ -12,7 +12,7 @@ class _messagesState extends State<messages> {
   String email;
   _messagesState({required this.email});
 
-  Stream<QuerySnapshot> _messageStream = FirebaseFirestore.instance
+  final Stream<QuerySnapshot> _messageStream = FirebaseFirestore.instance
       .collection('Messages')
       .orderBy('time')
       .snapshots();
@@ -22,17 +22,17 @@ class _messagesState extends State<messages> {
       stream: _messageStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text("something is wrong");
+          return const Text("something is wrong");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
         return ListView.builder(
           itemCount: snapshot.data!.docs.length,
-          physics: ScrollPhysics(),
+          physics: const ScrollPhysics(),
           shrinkWrap: true,
           primary: true,
           itemBuilder: (_, index) {
@@ -51,32 +51,32 @@ class _messagesState extends State<messages> {
                     width: 300,
                     child: ListTile(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(
+                        side: const BorderSide(
                           color: Colors.purple,
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       title: Text(
                         qs['email'],
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                         ),
                       ),
                       subtitle: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
+                          SizedBox(
                             width: 200,
                             child: Text(
                               qs['message'],
                               softWrap: true,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 15,
                               ),
                             ),
                           ),
                           Text(
-                            d.hour.toString() + ":" + d.minute.toString(),
+                            "${d.hour}:${d.minute}",
                           )
                         ],
                       ),

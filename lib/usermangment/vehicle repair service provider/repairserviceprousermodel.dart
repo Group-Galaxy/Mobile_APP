@@ -5,6 +5,7 @@ class RepairUserModel {
   String? secondName;
   String? contactNO;
   String? location;
+  String? imgUrl;
 
   RepairUserModel(
       {this.uid,
@@ -12,7 +13,7 @@ class RepairUserModel {
       this.firstName,
       this.secondName,
       this.contactNO,
-      this.location});
+      this.location,this.imgUrl});
 
   // receiving data from server
   factory RepairUserModel.fromMap(map) {
@@ -23,6 +24,7 @@ class RepairUserModel {
       secondName: map['secondName'],
       contactNO: map['contactNo'],
       location: map['location'],
+      imgUrl: map['imgUrl'],
     );
   }
 
@@ -34,6 +36,7 @@ class RepairUserModel {
       'firstName': firstName,
       'contactNo': contactNO,
       'location': location,
+      'imgUrl': imgUrl,
     };
   }
 }

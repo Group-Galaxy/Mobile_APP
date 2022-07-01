@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:mypart/seller/Items.dart';
@@ -37,6 +38,10 @@ class _AddItemsState extends State<AddItems> {
   TextEditingController Item_Price = TextEditingController();
   TextEditingController Item_Qty = TextEditingController();
   TextEditingController ItemFeatures=TextEditingController();
+  TextEditingController Item_Brand=TextEditingController();
+  TextEditingController SuitableTypes=TextEditingController();
+  
+  
   var  Selected_category;
   var Selected_period;
   var Downloadurl;
@@ -85,7 +90,8 @@ class _AddItemsState extends State<AddItems> {
   
 
 
-  CollectionReference ref = FirebaseFirestore.instance.collection('Vehicle Parts');
+  CollectionReference ref = FirebaseFirestore.instance.collection('VehicleParts');
+  final CollectionReference users = FirebaseFirestore.instance.collection('vehicl parts providers');
    
   @override
   
@@ -116,7 +122,7 @@ class _AddItemsState extends State<AddItems> {
   Widget build(BuildContext context) {
 
     
-  
+ 
    return Scaffold(
    
    
@@ -168,10 +174,30 @@ class _AddItemsState extends State<AddItems> {
                       ),
                       ),
                      ),
-                 SizedBox(
-                  height:20,
-                 ),
-
+                
+                   Padding(
+                    padding: EdgeInsets.only(left: 10, right:10,bottom:5,top: 20),
+                    child: TextFormField( //Item Brand
+                      controller: Item_Brand,
+                      
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.purple, width: 2.0),
+                    borderRadius: BorderRadius.circular(100.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, width: 2.0),
+                     borderRadius: BorderRadius.circular(100.0),
+                  ),
+                        labelText: 'Item Brand',
+                         counterText: 'eg : Amaron, CEAT',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize:16,
+                           ),
+                      ),
+                      ),
+                     ),
 
                  Padding(
                     padding: EdgeInsets.only(left: 10, right:10,bottom:5),
@@ -401,7 +427,35 @@ class _AddItemsState extends State<AddItems> {
                   ),
                         
                           labelText: 'Item Features',
-                          counterText: 'eg :capacity,power out ,delivery options',
+                          counterText: 'eg :capacity,power out ',
+                          
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize:16,
+                             ),
+                        ),
+                        ),
+                 ),
+                     
+                      SizedBox(
+                  height:20,
+                 ),
+                    Padding(
+                    padding: EdgeInsets.only(left: 10, right:10,bottom:5),
+                   child: TextFormField(
+                        controller: SuitableTypes,
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.purple, width: 2.0),
+                    borderRadius: BorderRadius.circular(100.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, width: 2.0),
+                     borderRadius: BorderRadius.circular(100.0),
+                  ),
+                        
+                          labelText: 'Suitable Vehicle Types',
+                          counterText: 'eg :Daewoo Matitz,Hyundai Santro-Xing,',
                           
                           labelStyle: TextStyle(
                             color: Colors.black,
@@ -549,22 +603,57 @@ class _AddItemsState extends State<AddItems> {
                    today = new DateTime(today.year, today.month, today.day,);         
                 ref.add({
                 'Item Name': Item_Name.text,
+                'ItemBrand':Item_Brand.text,
                 'Item Price': Item_Price.text,
-                'Item Qty':Item_Qty.text,
+                'StockQty':Item_Qty.text,
                 'Item Features':ItemFeatures.text,
                 'Item Category':  Selected_category.toString(),
                 'Condition':Selected_condition.toString(),
                 'Warenty Period':  Selected_period.toString(),
                 'Imageurl':Downloadurl.toString(),
                 'PostedDate':today,
+                'SuitableTypes':SuitableTypes.text,
                 'Service Provider Id':loggedInUser.uid,
                 'Service Provider Name':loggedInUser.firstName,
                  
                 
               }
-              ).whenComplete(() {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => Items()));
+              )
+             /* users.doc(loggedInUser.uid).collection('MyAutoParts').add({
+                'ItemName': Item_Name.text,
+                'ItemBrand':Item_Brand.text,
+                'ItemPrice': Item_Price.text,
+                'StockQty':Item_Qty.text,
+                'ItemFeatures':ItemFeatures.text,
+                'ItemCategory':  Selected_category.toString(),
+                'Condition':Selected_condition.toString(),
+                'WarentyPeriod':  Selected_period.toString(),
+                'SuitableTypes':SuitableTypes.text,
+                'Imageurl':Downloadurl.toString(),
+                'PostedDate':today,
+                
+              })*/.
+              whenComplete(() {
+                showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                
+                  content: const Text("You added the item sucessfully"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                          Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => Items()));
+                      },
+                      child: Container(
+                        color: Colors.green,
+                        padding: const EdgeInsets.all(14),
+                        child: const Text("okay"),
+                      ),
+                    ),
+                  ]
+                ),
+                    );
               });
                    
                  }
@@ -645,3 +734,5 @@ Future getImage(BuildContext context) async {
  
 } 
 }
+
+
