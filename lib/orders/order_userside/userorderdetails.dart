@@ -25,14 +25,14 @@ class _NewordersState extends State<Neworders> {
   Widget build(BuildContext context) {
     final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
      CollectionReference orders =
-      FirebaseFirestore.instance.collection('VehicleOwner/${orderdVehicleOwner!.uid}/UserOrders');
+      FirebaseFirestore.instance.collection('Order Details');
       
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-         
+            .where('vehicle Owner Id' ,isEqualTo:orderdVehicleOwner?.uid )
             .where('Oreder Status', isEqualTo: 'Pending').orderBy('Order Date Time', descending: true)
             .get(
              
@@ -202,7 +202,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+     return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
@@ -369,7 +369,7 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                             ElevatedButton(
                                               onPressed: () {},
                                               child: const Text(
-                                                'View More',
+                                                'Pay',
                                                 style: TextStyle(fontSize: 10),
                                               ),
                                               style: ElevatedButton.styleFrom(
@@ -416,7 +416,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
@@ -976,9 +976,12 @@ class _CancelledState extends State<Cancelled> {
                                           ],
                                         ),
                                         Row(
-                                          children: [
+                                          children:  [
                                             Text(
-                                              'Total Payble fee : 2000',
+                                              'Reason for cancel: '+data['resonForCancel'],
+                                              softWrap: false,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(fontSize: 12),
                                             ),
                                           ],
@@ -986,7 +989,7 @@ class _CancelledState extends State<Cancelled> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      width: 50,
+                                      width: 40,
                                     ),
                                      Column(
                                       children: [
@@ -1006,28 +1009,7 @@ class _CancelledState extends State<Cancelled> {
                                           ],
                                         ),
 
-                                       Row(
-                                          
-                                            crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                            ),
-                                          
-                                          ],
-                                        ),
+                                     
                                        
                                       ],
                                     ),
@@ -1061,7 +1043,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+     return "${DateTime.now().difference(OrderDate).inMinutes} mins ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {

@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/categories/categoryProvider.dart';
+import 'package:mypart/repairservice/repairProvider.dart';
 import 'package:mypart/seller/ItemProvider.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/welcomeScreen.dart';
@@ -35,7 +36,10 @@ Future<void> main() async {
     providers: [
       Provider(create: (_) => ProductProvider()),
       Provider(create: (_) => categoryprovider()),
-      Provider(create: (_) => ItemProvider())
+      Provider(create: (_) => ItemProvider()),
+      Provider(create: (_) => RepairProvider())
+
+      
     ],
     child: const MyApp(),
   )));
