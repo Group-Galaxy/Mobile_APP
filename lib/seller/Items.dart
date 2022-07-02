@@ -20,27 +20,16 @@ class Items extends StatefulWidget {
 }
 
 class _ItemsState extends State<Items> {
-  User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("vehicl parts providers")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+  
+  
 
   final _PriceFormat = NumberFormat('##,##,##0');
 
   @override
   Widget build(BuildContext context) {
+    final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
    CollectionReference vehicleparts = FirebaseFirestore.instance.collection('VehicleParts');
+   print(orderdVehicleOwner?.uid);
        
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -73,7 +62,7 @@ class _ItemsState extends State<Items> {
       ),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
-          future: vehicleparts.where('Service Provider Id', isEqualTo: loggedInUser.uid).get(),
+          future: vehicleparts.where('Service Provider Id', isEqualTo: orderdVehicleOwner?.uid).get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {

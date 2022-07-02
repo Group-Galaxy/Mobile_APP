@@ -123,7 +123,7 @@ class _ChatpageState extends State<Chatpage> {
                           'time': FieldValue.serverTimestamp(),
                           "getterId": widget.getterId,
                           
-                          "name": widget.getterName ?? "NO Name",
+                          "name": curr?.displayName  ?? "NO Name",
                           "isMe": true,
                           "isImage": true,
                           "imgUrl": imgUrl,
@@ -192,7 +192,7 @@ class _ChatpageState extends State<Chatpage> {
                                 '${widget.getter}/${widget.getterId}/MessagesList')
                             .doc(curr?.uid)
                             .set({
-                          //"name": curr?.displayName ?? "No name",
+                          "name": widget.getterName ?? "No name",
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': message.text.trim(),
                           'isRespone': true
@@ -205,7 +205,7 @@ class _ChatpageState extends State<Chatpage> {
                           'time': FieldValue.serverTimestamp(),
                           "getterId": widget.getterId,
                           
-                          "name":  widget.getterName ?? "NO Name",
+                          "name":  curr?.displayName ?? "NO Name",
                           "isMe": true,
                           "isImage": false,
                           "imgUrl": "",
@@ -215,7 +215,7 @@ class _ChatpageState extends State<Chatpage> {
                                 '${widget.sender}/${curr?.uid}/MessagesList')
                             .doc(widget.getterId)
                             .set({
-                          //"name": widget.getterName ?? "No name",
+                          "name": widget.getterName ?? "No name",
                           'lastMsgTime': FieldValue.serverTimestamp(),
                           'message': message.text.trim(),
                           'isRespone': true

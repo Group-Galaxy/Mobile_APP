@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mypart/dashboard/components/card_custom.dart';
 import 'package:mypart/dashboard/components/circle_progress.dart';
 import 'package:mypart/dashboard/components/list_tile_custom.dart';
@@ -14,6 +18,7 @@ import 'package:mypart/orders/ordershome.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../chat/chat_home.dart';
@@ -28,10 +33,11 @@ class _NavSideState extends State<NavSide> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
   late SharedPreferences prefs;
-
+  var imgUrl = "";
   @override
   void initState() {
     super.initState();
+    notification();
     setAc();
     FirebaseFirestore.instance
         .collection("vehicl parts providers")
@@ -39,7 +45,7 @@ class _NavSideState extends State<NavSide> {
         .get()
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
-      notification();
+
       setState(() {});
     });
   }
@@ -58,7 +64,7 @@ class _NavSideState extends State<NavSide> {
         debugPrint(element["Ordernew"].toString());
         if (element["Ordernew"]) {
           Fluttertoast.showToast(
-              msg: "${element["Service Provider Name"]} has new order",
+              msg: "You have new order from ${element["Vehicle Owner Name"]} ",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
@@ -285,9 +291,58 @@ class _NavSideState extends State<NavSide> {
             UserAccountsDrawerHeader(
               accountName: Text(loggedInUser.firstName ?? ""),
               accountEmail: Text(loggedInUser.email ?? ""),
-              currentAccountPicture:  CircleAvatar(
-                
-                 child: Image.network(loggedInUser.imgUrl ?? ""),
+              currentAccountPicture: GestureDetector(
+                onTap: () async {
+                  final firebaseStorage = FirebaseStorage.instance;
+                  final imagePicker = ImagePicker();
+                  XFile? image;
+                  //Check Permissions
+                  await Permission.photos.request();
+
+                  var permissionStatus = await Permission.photos.status;
+
+                  if (permissionStatus.isGranted) {
+                    //Select Image
+                    image = await imagePicker.pickImage(
+                        source: ImageSource.gallery);
+
+                    if (image != null) {
+                      var file = File(image.path);
+                      print("*******************");
+                      print(image.path);
+                      var snapshot = await firebaseStorage
+                          .ref()
+                          .child('users/profileimg')
+                          .putFile(file);
+
+                      imgUrl = await snapshot.ref.getDownloadURL();
+                     await user?.updatePhotoURL(imgUrl);
+                      setState(() {});
+                      print(imgUrl.toString());
+                    } else {
+                      print('No Image Path Received');
+                    }
+                  } else {
+                    print(
+                        'Permission not granted. Try Again with permission access');
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 50.0,
+                  backgroundColor: Colors.grey,
+                  child: CachedNetworkImage(
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.fill,
+                    imageUrl: FirebaseAuth.instance.currentUser?.photoURL ?? "",
+                    placeholder: (context, url) => const CircleAvatar(
+                      radius: 30.0,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.account_circle_outlined),
+                  ),
+                ),
               ),
             ),
             ListTile(
@@ -301,11 +356,11 @@ class _NavSideState extends State<NavSide> {
               leading: const Icon(Icons.notifications),
               title: const Text("Notifications"),
               onTap: () {
-              //   Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (_) => const PartsProviderNotifications()));
-               },
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const PartsProviderNotifications()));
+              },
             ),
             ListTile(
               leading: const Icon(Icons.chat),

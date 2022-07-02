@@ -57,9 +57,7 @@ class _ChatHomeState extends State<ChatHome> {
               DateTime d = t.toDate();
               print(d.toString());
 
-              return !qs['isRespone']
-                  ? Container()
-                  : Padding(
+              return Padding(
                       padding: const EdgeInsets.all(10),
                       child: GestureDetector(
                         onTap: () {

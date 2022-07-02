@@ -91,25 +91,22 @@ class _AddItemsState extends State<AddItems> {
 
 
   CollectionReference ref = FirebaseFirestore.instance.collection('VehicleParts');
-  final CollectionReference users = FirebaseFirestore.instance.collection('vehicl parts providers');
-   
+ 
   @override
   
-  
-    User? user = FirebaseAuth.instance.currentUser;
-      UserModel loggedInUser = UserModel();
-
-  @override
-  
-  
-
-  void initState() {
-  fetchcategories();
+  final vehiclePartsProvider = FirebaseAuth.instance.currentUser;
+   UserModel loggedInUser = UserModel();
    
+  
+
+  
+   void initState() {
+    fetchcategories();
+  
     super.initState();
-     FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection("vehicl parts providers")
-        .doc(user!.uid)
+        .doc(vehiclePartsProvider!.uid)
         .get()
         .then((value) {
       this.loggedInUser = UserModel.fromMap(value.data());
@@ -121,7 +118,7 @@ class _AddItemsState extends State<AddItems> {
   final _key = GlobalKey<FormState>();
   Widget build(BuildContext context) {
 
-    
+    final vehiclePartsProvider = FirebaseAuth.instance.currentUser;
  
    return Scaffold(
    
@@ -613,8 +610,11 @@ class _AddItemsState extends State<AddItems> {
                 'Imageurl':Downloadurl.toString(),
                 'PostedDate':today,
                 'SuitableTypes':SuitableTypes.text,
-                'Service Provider Id':loggedInUser.uid,
-                'Service Provider Name':loggedInUser.firstName,
+                'Service Provider Id':vehiclePartsProvider?.uid,
+                'Service Provider Name':vehiclePartsProvider?.displayName,
+                'ServiceProviderContactNo':loggedInUser.contactNO,
+                'ServiceProviderLocation':loggedInUser.location,
+                
                  
                 
               }

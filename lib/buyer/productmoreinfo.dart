@@ -195,6 +195,32 @@ class _productDetailsState extends State<productDetails> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text('Suitable Vehicle Types: ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 115, 113, 113))),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                                                  Expanded(
+                              child: Text(
+                                data['SuitableTypes'],
+                                style: TextStyle(fontSize: 12),
+                                softWrap: false,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis, // new
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  const Divider(color: Colors.grey),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children:  [
                           Text('Seller Details: ',
                               style: TextStyle(
@@ -223,14 +249,15 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                           Text('', style: TextStyle(fontSize: 12)),
+                           Text(data['ServiceProviderContactNo'],
+                              style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        children: const [
+                        children:  [
                           SizedBox(
                             width: 20,
                           ),
@@ -238,8 +265,8 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text('Wester,Gampha,Negambo',
-                              style: TextStyle(fontSize: 12)),
+                          Text(data['ServiceProviderLocation'],
+                              style: const TextStyle(fontSize: 12)),
                           Icon(
                             Icons.location_on,
                             size: 18,
@@ -348,6 +375,10 @@ class _productDetailsState extends State<productDetails> {
                 String message = "You have new order";
                 final curr = FirebaseAuth.instance.currentUser;
                 CollectionReference ordersProvider = FirebaseFirestore.instance.collection('vehicl parts providers/${data['Service Provider Id']}/Order');
+               
+                
+
+                if(OrderQuantity>0){
                 ordersProvider.add({
                   'Item Name': data['Item Name'],
                   'Item Price': data['Item Price'],
@@ -356,7 +387,7 @@ class _productDetailsState extends State<productDetails> {
                   'Order Date Time': today,
                   'vehicle Owner Id': curr?.uid,
                   'Vehicle Owner Name': curr?.displayName,
-                  'Service Provider Id': data['Service Provider Id'],
+                 
                  
                   'Oreder Status': OrderStatus,
                   "Ordernew": true
@@ -373,18 +404,21 @@ class _productDetailsState extends State<productDetails> {
                   'Vehicle Owner Name': curr?.displayName,
                   'Service Provider Id': data['Service Provider Id'],
                   'Service Provider Name': data['Service Provider Name'],
+                  
                   'Oreder Status': OrderStatus,
                   "Ordernew": true
                 });
 
-                notifications.add({
-                  'ItemName': data['Item Name'],
-                  'Sender': curr?.uid,
-                  'receiver': data['Service Provider Id'],
-                  'message': message,
-                  'DateTime': today,
-                  "Ordernew": true
-                });
+                
+             
+              //  ordersProvider.doc(id) notifications.add({
+              //     'ItemName': data['Item Name'],
+              //     'Sender': curr?.uid,
+              //     'receiver': data['Service Provider Id'],
+              //     'message': message,
+              //     'DateTime': today,
+              //     "Ordernew": true
+              //   });
                 user.doc(curr!.uid).collection('UserOrders').add({
                   'Item Name': data['Item Name'],
                   'Item Price': data['Item Price'],
@@ -392,9 +426,13 @@ class _productDetailsState extends State<productDetails> {
                   'Imageurl': data['Imageurl'],
                   'Order Date Time': today,
                   'Service Provider Id': data['Service Provider Id'],
+                   'Service Provider Name': data['Service Provider Name'],
                   'Oreder Status': OrderStatus,
-                  "Ordernew": true
+                  "Ordernew": true,
+                  
                 }).whenComplete(() {
+                   
+
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
@@ -417,6 +455,18 @@ class _productDetailsState extends State<productDetails> {
                         ]),
                   );
                 });
+              }
+              else{
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                        content: const Text(
+                            "Enter the qty that you wish to buy"),
+                        actions: <Widget>[
+                         
+                        ]),
+                  );
+              }
               },
               style: const NeumorphicStyle(color: Colors.purple),
               child: Row(

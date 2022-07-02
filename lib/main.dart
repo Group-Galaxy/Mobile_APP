@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
- import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/categories/categoryProvider.dart';
@@ -28,15 +28,7 @@ Future<void> main() async {
       projectId: "mypart-86d9e",
     ),
   );
-  await _configureLocalTimeZone();
-  const initializationSettingsAndroid =
-      AndroidInitializationSettings('icon_main');
-  final initializationSettingsIOS = IOSInitializationSettings(
-      onDidReceiveLocalNotification:
-          (int id, String? title, String? body, String? payload) async {});
-  final initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-  await _notificationInitMethod(initializationSettings);
+ 
   Provider.debugCheckInvalidValueType = null;
   runApp((MultiProvider(
     providers: [
@@ -48,19 +40,7 @@ Future<void> main() async {
   )));
 }
 
-Future<void> _notificationInitMethod(
-    InitializationSettings initializationSettings) async {
-  try {
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String? payload) async {
-      if (payload != null) {
-        debugPrint('notipfication payload: $payload');
-      }
-    });
-  } catch (e) {
-    debugPrint("$e");
-  }
-}
+
 
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();

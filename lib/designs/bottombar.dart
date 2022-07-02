@@ -55,7 +55,7 @@ class BottomBar extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (_) => const ChatHome(
-                                            sender: "users",
+                                            sender: "VehicleOwner",
                                           )));
                             },
                           ),

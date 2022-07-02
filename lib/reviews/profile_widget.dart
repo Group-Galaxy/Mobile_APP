@@ -135,7 +135,7 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                                         '${widget.sender}/${curr?.uid}/MessagesList')
                                     .doc(data['uid'])
                                     .set({
-                                  "name": curr?.displayName ?? "No name",
+                                  "name": data['firstName'] ?? "No name",
                                   'lastMsgTime': FieldValue.serverTimestamp(),
                                   'isRespone': true,
                                   "getterId": widget.getterId,
@@ -143,6 +143,7 @@ class _ProfileWidegtState extends State<ProfileWidegt> {
                                   "sender": widget.sender,
                                   "getter": widget.getter
                                 }, SetOptions(merge: true));
+                                 
                                 fs
                                     .collection(
                                         '${widget.getter}/${data['uid']}/MessagesList')
