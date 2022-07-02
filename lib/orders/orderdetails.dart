@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:mypart/orders/cancelledorders.dart';
+import 'package:mypart/orders/updateacceptedorders.dart';
 import 'package:mypart/services/searchService.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
@@ -43,14 +45,14 @@ class _NewordersState extends State<Neworders> {
   @override
   Widget build(BuildContext context) {
      final vehiclePartsProvider= FirebaseAuth.instance.currentUser;
-     CollectionReference orders =
-      FirebaseFirestore.instance.collection('vehicl parts providers/${vehiclePartsProvider?.uid}/Order');
+    CollectionReference orders =
+      FirebaseFirestore.instance.collection('Order Details');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-              
+              .where('Service Provider Id', isEqualTo: vehiclePartsProvider?.uid)
               .where('Oreder Status', isEqualTo: 'Pending').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
@@ -165,38 +167,59 @@ class _NewordersState extends State<Neworders> {
                                           ),
                                           Row(
                                              
-                                children: 
-                                  [
-                                    CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: LikeButton(
-                                      
-                                      likeBuilder: (bool isLiked) {
-                                        return Icon(
-                                          Icons.check_circle_outline_rounded,
-                                          color: isLiked
-                                              ? Colors.green
-                                              : Colors.grey,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(width: 10,),
-                                  CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: LikeButton(
-                                      
-                                      likeBuilder: (bool isLiked) {
-                                        return Icon(
-                                          Icons.close_outlined,
-                                          color: isLiked
-                                              ? Colors.red
-                                              : Colors.grey,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                            children:<Widget> [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                   
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) => AcceptOrder(
+                                                            docid: data,
+                                                          )));
+                                            
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  
+                                                    primary: Colors.green,
+                                                    fixedSize: const Size(100, 9),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                50))),
+                                                child: const Text(
+                                                  'Accept',
+                                                  style: TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
+                              
+                                          ),
+                                           Row(
+                                             
+                                            children:<Widget> [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                   Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) => RejectOrder(
+                                                            docid: data, Item_Name: data['Item Name'], Qty:  data['Item Qty'], 
+                                                          )));
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.red,
+                                                    fixedSize: const Size(100, 9),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                50))),
+                                                child: const Text(
+                                                  'Reject',
+                                                  style: TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
                               
                                           ),
                                          Row(
@@ -279,8 +302,7 @@ class _ToPayOrdersState extends State<ToPayOrders> {
   @override
   
 
-     bool isaccepted=false;
-     bool isrejected=false;
+    
  
   
    
@@ -291,13 +313,15 @@ class _ToPayOrdersState extends State<ToPayOrders> {
      final PartsProvider = FirebaseAuth.instance.currentUser;
 
 
-   CollectionReference orders =
-      FirebaseFirestore.instance.collection('VehicleOwner/${PartsProvider!.uid}/UserOrders');
+  
+        CollectionReference orders =
+      FirebaseFirestore.instance.collection('Order Details');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
+              .where('Service Provider Id', isEqualTo: PartsProvider?.uid)
               
               .where('Oreder Status', isEqualTo: 'accepted')
               .get(),
@@ -924,8 +948,7 @@ class Cancelled extends StatefulWidget {
 class _CancelledState extends State<Cancelled> {
   @override
   @override
-  User? currentAutoPartsProvider = FirebaseAuth.instance.currentUser;
-  UserModel CurrentServiceprovider = UserModel();
+  
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
 
@@ -933,32 +956,22 @@ class _CancelledState extends State<Cancelled> {
      bool isrejected=false;
  
   
-   
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("vehicl parts providers")
-        .doc(currentAutoPartsProvider!.uid)
-        .get()
-        .then((value) {
-      CurrentServiceprovider = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
+      final vehiclePartsProvider= FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
+          
           future: orders
               .where(
                 'Service Provider Id',
-                isEqualTo: CurrentServiceprovider.uid,
+                isEqualTo: vehiclePartsProvider?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'accepted')
+              .where('Oreder Status', isEqualTo: 'cancelled')
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1039,9 +1052,12 @@ class _CancelledState extends State<Cancelled> {
                                           ],
                                         ),
                                         Row(
-                                          children: const [
+                                          children:  [
                                             Text(
-                                              'Total Payble fee : 2000',
+                                              'Reason for cancel '+data['resonForCancel'],
+                                              softWrap: false,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(fontSize: 12),
                                             ),
                                           ],
@@ -1069,28 +1085,7 @@ class _CancelledState extends State<Cancelled> {
                                           ],
                                         ),
 
-                                       Row(
-                                          
-                                            crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
-                                            ),
-                                          
-                                          ],
-                                        ),
+                                      
                                        
                                       ],
                                     ),

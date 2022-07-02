@@ -1,6 +1,7 @@
 //import 'dart:async';
 
 import 'dart:async';
+import 'package:uuid/uuid.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,10 +42,10 @@ class _productDetailsState extends State<productDetails> {
   CollectionReference user =
       FirebaseFirestore.instance.collection('VehicleOwner');
 
-  CollectionReference notifications =
-      FirebaseFirestore.instance.collection('notifications');
+ 
 
   @override
+   String? docid;
   int OrderQuantity = 0;
   var today = DateTime.now();
   String OrderStatus = "Pending";
@@ -365,6 +366,7 @@ class _productDetailsState extends State<productDetails> {
             const SizedBox(
               width: 20,
             ),
+            
             Expanded(
                 child: NeumorphicButton(
               onPressed: () {
@@ -372,27 +374,28 @@ class _productDetailsState extends State<productDetails> {
                     today.minute);
                 String message = "You have new order";
                 final curr = FirebaseAuth.instance.currentUser;
-                CollectionReference ordersProvider = FirebaseFirestore.instance.collection('vehicl parts providers/${data['Service Provider Id']}/Order');
+               
+              //bill details
+                  
+              double quantity=OrderQuantity.toDouble();
+              double sub_total=_price*quantity;
+              double delivery_fee = 500;
+                double total_fee = _price * OrderQuantity+
+                    ((OrderQuantity== 1)
+                        ? delivery_fee
+                        : (OrderQuantity == 2)
+                            ? 750
+                            : 1000);
+      
+
+      print(total_fee);
+                if(OrderQuantity>0){
                
                 
 
-                if(OrderQuantity>0){
-                ordersProvider.add({
-                  'Item Name': data['Item Name'],
-                  'Item Price': data['Item Price'],
-                  'Item Qty': OrderQuantity.toString(),
-                  'Imageurl': data['Imageurl'],
-                  'Order Date Time': today,
-                  'vehicle Owner Id': curr?.uid,
-                  'Vehicle Owner Name': curr?.displayName,
-                 
-                 
-                  'Oreder Status': OrderStatus,
-                  "Ordernew": true
-                });
-                
+                orders.add
 
-                orders.add({
+                ({
                   'Item Name': data['Item Name'],
                   'Item Price': data['Item Price'],
                   'Item Qty': OrderQuantity.toString(),
@@ -402,58 +405,48 @@ class _productDetailsState extends State<productDetails> {
                   'Vehicle Owner Name': curr?.displayName,
                   'Service Provider Id': data['Service Provider Id'],
                   'Service Provider Name': data['Service Provider Name'],
-                  
+                  'DeliveryFee':delivery_fee,
+                  'SubTotal':sub_total,
+                  'Total':total_fee,
                   'Oreder Status': OrderStatus,
                   "Ordernew": true
-                });
+
+                })
+                .
+                then((value) {
+                  String docid=value.id;
+                  
+                  
+                })
 
                 
+                
+                
+              
              
-              //  ordersProvider.doc(id) notifications.add({
-              //     'ItemName': data['Item Name'],
-              //     'Sender': curr?.uid,
-              //     'receiver': data['Service Provider Id'],
-              //     'message': message,
-              //     'DateTime': today,
-              //     "Ordernew": true
-              //   });
-                user.doc(curr!.uid).collection('UserOrders').add({
-                  'Item Name': data['Item Name'],
-                  'Item Price': data['Item Price'],
-                  'Item Qty': OrderQuantity.toString(),
-                  'Imageurl': data['Imageurl'],
-                  'Order Date Time': today,
-                  'Service Provider Id': data['Service Provider Id'],
-                   'Service Provider Name': data['Service Provider Name'],
-                  'Oreder Status': OrderStatus,
-                  "Ordernew": true,
-                  
-                }).whenComplete(() {
-                   
+             
 
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                        content: const Text(
-                            "Your order is placed sucessfully , Please waiting for seller response"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => VehiclePartsHome()));
-                            },
-                            child: Container(
-                              color: Colors.green,
-                              padding: const EdgeInsets.all(14),
-                              child: const Text("okay"),
-                            ),
-                          ),
-                        ]),
-                  );
+
+              .whenComplete(() {
+                   
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => checkoutorder(
+                              date: today,
+                              price: _price,
+                              providerName: data['Service Provider Name'],
+                              qty: OrderQuantity,
+                              item: data['Item Name'],
+                              service_provider_id: data['Service Provider Id'],
+                              
+                             
+                            )));
+                  
                 });
+               
               }
+              
               else{
                   showDialog(
                     context: context,
@@ -488,4 +481,7 @@ class _productDetailsState extends State<productDetails> {
       )),
     );
   }
+
+  
 }
+

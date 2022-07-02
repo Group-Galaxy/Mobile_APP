@@ -3,6 +3,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/Order_payment/checkout_receipt.dart';
+import 'package:mypart/buyer/vehicle_parts_home.dart';
 import 'package:mypart/gateway.dart';
 import 'package:mypart/usermangment/usermodel.dart';
 import 'package:getwidget/getwidget.dart';
@@ -22,6 +23,7 @@ class checkoutorder extends StatefulWidget {
   var providerName;
   var qty;
   var service_provider_id;
+ 
   String? item;
 
   checkoutorder(
@@ -31,6 +33,7 @@ class checkoutorder extends StatefulWidget {
       this.providerName,
       this.qty,
       required this.item,
+     
       required this.service_provider_id})
       : super(key: mykey);
 
@@ -155,34 +158,32 @@ class _checkoutorderState extends State<checkoutorder> {
             ButtonBar(
               children: [
                 RaisedButton(
-                  child: Text("Pay Now"),
+                  child: Text("Confrorm Order"),
                   textColor: Colors.white,
                   color: Colors.purple,
-                  onPressed: () async {
-                    await controller.makePayment(
-                        amount: '${total_fee}', currency: 'LKR');
-                    await controller.addpaymentDataToDb(
-                        userName: currentUser['firstName'],
-                        serviceProviderID: widget.service_provider_id,
-                        date: widget.date.toString(),
-                        balance: (widget.price * widget.qty +
-                                ((widget.qty == 1)
-                                    ? delivery_fee
-                                    : (widget.qty == 2)
-                                        ? 750
-                                        : 1000))
-                            .toString(),
-                        subTotal: widget.price.toString(),
-                        quantity: widget.qty.toString(),
-                        item: widget.item!,
-                        delivery_fee: ((widget.qty == 1)
-                                ? delivery_fee
-                                : (widget.qty == 2)
-                                    ? 750
-                                    : 1000)
-                            .toString(),
-                        contactNo: currentUser['contactNo'].toString(),
-                        address: _Address.text);
+                  onPressed: ()  {
+                    showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                        content: const Text(
+                            "Your order is placed sucessfully , Please waiting for seller response"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => VehiclePartsHome()));
+                            },
+                            child: Container(
+                              color: Colors.green,
+                              padding: const EdgeInsets.all(14),
+                              child: const Text("okay"),
+                            ),
+                          ),
+                        ]),
+                  );
+                    
                   },
                 ),
               ],
