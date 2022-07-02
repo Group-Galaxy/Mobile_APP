@@ -53,20 +53,22 @@ class _ReportState extends State<Report> {
         centerTitle: true,
         backgroundColor: Colors.purple,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: FutureBuilder(
-            future: getReport(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator.adaptive();
-              } else {
-                final data = snapshot.data as List<Card>;
-                return Column(
-                  children: data,
-                );
-              }
-            },
+      body: Card(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: FutureBuilder(
+              future: getReport(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator.adaptive();
+                } else {
+                  final data = snapshot.data as List<Card>;
+                  return Column(
+                    children: data,
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),

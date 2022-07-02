@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/firebaseservice.dart';
+import 'package:mypart/repair_payment/receipt.dart';
+import 'package:mypart/report/report.dart';
 import 'package:mypart/reviews/review_show_screen.dart';
-
-
 
 class RepairList extends StatefulWidget {
   const RepairList({Key? key}) : super(key: key);
@@ -13,15 +13,14 @@ class RepairList extends StatefulWidget {
   State<RepairList> createState() => _RepairListState();
 }
 
-class _RepairListState extends State<RepairList> 
-{
+class _RepairListState extends State<RepairList> {
   @override
-  final CollectionReference RepairServiceProvider = FirebaseFirestore.instance.collection('vehicle repair service provider');
-   final curr = FirebaseAuth.instance.currentUser;
+  final CollectionReference RepairServiceProvider =
+      FirebaseFirestore.instance.collection('vehicle repair service provider');
+  final curr = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: const Text("Available Service Providers"),
@@ -56,7 +55,6 @@ class _RepairListState extends State<RepairList>
                   );
                 }
                 return Container(
-                   
                   child: ListView.builder(
                       itemCount: snapshot.data!.size,
                       itemBuilder: (BuildContext context, int i) {
@@ -114,31 +112,25 @@ class _RepairListState extends State<RepairList>
                                     ),
                                     Row(
                                       children: [
-                                         
                                         Container(
-                                          
                                           alignment: Alignment.center,
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10.0, vertical: 10.0),
                                           child: FlatButton(
-                                            
-                                               onPressed: () async {
-                                              
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (_) => const ReviewShowScreen(
-                                                          getter: "vehicle repair service provider",
-                                                          sender: "VehicleOwner",
-                                                          getterId: 'lnL9eiQ9dsRPlykqT4SDL03c63z2',
-
-                                                          
-
-
-                                                        ),
-                                                      ));
-                                                },
-                                            
+                                            onPressed: () async {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        const ReviewShowScreen(
+                                                      getter:
+                                                          "vehicle repair service provider",
+                                                      sender: "VehicleOwner",
+                                                      getterId:
+                                                          'lnL9eiQ9dsRPlykqT4SDL03c63z2',
+                                                    ),
+                                                  ));
+                                            },
                                             color: const Color.fromARGB(
                                                 255, 222, 130, 238),
                                             shape: RoundedRectangleBorder(
@@ -176,7 +168,12 @@ class _RepairListState extends State<RepairList>
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10.0, vertical: 10.0),
                                           child: FlatButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Receipts()));
+                                            },
                                             color: const Color.fromARGB(
                                                 255, 222, 130, 238),
                                             shape: RoundedRectangleBorder(
