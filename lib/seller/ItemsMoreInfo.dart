@@ -28,7 +28,7 @@ class ItemsDetails extends StatefulWidget {
 }
 
 class _ItemsDetailsState extends State<ItemsDetails> {
-  FirebaseService _service = FirebaseService();
+
   
      
 
@@ -37,7 +37,7 @@ class _ItemsDetailsState extends State<ItemsDetails> {
     final _PriceFormat = NumberFormat('##,##,##0');
     var _productProvider = Provider.of<ItemProvider>(context);
     var data = _productProvider.ItemtData;
-    var _price = int.parse(data['ItemPrice']);
+    var _price = int.parse(data['Item Price']);
 
     String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
@@ -76,7 +76,7 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                       children: [
                         Column(
                           children: [
-                            Text(data['ItemName'],
+                            Text(data['Item Name'],
                                 style: TextStyle(fontSize: 16)),
                           ],
                         ),
@@ -108,7 +108,7 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text(data['WarentyPeriod'],
+                          Text(data['Warenty Period'],
                               style: TextStyle(fontSize: 12)),
                         ],
                       ),
@@ -146,7 +146,7 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text(data['ItemFeatures'],
+                          Text(data['Item Features'],
                               style: TextStyle(fontSize: 12)),
                         ],
                       ),

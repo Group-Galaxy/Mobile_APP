@@ -10,22 +10,22 @@ import 'package:provider/provider.dart';
 
 class ProductList extends StatelessWidget {
   final bool Proscreen;
-  const ProductList(this.Proscreen);
+  ProductList(this.Proscreen);
 
   @override
   Widget build(BuildContext context) {
-    FirebaseService service = FirebaseService();
-    var catProvider = Provider.of<categoryprovider>(context);
+   final CollectionReference VehicleItems = FirebaseFirestore.instance.collection('VehicleParts');
+    var _catProvider = Provider.of<categoryprovider>(context);
 
-    final PriceFormat = NumberFormat('##,##,##0');
+    final _PriceFormat = NumberFormat('##,##,##0');
 
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
         child: FutureBuilder<QuerySnapshot>(
-          future: service.VehicleItems.orderBy('PostedDate')
-              .where('Item Category', isEqualTo: catProvider.Selectedcategory)
+          future: VehicleItems.orderBy('PostedDate')
+              .where('Item Category', isEqualTo: _catProvider.Selectedcategory)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -43,8 +43,8 @@ class ProductList extends StatelessWidget {
                 ),
               );
             }
-            if (snapshot.data!.docs.isEmpty) {
-              return const Center(
+            if (snapshot.data!.docs.length == 0) {
+              return Center(
                 child: Text("No products added to this selected category"),
               );
             }
@@ -54,20 +54,19 @@ class ProductList extends StatelessWidget {
               children: [
                 if (Proscreen == false)
                   Container(
-                    child: const Text(
+                    child: Text(
                       'Recomoned For You',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 GridView.builder(
                     shrinkWrap: true,
-                    physics: const ScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                    physics: ScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 210,
                       childAspectRatio: 2 / 2.1,
                       crossAxisSpacing: 8,
@@ -76,15 +75,16 @@ class ProductList extends StatelessWidget {
                     itemCount: snapshot.data!.size,
                     itemBuilder: (BuildContext context, int i) {
                       var data = snapshot.data!.docs[i];
-                      var price = int.parse(data['Item Price']);
+                      var _price = int.parse(data['Item Price']);
 
-                      String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
+                      String _FormatedPrice =
+                          '\Rs. ${_PriceFormat.format(_price)}';
 
-                      var provider = Provider.of<ProductProvider>(context);
+                      var _provider = Provider.of<ProductProvider>(context);
 
                       return InkWell(
                         onTap: () {
-                          provider.getProductDetails(data);
+                          _provider.getProductDetails(data);
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -98,14 +98,14 @@ class ProductList extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         right: 8, left: 8, top: 8),
-                                    child: SizedBox(
+                                    child: Container(
                                       height: 80,
                                       child: Center(
                                         child: Image.network(data['Imageurl']),
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     height: 10,
                                   ),
                                   Padding(
@@ -118,22 +118,20 @@ class ProductList extends StatelessWidget {
                                           children: [
                                             Text(
                                               data['Item Name'],
-                                              style:
-                                                  const TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             Text(
-                                              FormatedPrice,
-                                              style: const TextStyle(
+                                              _FormatedPrice,
+                                              style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12),
                                             ),
                                             Text(
                                               'Warrenty : ' +
                                                   data['Warenty Period'],
-                                              style:
-                                                  const TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 12),
                                             ),
                                           ],
                                         ),
@@ -147,10 +145,10 @@ class ProductList extends StatelessWidget {
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,
                                   child: LikeButton(
-                                    circleColor: const CircleColor(
+                                    circleColor: CircleColor(
                                         start: Color(0xff00ddff),
                                         end: Color(0xff0099cc)),
-                                    bubblesColor: const BubblesColor(
+                                    bubblesColor: BubblesColor(
                                       dotPrimaryColor: Color(0xff33b5e5),
                                       dotSecondaryColor: Color(0xff0099cc),
                                     ),
@@ -183,4 +181,11 @@ class ProductList extends StatelessWidget {
       ),
     );
   }
+
+
+  
 }
+
+
+
+  

@@ -124,7 +124,7 @@ class _DriverHomeState extends State<DriverHome> {
                       MaterialPageRoute(
                           builder: (_) => const ReviewGiveScreen(
                                 getter: "vehicl parts providers",
-                                getterId: "KI5m6ByIHZRGxNuMIhJmbu0f7bk2",
+                                getterId: "pMwHN6sWTxYSSzKXlRe6bTmWUAZ2",
                               )));
                 },
                 child: const Text("Review put"),
@@ -136,8 +136,8 @@ class _DriverHomeState extends State<DriverHome> {
                       MaterialPageRoute(
                         builder: (_) => const ReviewShowScreen(
                           getter: "vehicl parts providers",
-                          sender: "users",
-                          getterId: "KI5m6ByIHZRGxNuMIhJmbu0f7bk2",
+                          sender: "VehicleOwner",
+                          getterId: "pMwHN6sWTxYSSzKXlRe6bTmWUAZ2",
                         ),
                       ));
                 },

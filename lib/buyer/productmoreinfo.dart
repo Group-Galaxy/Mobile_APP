@@ -197,6 +197,32 @@ class _productDetailsState extends State<productDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          const Text('Suitable Vehicle Types: ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 115, 113, 113))),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                                                  Expanded(
+                              child: Text(
+                                data['SuitableTypes'],
+                                style: TextStyle(fontSize: 12),
+                                softWrap: false,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis, // new
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  const Divider(color: Colors.grey),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children:  [
                           Text('Seller Details: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -221,14 +247,15 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text('', style: TextStyle(fontSize: 12)),
+                           Text(data['ServiceProviderContactNo'],
+                              style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        children: const [
+                        children:  [
                           SizedBox(
                             width: 20,
                           ),
@@ -236,8 +263,8 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text('Wester,Gampha,Negambo',
-                              style: TextStyle(fontSize: 12)),
+                          Text(data['ServiceProviderLocation'],
+                              style: const TextStyle(fontSize: 12)),
                           Icon(
                             Icons.location_on,
                             size: 18,
@@ -341,54 +368,103 @@ class _productDetailsState extends State<productDetails> {
             Expanded(
                 child: NeumorphicButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => checkoutorder(
-                              date: today,
-                              price: _price,
-                              providerName: data['Service Provider Name'],
-                              qty: OrderQuantity,
-                              item: data['Item Name'],
-                              service_provider_id: data['Service Provider Id'],
-                            )));
+                today = DateTime(today.year, today.month, today.day, today.hour,
+                    today.minute);
+                String message = "You have new order";
+                final curr = FirebaseAuth.instance.currentUser;
+                CollectionReference ordersProvider = FirebaseFirestore.instance.collection('vehicl parts providers/${data['Service Provider Id']}/Order');
+               
+                
 
-                // today = new DateTime(today.year, today.month, today.day,
-                //     today.hour, today.minute);
+                if(OrderQuantity>0){
+                ordersProvider.add({
+                  'Item Name': data['Item Name'],
+                  'Item Price': data['Item Price'],
+                  'Item Qty': OrderQuantity.toString(),
+                  'Imageurl': data['Imageurl'],
+                  'Order Date Time': today,
+                  'vehicle Owner Id': curr?.uid,
+                  'Vehicle Owner Name': curr?.displayName,
+                 
+                 
+                  'Oreder Status': OrderStatus,
+                  "Ordernew": true
+                });
+                
 
-                // orders.add({
-                //   'Item Name': data['Item Name'],
-                //   'Item Price': data['Item Price'],
-                //   'Item Qty': OrderQuantity.toString(),
-                //   'Imageurl': data['Imageurl'],
-                //   'Order Date Time': today,
-                //   'vehicle Owner Id': loggedInUser.uid,
-                //   'Vehicle Owner Name': loggedInUser.firstName,
-                //   'Service Provider Id': data['Service Provider Id'],
-                //   'Service Provider Name': data['Service Provider Name'],
-                //   'Oreder Status': OrderStatus,
-                // }).whenComplete(() {
-                //   showDialog(
-                //     context: context,
-                //     builder: (ctx) => AlertDialog(
-                //       content: const Text(
-                //           "Your order is placed sucessfully , Please waiting for seller response"),
-                //       actions: <Widget>[
-                // TextButton(
-                //   onPressed: () {
-                //     Navigator.pushReplacement(context,
-                //         MaterialPageRoute(builder: (_) => Home()));
-                //   },
-                //   child: Container(
-                //     color: Colors.green,
-                //     padding: const EdgeInsets.all(14),
-                //     child: const Text("okay"),
-                //   ),
-                // ),
-                //       ],
-                //     ),
-                //   );
-                // });
+                orders.add({
+                  'Item Name': data['Item Name'],
+                  'Item Price': data['Item Price'],
+                  'Item Qty': OrderQuantity.toString(),
+                  'Imageurl': data['Imageurl'],
+                  'Order Date Time': today,
+                  'vehicle Owner Id': curr?.uid,
+                  'Vehicle Owner Name': curr?.displayName,
+                  'Service Provider Id': data['Service Provider Id'],
+                  'Service Provider Name': data['Service Provider Name'],
+                  
+                  'Oreder Status': OrderStatus,
+                  "Ordernew": true
+                });
+
+                
+             
+              //  ordersProvider.doc(id) notifications.add({
+              //     'ItemName': data['Item Name'],
+              //     'Sender': curr?.uid,
+              //     'receiver': data['Service Provider Id'],
+              //     'message': message,
+              //     'DateTime': today,
+              //     "Ordernew": true
+              //   });
+                user.doc(curr!.uid).collection('UserOrders').add({
+                  'Item Name': data['Item Name'],
+                  'Item Price': data['Item Price'],
+                  'Item Qty': OrderQuantity.toString(),
+                  'Imageurl': data['Imageurl'],
+                  'Order Date Time': today,
+                  'Service Provider Id': data['Service Provider Id'],
+                   'Service Provider Name': data['Service Provider Name'],
+                  'Oreder Status': OrderStatus,
+                  "Ordernew": true,
+                  
+                }).whenComplete(() {
+                   
+
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                        content: const Text(
+                            "Your order is placed sucessfully , Please waiting for seller response"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => VehiclePartsHome()));
+                            },
+                            child: Container(
+                              color: Colors.green,
+                              padding: const EdgeInsets.all(14),
+                              child: const Text("okay"),
+                            ),
+                          ),
+                        ]),
+                  );
+                });
+              }
+              else{
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                        content: const Text(
+                            "Enter the qty that you wish to buy"),
+                        actions: <Widget>[
+                         
+                        ]),
+                  );
+              }
               },
               style: const NeumorphicStyle(color: Colors.purple),
               child: Row(

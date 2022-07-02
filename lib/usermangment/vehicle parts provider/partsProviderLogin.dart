@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mypart/dashboard/dashboard.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsproviregister.dart';
 
+import '../reset.dart';
+
 class PartsProviderLogin extends StatefulWidget {
   const PartsProviderLogin({Key? key}) : super(key: key);
 
@@ -141,6 +143,18 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
                     const SizedBox(height: 35),
                     loginButton,
                     const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          child: const Text('Forgot Pasword?'),
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const ResetScreen()),
+                          ),
+                        ),
+                      ],
+                    ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

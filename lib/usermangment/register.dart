@@ -382,6 +382,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     userModel.firstName = firstNameEditingController.text;
     userModel.secondName = secondNameEditingController.text;
     userModel.contactNO = contactNoEditingController.text;
+    
     userModel.imgUrl = imgUrl;
     await firebaseFirestore
         .collection("VehicleOwner")

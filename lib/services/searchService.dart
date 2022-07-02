@@ -51,48 +51,50 @@ class SearchService{
             
    var _provider=Provider.of<ProductProvider>(context);
 
-              return InkWell(
-                 onTap: () {
-                   
-                         provider.getProductDetails(VehicleParts.document);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => productDetails()));
-                        
-                 },
-                  child: Card(
-                    elevation: 4,
-                 child: Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: Row(
-                    children: [
-                      Container(
-                        width: 180,
-                        height: 120,
-                        child: Image.network(VehicleParts.document['Imageurl']),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Text(_FormatedPrice, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                              Text(VehicleParts.Item_Name)
-                            ],
-                          ),
+              return Container(
+                child: InkWell(
+                   onTap: () {
+                     
+                           provider.getProductDetails(VehicleParts.document);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => productDetails()));
                           
-                        ],
-                      )
-                    ],
-                    
+                   },
+                    child: Card(
+                      elevation: 4,
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: Row(
+                      children: [
+                        Container(
+                          width: 180,
+                          height: 120,
+                          child: Image.network(VehicleParts.document['Imageurl']),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Text(_FormatedPrice, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                                Text(VehicleParts.Item_Name)
+                              ],
+                            ),
+                            
+                          ],
+                        )
+                      ],
+                      
+                     ),
                    ),
-                 ),
+                    ),
                   ),
-                );
+              );
               
           
             }

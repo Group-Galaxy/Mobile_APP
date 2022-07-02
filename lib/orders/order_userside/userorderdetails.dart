@@ -33,7 +33,7 @@ class _NewordersState extends State<Neworders> {
         child: FutureBuilder<QuerySnapshot>(
           future: orders
          
-            .where('Oreder Status', isEqualTo: 'Pending')
+            .where('Oreder Status', isEqualTo: 'Pending').orderBy('Order Date Time', descending: true)
             .get(
              
             ),

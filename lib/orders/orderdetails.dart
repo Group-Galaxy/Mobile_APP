@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:mypart/services/searchService.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
 import '../../usermangment/usermodel.dart';
@@ -19,8 +20,7 @@ class Neworders extends StatefulWidget {
 class _NewordersState extends State<Neworders> {
   User? currentAutoPartsProvider = FirebaseAuth.instance.currentUser;
   UserModel CurrentServiceprovider = UserModel();
-  CollectionReference orders =
-      FirebaseFirestore.instance.collection('Order Details');
+  
 
      bool isaccepted=false;
      bool isrejected=false;
@@ -42,16 +42,16 @@ class _NewordersState extends State<Neworders> {
 
   @override
   Widget build(BuildContext context) {
+     final vehiclePartsProvider= FirebaseAuth.instance.currentUser;
+     CollectionReference orders =
+      FirebaseFirestore.instance.collection('vehicl parts providers/${vehiclePartsProvider?.uid}/Order');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-              .where(
-                'Service Provider Id',
-                isEqualTo: CurrentServiceprovider.uid,
-              )
-              .where('Oreder Status', isEqualTo: 'Pending')
+              
+              .where('Oreder Status', isEqualTo: 'Pending').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

@@ -6,6 +6,8 @@ import 'package:mypart/seller/Items.dart';
 
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproregister.dart';
 
+import '../reset.dart';
+
 class RepairServiceProviderLogin extends StatefulWidget {
   const RepairServiceProviderLogin({Key? key}) : super(key: key);
 
@@ -144,6 +146,18 @@ class _RepairServiceProviderLoginState
                     const SizedBox(height: 35),
                     loginButton,
                     const SizedBox(height: 15),
+                   Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          child: const Text('Forgot Pasword?'),
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const ResetScreen()),
+                          ),
+                        ),
+                      ],
+                    ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
