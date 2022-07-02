@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,41 @@ class PaymentController extends GetxController {
       }
     } catch (e, s) {
       print('exception:$e$s');
+    }
+  }
+
+  Future addpaymentDataToDb(
+      {required String userName,
+      required String serviceProviderID,
+      // required String discount,
+      required String date,
+      required String balance,
+      required String subTotal,
+      required String quantity,
+      required String item,
+      required String delivery_fee,
+      required String contactNo,
+      required String address}) async {
+    Map<String, dynamic> body = {
+      "userName": userName,
+      "serviceProviderID": serviceProviderID,
+      // "discount": discount,
+      "date": date,
+      "balance": balance,
+      "subTotal": subTotal,
+      "Quantity": quantity,
+      "Item": item,
+      "DeliveryFee": delivery_fee,
+      "Contatctnumber": contactNo,
+      "Address": address
+    };
+    try {
+      await FirebaseFirestore.instance
+          .collection('orderpayments')
+          .doc()
+          .set(body);
+    } catch (e) {
+      print('error');
     }
   }
 

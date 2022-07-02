@@ -56,8 +56,12 @@ dependencies:
   get: ^4.6.1
   pdf: ^3.8.1
   printing: ^5.9.1
-  flutter_svg: ^1.1.0
+  flutter_svg: ^1.0.3
   google_fonts: ^3.0.1
+  getwidget: ^3.0.1
+ 
+  #flutter_svg: ^1.1.0
+ # google_fonts: ^3.0.1
   shared_preferences: ^2.0.15
   flutter_rating_bar: ^4.0.1
   file_picker: ^4.6.1

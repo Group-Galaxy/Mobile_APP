@@ -1,10 +1,13 @@
 //import 'dart:async';
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:mypart/Order_payment/checkout_order.dart';
 import 'package:mypart/buyer/productProvider.dart';
 import 'package:mypart/buyer/products.dart';
 import 'package:mypart/buyer/vehicle_parts_home.dart';
@@ -35,28 +38,26 @@ class _productDetailsState extends State<productDetails> {
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
-  CollectionReference user = FirebaseFirestore.instance.collection('VehicleOwner');
-  
+  CollectionReference user =
+      FirebaseFirestore.instance.collection('VehicleOwner');
+
   CollectionReference notifications =
       FirebaseFirestore.instance.collection('notifications');
-       
 
   @override
-  
   int OrderQuantity = 0;
   var today = DateTime.now();
   String OrderStatus = "Pending";
   @override
   Widget build(BuildContext context) {
-    final PriceFormat = NumberFormat('##,##,##0');
-    var productProvider = Provider.of<ProductProvider>(context);
-    var data = productProvider.ProductData;
-    var price = int.parse(data['Item Price']);
+    final _PriceFormat = NumberFormat('##,##,##0');
+    var _productProvider = Provider.of<ProductProvider>(context);
+    var data = _productProvider.ProductData;
+    var _price = int.parse(data['Item Price']);
+    print(data);
+    String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
-
-
-
-    String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
+    //String FormatedPrice = 'Rs. ${PriceFormat.format(price)}';
 
     final fs = FirebaseFirestore.instance;
     return Scaffold(
@@ -107,7 +108,7 @@ class _productDetailsState extends State<productDetails> {
                                 style: const TextStyle(fontSize: 16)),
                           ],
                         ),
-                        const SizedBox(width: 50),
+                        SizedBox(width: 5),
                         Column(
                           children: [
                             QuantityInput(
@@ -126,7 +127,7 @@ class _productDetailsState extends State<productDetails> {
                     ),
                     Row(
                       children: [
-                        Text(FormatedPrice,
+                        Text(_FormatedPrice,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
                       ],
@@ -230,18 +231,15 @@ class _productDetailsState extends State<productDetails> {
                           SizedBox(
                             width: 20,
                           ),
-
                           Text(data['Service Provider Name'],
-                              style: const TextStyle(fontSize: 12)),
-                              
-                          
+                              style: TextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        children:  [
+                        children: [
                           SizedBox(
                             width: 20,
                           ),

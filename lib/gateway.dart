@@ -49,7 +49,8 @@ class PaymentPage extends StatelessWidget {
           children: [
             ElevatedButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.purple),
               ),
               onPressed: () {
                 controller.makePayment(amount: '10', currency: 'USD');
