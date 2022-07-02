@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class Receipts extends StatefulWidget {
 }
 
 class _ReceiptsState extends State<Receipts> {
-  var _date = DateTime.now().toString();
+//  var _date = DateTime.now().toString();
   TextEditingController _ServiceProviderName = new TextEditingController();
   TextEditingController _UserName = new TextEditingController();
   TextEditingController _VehicleFault = new TextEditingController();
@@ -31,15 +33,19 @@ class _ReceiptsState extends State<Receipts> {
   double resultValue = 0.0;
 
   double balanceValue = 0.0;
+
   User? currentAutoPartsProvider = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentServiceprovider = VehicleOwnerModel();
   CollectionReference repair =
-      FirebaseFirestore.instance.collection('payments');
+      FirebaseFirestore.instance.collection('BookingDetails');
   VehicleOwnerModel loggedInUser = VehicleOwnerModel();
+
+  CollectionReference notifications =
+      FirebaseFirestore.instance.collection('BookingDetails');
   final user = FirebaseAuth.instance.currentUser;
 
   // var _date = DateTime.now().toString();
-
+  var today = DateTime.now();
   var currentUser = {};
   @override
   void initState() {
@@ -59,9 +65,9 @@ class _ReceiptsState extends State<Receipts> {
   }
 
   @override
-  var today = DateTime.now();
   Widget build(BuildContext context) {
     print("uid " + user!.uid);
+
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 245, 213, 249),
         appBar: AppBar(
@@ -69,15 +75,44 @@ class _ReceiptsState extends State<Receipts> {
           centerTitle: true,
           backgroundColor: Colors.purple,
         ),
-        body: Card(
-          child: SingleChildScrollView(
+        body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('BookingDetails')
+              .snapshots(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return ListView(
+              children: snapshot.data.documents.map((document) {
+                if (!snapshot.hasData)
+                  return Text('Loading data.... Please wait');
+                return Container(
+                  child: Center(child: Text(document['ServiceProviderName'])),
+                );
+              }).toList(),
+            );
+          },
+        )
+
+        /*   child: SingleChildScrollView(
               child: Column(children: [
+            GFListTile(
+              color: GFColors.WHITE,
+              titleText: 'Date : ${currentUser['Date']}',
+            ),
             GFListTile(
               color: GFColors.WHITE,
               titleText: 'User Name : ${currentUser['firstName']}',
             ),
+            GFListTile(
+              color: GFColors.WHITE,
+              titleText:
+                  'Service Provider Name : ${currentUser['ServiceProviderName']}',
+            ),
+            GFListTile(
+              color: GFColors.WHITE,
+              titleText: 'Vehicle Fault : ${currentUser['VehicleFault']}',
+            ),*/
 
-            /* DateTimePicker(
+        /* DateTimePicker(
           initialValue: DateTime.now().toString(),
           firstDate: DateTime(2000),
           lastDate: DateTime(2100),
@@ -118,7 +153,7 @@ class _ReceiptsState extends State<Receipts> {
         SizedBox(
           height: 20,
         ),*/
-            Padding(
+        /*   Padding(
                 padding: const EdgeInsets.all(0.0),
                 child: TextField(
                     controller: _Inspection,
@@ -164,9 +199,9 @@ class _ReceiptsState extends State<Receipts> {
 
                     setState(() {
                       balanceValue = resultValue;
-                    });
+                    });*/
 
-                    /*final ServiceProviderName = _ServiceProviderName.text;
+        /*final ServiceProviderName = _ServiceProviderName.text;
                 final UserName = _UserName.text;
                 final VehicleFault = _VehicleFault.text;
                 final InspectionValue = _Inspection.text;
@@ -184,8 +219,8 @@ class _ReceiptsState extends State<Receipts> {
                   Date: Date,
                 );*/
 
-                    // print("the selected date is ${_date}");
-                    /* Navigator.of(context).push(MaterialPageRoute(
+        // print("the selected date is ${_date}");
+        /* Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => receiptUser(
                           /*ServiceProviderName: _ServiceProviderName.text,
                           UserName: _UserName.text,
@@ -195,16 +230,14 @@ class _ReceiptsState extends State<Receipts> {
                           Balance: resultValue.toString(),
                           Date: _date,*/
                           ))*/
-                  })
-            ])
-          ])),
-          elevation: 8,
+
+        /* elevation: 8,
           shadowColor: Colors.purple,
           margin: EdgeInsets.all(15),
           shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.purple, width: 2)),
-        ));
+              borderSide: BorderSide(color: Colors.purple, width: 2)),*/
+        );
   }
 }
 
