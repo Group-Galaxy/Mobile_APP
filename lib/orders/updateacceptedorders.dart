@@ -23,7 +23,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
     appBar: AppBar(
       
      
-      title: Text("Edit Item"),
+      title: Text(""),
        
       
       ),

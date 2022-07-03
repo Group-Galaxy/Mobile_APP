@@ -55,33 +55,33 @@ class _NavSideState extends State<NavSide> {
     User? user = FirebaseAuth.instance.currentUser;
 
     final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
-        .collection('vehicl parts providers/${user?.uid}/Order')
+        .collection('Order Details')
         .snapshots();
 
-    messageStream.forEach((element) {
-      debugPrint(element.docs.length.toString());
-      for (var element in element.docs) {
-        debugPrint(element["Ordernew"].toString());
-        if (element["Ordernew"]) {
-          Fluttertoast.showToast(
-              msg: "You have new order from ${element["Vehicle Owner Name"]} ",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
-          final fs = FirebaseFirestore.instance;
+    // messageStream.forEach((element) {
+    //   debugPrint(element.docs.length.toString());
+    //   for (var element in element.docs) {
+    //     debugPrint(element["Ordernew"].toString());
+    //     if (element["Ordernew"]) {
+    //       Fluttertoast.showToast(
+    //           msg: "You have new order from ${element["Vehicle Owner Name"]} ",
+    //           toastLength: Toast.LENGTH_LONG,
+    //           gravity: ToastGravity.TOP,
+    //           timeInSecForIosWeb: 1,
+    //           backgroundColor: Colors.red,
+    //           textColor: Colors.white,
+    //           fontSize: 16.0);
+    //       final fs = FirebaseFirestore.instance;
 
-          fs
-              .collection('vehicl parts providers/${user?.uid}/Order')
-              .doc(element.id)
-              .set({
-            "Ordernew": false,
-          }, SetOptions(merge: true));
-        }
-      }
-    });
+    //       // fs
+    //       //     .collection('vehicl parts providers/${user?.uid}/Order')
+    //       //     .doc(element.id)
+    //       //     .set({
+    //       //   "Ordernew": false,
+    //       // }, SetOptions(merge: true));
+    //     }
+    //   }
+    // });
   }
 
   setAc() async {

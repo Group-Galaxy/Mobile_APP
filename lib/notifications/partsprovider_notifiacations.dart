@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:mypart/notifications/Update.dart';
+import 'package:mypart/orders/ordershome.dart';
 
 class PartsProviderNotifications extends StatefulWidget {
   
@@ -12,11 +14,12 @@ class PartsProviderNotifications extends StatefulWidget {
 }
 
 class _PartsProviderNotificationsState extends State<PartsProviderNotifications> {
+   bool Seennotify =true;
   @override
   Widget build(BuildContext context) {
    final vehiclePartsProvider= FirebaseAuth.instance.currentUser;
-    CollectionReference orders =
-      FirebaseFirestore.instance.collection('Order Details');
+    CollectionReference Notifications =
+      FirebaseFirestore.instance.collection('Notifications');
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications'),
@@ -24,9 +27,9 @@ class _PartsProviderNotificationsState extends State<PartsProviderNotifications>
       backgroundColor: Color.fromARGB(255, 254, 253, 254),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
-          future: orders
-              .where('Service Provider Id', isEqualTo: vehiclePartsProvider?.uid)
-              .where('Oreder Status', isEqualTo: 'Pending').orderBy('Order Date Time', descending: true)
+          future: Notifications
+              .where('receiverId', isEqualTo: vehiclePartsProvider?.uid)
+             .orderBy('SendTime', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -45,106 +48,129 @@ class _PartsProviderNotificationsState extends State<PartsProviderNotifications>
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 5.0),
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      child: Container(
-                       
-                       
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
-                          child: 
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                     
-                                      Column(
-                                        children: [
-                                          
-                                          Row(
-                                            children: [
-                                              Text(
-                                               ' You have new order',
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              SizedBox(
-                                                width: 110,
-                                              ),
-                                              Text(getTime(data['Order Date Time']),
-                                               style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              
-                                              )
 
-                                              
-                                         
-                                              
-                                            ],
-                                            
-                                          ),
-                                          
-                                          Row(
-                                            children: [
-                                              Text(
-                                               '${data['Vehicle Owner Name']} Order ${data['Item Name']}',
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
+                 
+              return SizedBox(
+                width: double.infinity,
+        height: 70,
+                child: Card(
 
-                                           
-                                          
-                                        ],
-                                        
-                                      ),
-                                      const SizedBox(
-                                        width: 80,
-                                      ),
-                                       
-                                         
-                                          
-                                           
-                                        
-                                       
-                                    ],
-                                  ),
-                                 
+                           
+                            elevation: 6.0,
                             
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0.0),
+
+                              
+                            ),
+                            child: InkWell(
+                              onTap: () async {
+                                data['Seen']==true? Colors.pink :Colors.amber;
+                                Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => const Myorders()));
+                               
+                                    },
+                             
+                                child: 
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          
+                                              children: [
+                                                
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                     data['messageTitle'],
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.bold),
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 160,
+                                                    ),
+                                                    Text(getTime(data['SendTime']),
+                                                     style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.bold),
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    
+                                                    )
+                                            
+                                                    
+                                               
+                                                    
+                                                  ],
+                                                  
+                                                ),
+                                                
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                     data['messageBody'],
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          ),
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
+                                                ),
+                                            
+                                                 
+                                                
+                                            
+                                            const SizedBox(
+                                              width: 80,
+                                            ),
+                                             
+                                               
+                                                
+                                                 
+                                              
+                                             
+                                          ],
+                                        ),
+                                       
+                                  
+                              
+                            )
+                          ),
+              );
                         
-                      )
-                    ),
-                  );
-                },
-              ),
+                      
+                
+              
+                      
+                }
+            ),
             );
-          },
+        },
         ),
+
+
       ),
 
-      
+     
     );
+
+              
+
+          
+    
+      
+
+      
+    
 
     
 }
+
+
+
+
 getTime( Timestamp Time) {
     
     
