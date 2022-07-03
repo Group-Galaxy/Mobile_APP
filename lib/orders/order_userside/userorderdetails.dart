@@ -221,23 +221,12 @@ class ToPayOrders extends StatefulWidget {
 
 class _ToPayOrdersState extends State<ToPayOrders> {
   @override
- User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+ final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+ 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -248,9 +237,9 @@ class _ToPayOrdersState extends State<ToPayOrders> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'accepted')
+              .where('Oreder Status', isEqualTo: 'accepted').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -367,7 +356,10 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+
+
+                                              },
                                               child: const Text(
                                                 'Pay',
                                                 style: TextStyle(fontSize: 10),
@@ -434,24 +426,12 @@ class ToDeliver extends StatefulWidget {
 
 class _ToDeliverState extends State<ToDeliver> {
   @override
- @override
-  User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+ final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+ 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -462,9 +442,9 @@ class _ToDeliverState extends State<ToDeliver> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'paid')
+              .where('Oreder Status', isEqualTo: 'paid').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -650,23 +630,12 @@ class Finished extends StatefulWidget {
 class _FinishedState extends State<Finished> {
   @override
   @override
- User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+ 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -677,9 +646,9 @@ class _FinishedState extends State<Finished> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'finished')
+              .where('Oreder Status', isEqualTo: 'finished').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -866,23 +835,12 @@ class Cancelled extends StatefulWidget {
 class _CancelledState extends State<Cancelled> {
   @override
   @override
- User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+ 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -893,9 +851,9 @@ class _CancelledState extends State<Cancelled> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'cancelled')
+              .where('Oreder Status', isEqualTo: 'accepted').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

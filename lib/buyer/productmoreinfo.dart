@@ -412,12 +412,8 @@ class _productDetailsState extends State<productDetails> {
                   "Ordernew": true
 
                 })
-                .
-                then((value) {
-                  String docid=value.id;
-                  
-                  
-                })
+                
+               
 
                 
                 
