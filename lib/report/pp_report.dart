@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/colors/gf_color.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 
 class pp_Report extends StatefulWidget {
@@ -66,37 +67,29 @@ class _ReportState extends State<pp_Report> {
             child: Column(children: [
               GFListTile(
                 color: GFColors.WHITE,
-                titleText: 'Date : ${data['date'].toString().substring(0, 10)}',
-                subTitleText: 'Time : ${data['date'].toString().substring(
-                      10,
-                    )}',
+                titleText: 'Item Name : ${data['Item'].toString()}',
               ),
-              GFListTile(
-                color: GFColors.WHITE,
-              ),
-              //Text('Date : ${data['date'].toString().substring(0, 10)}'),
-              SizedBox(
-                width: double.infinity,
-              ),
+              Text('Date : ${data['date'].toString().substring(0, 10)}'),
               Text('Time : ${data['date'].toString().substring(
                     10,
                   )}'),
-              SizedBox(
-                width: double.infinity,
-              ),
               Text(data['serviceProviderName'].toString()),
-              SizedBox(
-                width: double.infinity,
-              ),
-              Text(data['userName'].toString()),
-              SizedBox(
-                width: double.infinity,
-              ),
               Text(data['vehicleFault'].toString()),
-              SizedBox(
-                width: double.infinity,
-              ),
+              Text(data['userName'].toString()),
               Text(data['balance'].toString()),
+              // GFButton(
+              //   onPressed: () {},
+              //   text: "Rating",
+              //   blockButton: true,
+              // ),
+              // GFButton(
+              //   onPressed: () {},
+              //   text: "Comment",
+              //   blockButton: true,
+              // ),
+              // SizedBox(
+              //   width: double.infinity,
+              // ),
             ]),
           ));
         }
