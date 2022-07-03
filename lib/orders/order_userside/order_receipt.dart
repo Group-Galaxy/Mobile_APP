@@ -154,8 +154,9 @@ class _OrderReceiptState extends State<OrderReceipt> {
                       textColor: Colors.white,
                       color: Colors.purple,
                       onPressed: () async {
+                        int fee = total_fee.toInt();
                         await controller.makePayment(
-                            amount: '${total_fee}', currency: 'LKR');
+                            amount: '${fee}', currency: 'LKR');
                         // await controller.addpaymentDataToDb(
                         /*userName: currentUser['firstName'],
                       serviceProviderID: widget.service_provider_id,
