@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mypart/dashboard/repairserviceDashboard.dart';
 import 'package:mypart/repair_payment/repairUser_receipt.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -32,12 +33,6 @@ class _ReceiptsState extends State<Receipts> {
 
   double balanceValue = 0.0;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   void getData() async {
     var res = await FirebaseFirestore.instance
         .collection("BookingDetails")
@@ -56,8 +51,15 @@ class _ReceiptsState extends State<Receipts> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     getData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // getData();
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 245, 213, 249),
         appBar: AppBar(
@@ -173,15 +175,7 @@ class _ReceiptsState extends State<Receipts> {
 
                   print("the selected date is ${_date}");
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => receiptUser(
-                            ServiceProviderName: _ServiceProviderName.text,
-                            UserName: _UserName.text,
-                            VehicleFault: _VehicleFault.text,
-                            InspectionValue: _Inspection.text,
-                            Discount: _Discount.text,
-                            Balance: resultValue.toString(),
-                            Date: _date,
-                          )));
+                      builder: (context) => RepaiirDashboard()));
                 },
               ),
             ],
@@ -206,6 +200,7 @@ class _ReceiptsState extends State<Receipts> {
       'discount': Discount,
       'balance': Balance,
       'date': Date,
+      "is_paid": false
     };
 
     /// Create doc & write data to Firebase

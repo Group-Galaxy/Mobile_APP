@@ -16,7 +16,7 @@ import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
 
 class RepaiirDashboard extends StatefulWidget {
-  const RepaiirDashboard({Key? key, required String title}) : super(key: key);
+  const RepaiirDashboard({Key? key}) : super(key: key);
   @override
   _RepaiirDashboardState createState() => _RepaiirDashboardState();
 }

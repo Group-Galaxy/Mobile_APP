@@ -35,8 +35,8 @@ class _WelcomePageState extends State<WelcomePage> {
     }
     if (ismechanicn) {
       return RepaiirDashboard(
-        title: 'Dashboard',
-      );
+          //title: 'Dashboard',
+          );
     }
     if (ispartsn) {
       return const NavSide(

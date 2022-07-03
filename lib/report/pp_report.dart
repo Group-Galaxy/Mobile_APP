@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/colors/gf_color.dart';
+import 'package:getwidget/components/avatar/gf_avatar.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 
@@ -45,6 +46,7 @@ class _ReportState extends State<pp_Report> {
   }
 
   Widget build(BuildContext context) {
+    var total = 0.0;
     Future<List<Card>> getReport() async {
       CollectionReference _collectionRef =
           FirebaseFirestore.instance.collection('orderpayments');
@@ -61,6 +63,9 @@ class _ReportState extends State<pp_Report> {
       if (allData != null) {
         for (int i = 0; i < allData.length; i++) {
           Map data = Map<String, dynamic>.from(allData[i]);
+          //setState(() {
+          total += double.parse(data['balance']);
+          //});
           print(data['date']);
           card_data.add(Card(
             margin: EdgeInsets.all(8),
@@ -124,6 +129,24 @@ class _ReportState extends State<pp_Report> {
                   return CircularProgressIndicator.adaptive();
                 } else {
                   final data = snapshot.data as List<Card>;
+                  final total_card = Card(
+                    child: Column(
+                      children: [
+                        GFAvatar(
+                          backgroundColor: GFColors.TRANSPARENT,
+                          child: ClipOval(
+                            child: Image.network(
+                              currentUser['imgUrl'],
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          radius: 60,
+                        ),
+                        Text("Total: ${total}"),
+                      ],
+                    ),
+                  );
+                  data.insert(0, total_card);
                   return Column(
                     children: data,
                   );

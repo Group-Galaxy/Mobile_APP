@@ -146,7 +146,7 @@ class _RepairServiceProviderLoginState
                     const SizedBox(height: 35),
                     loginButton,
                     const SizedBox(height: 15),
-                   Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
@@ -194,11 +194,12 @@ class _RepairServiceProviderLoginState
     if (_formKey.currentState!.validate()) {
       try {
         await _auth
-            .signInWithEmailAndPassword(email: email.trim(), password: password.trim())
+            .signInWithEmailAndPassword(
+                email: email.trim(), password: password.trim())
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) =>  RepaiirDashboard(title: 'Dashboard',))),
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => RepaiirDashboard())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
