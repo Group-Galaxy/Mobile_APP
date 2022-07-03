@@ -2,13 +2,15 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mypart/dashboard/repairserviceDashboard.dart';
 import 'package:mypart/repair_payment/repairUser_receipt.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
 class Receipts extends StatefulWidget {
-  const Receipts({Key? key}) : super(key: key);
+  String booking_id = "rCAjTTUNJz8RieCiHnE5";
+  Receipts({required this.booking_id});
 
   @override
   State<Receipts> createState() => _ReceiptsState();
@@ -31,27 +33,33 @@ class _ReceiptsState extends State<Receipts> {
 
   double balanceValue = 0.0;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   void getData() async {
     var res = await FirebaseFirestore.instance
         .collection("BookingDetails")
-        .doc('rCAjTTUNJz8RieCiHnE5')
+        .doc(widget.booking_id)
         .get()
         .then((value) {
       print(value.data());
+      setState(() {
+        _ServiceProviderName.text = value.data()!["ServiceProviderName"];
+        _UserName.text = value.data()!["customerName"];
+        _VehicleFault.text = value.data()!["VehicleFault"];
+      });
     });
 
     //print(res);
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     getData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // getData();
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 245, 213, 249),
         appBar: AppBar(
@@ -82,6 +90,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  readOnly: true,
                   controller: _ServiceProviderName,
                   decoration: InputDecoration(
                       icon: Icon(Icons.people),
@@ -89,6 +98,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  readOnly: true,
                   controller: _UserName,
                   decoration: InputDecoration(
                       icon: Icon(Icons.people), labelText: 'User name'))),
@@ -165,15 +175,7 @@ class _ReceiptsState extends State<Receipts> {
 
                   print("the selected date is ${_date}");
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => receiptUser(
-                            ServiceProviderName: _ServiceProviderName.text,
-                            UserName: _UserName.text,
-                            VehicleFault: _VehicleFault.text,
-                            InspectionValue: _Inspection.text,
-                            Discount: _Discount.text,
-                            Balance: resultValue.toString(),
-                            Date: _date,
-                          )));
+                      builder: (context) => RepaiirDashboard()));
                 },
               ),
             ],
@@ -198,6 +200,7 @@ class _ReceiptsState extends State<Receipts> {
       'discount': Discount,
       'balance': Balance,
       'date': Date,
+      "is_paid": false
     };
 
     /// Create doc & write data to Firebase
