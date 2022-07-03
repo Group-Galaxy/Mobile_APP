@@ -64,7 +64,13 @@ class _ReportState extends State<pp_Report> {
           card_data.add(Card(
             margin: EdgeInsets.all(8),
             child: Column(children: [
-              Text(data['date'].toString()),
+              Text('Date : ${data['date'].toString().substring(0, 10)}'),
+              SizedBox(
+                width: double.infinity,
+              ),
+              Text('Time : ${data['date'].toString().substring(
+                    10,
+                  )}'),
               SizedBox(
                 width: double.infinity,
               ),
