@@ -104,82 +104,85 @@ class _OrderReceiptState extends State<OrderReceipt> {
         ),
         body: Card(
           child: SingleChildScrollView(
-              child: Column(children: [
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText:
-                  'Item : ${(widget.item == null) ? "Honda GP" : widget.item}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText:
-                  'Date : ${(widget.date == null) ? DateTime.now().toString().substring(0, 10) : widget.date.toString().substring(0, 10)}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText: 'User Name : ${currentUser['firstName']}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText: 'Contact No : ${currentUser['contactNo']}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText:
-                  'Parts Provider Name : ${(widget.providerName == null) ? "Fake User" : widget.providerName}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText:
-                  'Unit Price : ${(widget.price == null) ? "Rs.1000/=" : widget.price}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText:
-                  'Quantity : ${(widget.qty == null) ? "1" : widget.qty}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText:
-                  'Delivery fee : ${(widget.qty == 1) ? delivery_fee : (widget.qty == 2) ? 750 : 1000}',
-            ),
-            GFListTile(
-              color: GFColors.WHITE,
-              titleText: 'Total : ${total_fee}/=',
-            ),
-            ButtonBar(
+            child: Column(
               children: [
-                RaisedButton(
-                  child: Text("Pay"),
-                  textColor: Colors.white,
-                  color: Colors.purple,
-                  onPressed: () {
-                    //   showDialog(
-                    //   context: context,
-                    //   builder: (ctx) => AlertDialog(
-                    //       content: const Text(
-                    //           "Your order is placed sucessfully , Please waiting for seller response"),
-                    //       actions: <Widget>[
-                    //         TextButton(
-                    //           onPressed: () {
-                    //             Navigator.pushReplacement(
-                    //                 context,
-                    //                 MaterialPageRoute(
-                    //                     builder: (_) => VehiclePartsHome()));
-                    //           },
-                    //           child: Container(
-                    //             color: Colors.green,
-                    //             padding: const EdgeInsets.all(14),
-                    //             child: const Text("okay"),
-                    //           ),
-                    //         ),
-                    //       ]),
-                    // );
-                  },
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText:
+                      'Item : ${(widget.item == null) ? "Honda GP" : widget.item}',
                 ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText:
+                      'Date : ${(widget.date == null) ? DateTime.now().toString().substring(0, 10) : widget.date.toString().substring(0, 10)}',
+                ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText: 'User Name : ${currentUser['firstName']}',
+                ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText: 'Contact No : ${currentUser['contactNo']}',
+                ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText:
+                      'Parts Provider Name : ${(widget.providerName == null) ? "Fake User" : widget.providerName}',
+                ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText:
+                      'Unit Price : ${(widget.price == null) ? "Rs.1000/=" : widget.price}',
+                ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText:
+                      'Quantity : ${(widget.qty == null) ? "1" : widget.qty}',
+                ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText:
+                      'Delivery fee : ${(widget.qty == 1) ? delivery_fee : (widget.qty == 2) ? 750 : 1000}',
+                ),
+                GFListTile(
+                  color: GFColors.WHITE,
+                  titleText: 'Total : ${total_fee}/=',
+                ),
+                ButtonBar(children: [
+                  RaisedButton(
+                      child: Text("Pay"),
+                      textColor: Colors.white,
+                      color: Colors.purple,
+                      onPressed: () async {
+                        await controller.makePayment(
+                            amount: '${total_fee}', currency: 'LKR');
+                        // await controller.addpaymentDataToDb(
+                        /*userName: currentUser['firstName'],
+                      serviceProviderID: widget.service_provider_id,
+                      date: widget.date.toString(),
+                      balance: (widget.price * widget.qty +
+                              ((widget.qty == 1)
+                                  ? delivery_fee
+                                  : (widget.qty == 2)
+                                      ? 750
+                                      : 1000))
+                          .toString(),
+                      subTotal: widget.price.toString(),
+                      quantity: widget.qty.toString(),
+                      item: widget.item!,
+                      delivery_fee: ((widget.qty == 1)
+                              ? delivery_fee
+                              : (widget.qty == 2)
+                                  ? 750
+                                  : 1000)
+                          .toString(),
+                      contactNo: currentUser['contactNo'].toString(),*/
+                        // address: _Address.text
+                      })
+                ])
               ],
             ),
-          ])),
+          ),
           elevation: 8,
           shadowColor: Colors.purple,
           margin: EdgeInsets.all(15),

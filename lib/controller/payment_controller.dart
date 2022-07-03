@@ -31,18 +31,19 @@ class PaymentController extends GetxController {
     }
   }
 
-  Future addpaymentDataToDb(
-      {required String userName,
-      required String serviceProviderID,
-      // required String discount,
-      required String date,
-      required String balance,
-      required String subTotal,
-      required String quantity,
-      required String item,
-      required String delivery_fee,
-      required String contactNo,
-      required String address}) async {
+  /*Future addpaymentDataToDb({
+    required String userName,
+    required String serviceProviderID,
+    // required String discount,
+    required String date,
+    required String balance,
+    required String subTotal,
+    required String quantity,
+    required String item,
+    required String delivery_fee,
+    required String contactNo,
+    //required String address
+  }) async {
     Map<String, dynamic> body = {
       "userName": userName,
       "serviceProviderID": serviceProviderID,
@@ -54,7 +55,7 @@ class PaymentController extends GetxController {
       "Item": item,
       "DeliveryFee": delivery_fee,
       "Contatctnumber": contactNo,
-      "Address": address
+      //"Address": address
     };
     try {
       await FirebaseFirestore.instance
@@ -64,7 +65,7 @@ class PaymentController extends GetxController {
     } catch (e) {
       print('error');
     }
-  }
+  }*/
 
   displayPaymentSheet() async {
     try {
