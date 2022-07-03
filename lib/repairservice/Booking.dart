@@ -20,6 +20,9 @@ class Booking extends StatefulWidget {
 }
 
 class _BookingState extends State<Booking> {
+   TextEditingController vehicleNo = TextEditingController();
+  TextEditingController vehicleFault = TextEditingController();
+  TextEditingController vehicleType=TextEditingController();
   
   final vehiclePartsProvider = FirebaseAuth.instance.currentUser;
    VehicleOwnerModel loggedInUser = VehicleOwnerModel();
@@ -90,18 +93,34 @@ class _BookingState extends State<Booking> {
                     padding: const EdgeInsets.all(12.0),
                     child: TextField(
                         //style: TextStyle(color: Colors.black),
-                        
+                        controller: vehicleNo,
                         decoration: InputDecoration(
+                          
                             icon: Icon(
                               Icons.description,
                               color: Colors.black,
                             ),
                             labelText: 'vehicle No ',
                             labelStyle: TextStyle(color: Colors.black)))),
+                             Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TextField(
+                        //style: TextStyle(color: Colors.black),
+                        controller: vehicleType,
+                        decoration: InputDecoration(
+                          
+                            icon: Icon(
+                              Icons.description,
+                              color: Colors.black,
+                            ),
+                            labelText: 'vehicle Type',
+                            labelStyle: TextStyle(color: Colors.black)))),
       
                              Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      
+                      controller:vehicleFault,
                         //style: TextStyle(color: Colors.black),
                         
                         decoration: InputDecoration(
@@ -119,8 +138,41 @@ class _BookingState extends State<Booking> {
                         child: Text("save"),
                         textColor: Colors.white,
                         color: Colors.purple,
-                        onPressed: () async {
-                          
+                        onPressed: ()  {
+                           CollectionReference BookingDetails =
+      FirebaseFirestore.instance.collection('BookingDetails');
+                   var today = DateTime.now();
+
+                         BookingDetails.add
+                           ({
+                  
+                  'BookingDate': today,
+                  'ContactNo':loggedInUser.contactNO,
+                  'Location':' ',
+                  'ServiceProviderName': data['firstName'],
+                  'ServiceProviderID':data['uid'],
+                  'vehicleFault':vehicleFault.text,
+                  'vehicleNo': vehicleNo.text,
+                  'vehicleType':vehicleType.text,
+                  'customerID':loggedInUser.uid,
+                  'customerNmae':loggedInUser.firstName,
+                  'Status':'Pending',
+                  
+                  
+
+                });
+                
+                     showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                        content: const Text(
+                            "Your orequest send to the repair service provider.Please wait"),
+                      ),
+                  
+                     );
+                         
+
+               
                         },
                       ),
                     ),
