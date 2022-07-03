@@ -265,8 +265,13 @@ class _RepaiirDashboardState extends State<RepaiirDashboard> {
               leading: Icon(Icons.shop_outlined),
               title: Text("My jobs"),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Receipts()));
+                //receipts page....
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Receipts(
+                              booking_id: "rCAjTTUNJz8RieCiHnE5",
+                            )));
               },
             ),
             ListTile(

@@ -8,7 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
 class Receipts extends StatefulWidget {
-  const Receipts({Key? key}) : super(key: key);
+  String booking_id = "rCAjTTUNJz8RieCiHnE5";
+  Receipts({required this.booking_id});
 
   @override
   State<Receipts> createState() => _ReceiptsState();
@@ -40,10 +41,15 @@ class _ReceiptsState extends State<Receipts> {
   void getData() async {
     var res = await FirebaseFirestore.instance
         .collection("BookingDetails")
-        .doc('rCAjTTUNJz8RieCiHnE5')
+        .doc(widget.booking_id)
         .get()
         .then((value) {
       print(value.data());
+      setState(() {
+        _ServiceProviderName.text = value.data()!["ServiceProviderName"];
+        _UserName.text = value.data()!["customerName"];
+        _VehicleFault.text = value.data()!["VehicleFault"];
+      });
     });
 
     //print(res);
@@ -82,6 +88,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  readOnly: true,
                   controller: _ServiceProviderName,
                   decoration: InputDecoration(
                       icon: Icon(Icons.people),
@@ -89,6 +96,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  readOnly: true,
                   controller: _UserName,
                   decoration: InputDecoration(
                       icon: Icon(Icons.people), labelText: 'User name'))),
