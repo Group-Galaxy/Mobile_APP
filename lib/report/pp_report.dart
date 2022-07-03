@@ -64,7 +64,17 @@ class _ReportState extends State<pp_Report> {
           card_data.add(Card(
             margin: EdgeInsets.all(8),
             child: Column(children: [
-              Text('Date : ${data['date'].toString().substring(0, 10)}'),
+              GFListTile(
+                color: GFColors.WHITE,
+                titleText: 'Date : ${data['date'].toString().substring(0, 10)}',
+                subTitleText: 'Time : ${data['date'].toString().substring(
+                      10,
+                    )}',
+              ),
+              GFListTile(
+                color: GFColors.WHITE,
+              ),
+              //Text('Date : ${data['date'].toString().substring(0, 10)}'),
               SizedBox(
                 width: double.infinity,
               ),
