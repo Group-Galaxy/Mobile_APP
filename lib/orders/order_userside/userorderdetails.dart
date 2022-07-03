@@ -1,8 +1,7 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mypart/orders/order_userside/order_receipt.dart';
 
 import '../../usermangment/usermodel.dart';
 
@@ -14,31 +13,21 @@ class Neworders extends StatefulWidget {
 }
 
 class _NewordersState extends State<Neworders> {
-  
-  
-      
-
-
-
-    
   @override
   Widget build(BuildContext context) {
     final orderdVehicleOwner = FirebaseAuth.instance.currentUser;
-     CollectionReference orders =
-      FirebaseFirestore.instance.collection('Order Details');
-      
+    CollectionReference orders =
+        FirebaseFirestore.instance.collection('Order Details');
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-            .where('vehicle Owner Id' ,isEqualTo:orderdVehicleOwner?.uid )
-            .where('Oreder Status', isEqualTo: 'Pending').orderBy('Order Date Time', descending: true)
-            .get(
-             
-            ),
-            
-            
+              .where('vehicle Owner Id', isEqualTo: orderdVehicleOwner?.uid)
+              .where('Oreder Status', isEqualTo: 'Pending')
+              .orderBy('Order Date Time', descending: true)
+              .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -128,13 +117,12 @@ class _NewordersState extends State<Neworders> {
                                     const SizedBox(
                                       width: 50,
                                     ),
-                                     Column(
+                                    Column(
                                       children: [
                                         Row(
                                           children: [
-                                            
                                             Text(
-                                             getTime(data['Order Date Time']),
+                                              getTime(data['Order Date Time']),
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
@@ -144,11 +132,10 @@ class _NewordersState extends State<Neworders> {
                                           ],
                                         ),
                                         const SizedBox(
-                                      height: 50,
-                                    ),
+                                          height: 50,
+                                        ),
                                         Row(
-                                          
-                                            crossAxisAlignment:
+                                          crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             ElevatedButton(
@@ -165,15 +152,12 @@ class _NewordersState extends State<Neworders> {
                                                           BorderRadius.circular(
                                                               50))),
                                             ),
-                                          
                                           ],
                                         ),
-                                       
                                       ],
                                     ),
                                   ],
                                 ),
-                               
                               ],
                             ),
                           ],
@@ -188,29 +172,24 @@ class _NewordersState extends State<Neworders> {
         ),
       ),
     );
-    
   }
-  getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-     return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
 }
-}
 
+//...............................................................................................................
 
 class ToPayOrders extends StatefulWidget {
   const ToPayOrders({Key? key}) : super(key: key);
@@ -221,7 +200,7 @@ class ToPayOrders extends StatefulWidget {
 
 class _ToPayOrdersState extends State<ToPayOrders> {
   @override
- User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
+  User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
@@ -262,19 +241,14 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
-
-                   
-               
+                  print(data.data());
+                  print(data.data());
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
@@ -288,108 +262,113 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10.0),
-                        child: 
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8, left: 8, top: 5),
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(
+                                      child: Image.network(data['Imageurl']),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
                                 Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8, left: 8, top: 5),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Center(
-                                              child: Image.network(
-                                                  data['Imageurl']),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Total Payble fee : 2000',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 50,
-                                    ),
-                                     Column(
-                                      children: [
-                                        Row(
-                                         
-                                          children: [
-                                            Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            
-                                            )
-
-                                            
-                                          ],
-                                        ),
-
-                                       Row(
-                                          
-                                            crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'Pay',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                            ),
-                                          
-                                          ],
-                                        ),
-                                       
-                                      ],
+                                    Text(
+                                      data['Item Name'],
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
-                               
-                          
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Quantity : ' + data['Item Qty'],
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Total Payble fee : 2000',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      getTime(data['Order Date Time']),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OrderReceipt(
+                                                      date: DateTime.now()
+                                                          .toString()
+                                                          .substring(0, 10),
+                                                      price: data['SubTotal']
+                                                          .toString(),
+                                                      providerName: data[
+                                                          'Service Provider Name'],
+                                                      qty: data['Item Qty'],
+                                                      item: data['Item Name'],
+                                                      service_provider_id: data[
+                                                          'Service Provider Id'],
+                                                    )));
+                                      },
+                                      child: const Text(
+                                        'Pay',
+                                        style: TextStyle(fontSize: 10),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.purple,
+                                          fixedSize: const Size(100, 9),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50))),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -399,30 +378,22 @@ class _ToPayOrdersState extends State<ToPayOrders> {
           },
         ),
       ),
-
-      
     );
-    
   }
-   getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
-}
 }
 
 class ToDeliver extends StatefulWidget {
@@ -434,7 +405,7 @@ class ToDeliver extends StatefulWidget {
 
 class _ToDeliverState extends State<ToDeliver> {
   @override
- @override
+  @override
   User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
   CollectionReference orders =
@@ -476,19 +447,13 @@ class _ToDeliverState extends State<ToDeliver> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
 
-                   
-               
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
@@ -502,108 +467,95 @@ class _ToDeliverState extends State<ToDeliver> {
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10.0),
-                        child: 
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8, left: 8, top: 5),
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(
+                                      child: Image.network(data['Imageurl']),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
                                 Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8, left: 8, top: 5),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Center(
-                                              child: Image.network(
-                                                  data['Imageurl']),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Total Payble fee : 2000',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 50,
-                                    ),
-                                     Column(
-                                      children: [
-                                        Row(
-                                         
-                                          children: [
-                                            Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            
-                                            )
-
-                                            
-                                          ],
-                                        ),
-
-                                       Row(
-                                          
-                                            crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                            ),
-                                          
-                                          ],
-                                        ),
-                                       
-                                      ],
+                                    Text(
+                                      data['Item Name'],
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
-                               
-                          
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Quantity : ' + data['Item Qty'],
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Total Payble fee : 2000',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      getTime(data['Order Date Time']),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      child: const Text(
+                                        'View More',
+                                        style: TextStyle(fontSize: 10),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.purple,
+                                          fixedSize: const Size(100, 9),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50))),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -613,32 +565,23 @@ class _ToDeliverState extends State<ToDeliver> {
           },
         ),
       ),
-
-      
     );
-    
   }
-   getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
 }
-}
-
 
 class Finished extends StatefulWidget {
   const Finished({Key? key}) : super(key: key);
@@ -650,7 +593,7 @@ class Finished extends StatefulWidget {
 class _FinishedState extends State<Finished> {
   @override
   @override
- User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
+  User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
@@ -691,19 +634,13 @@ class _FinishedState extends State<Finished> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
 
-                   
-               
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
@@ -717,108 +654,95 @@ class _FinishedState extends State<Finished> {
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10.0),
-                        child: 
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8, left: 8, top: 5),
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(
+                                      child: Image.network(data['Imageurl']),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
                                 Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8, left: 8, top: 5),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Center(
-                                              child: Image.network(
-                                                  data['Imageurl']),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Total Payble fee : 2000',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 50,
-                                    ),
-                                     Column(
-                                      children: [
-                                        Row(
-                                         
-                                          children: [
-                                            Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            
-                                            )
-
-                                            
-                                          ],
-                                        ),
-
-                                       Row(
-                                          
-                                            crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'View More',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                            ),
-                                          
-                                          ],
-                                        ),
-                                       
-                                      ],
+                                    Text(
+                                      data['Item Name'],
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
-                               
-                          
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Quantity : ' + data['Item Qty'],
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Total Payble fee : 2000',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      getTime(data['Order Date Time']),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      child: const Text(
+                                        'View More',
+                                        style: TextStyle(fontSize: 10),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.purple,
+                                          fixedSize: const Size(100, 9),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50))),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -828,30 +752,22 @@ class _FinishedState extends State<Finished> {
           },
         ),
       ),
-
-      
     );
-    
   }
-   getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
-}
 }
 
 //cancelled tab
@@ -866,7 +782,7 @@ class Cancelled extends StatefulWidget {
 class _CancelledState extends State<Cancelled> {
   @override
   @override
- User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
+  User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
@@ -907,19 +823,13 @@ class _CancelledState extends State<Cancelled> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
 
-                   
-               
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
@@ -933,90 +843,81 @@ class _CancelledState extends State<Cancelled> {
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10.0),
-                        child: 
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8, left: 8, top: 5),
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(
+                                      child: Image.network(data['Imageurl']),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
                                 Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8, left: 8, top: 5),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Center(
-                                              child: Image.network(
-                                                  data['Imageurl']),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children:  [
-                                            Text(
-                                              'Reason for cancel: '+data['resonForCancel'],
-                                              softWrap: false,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 40,
-                                    ),
-                                     Column(
-                                      children: [
-                                        Row(
-                                         
-                                          children: [
-                                            Text(getTime(data['Order Date Time']),
-                                             style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            
-                                            )
-
-                                            
-                                          ],
-                                        ),
-
-                                     
-                                       
-                                      ],
+                                    Text(
+                                      data['Item Name'],
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
-                               
-                          
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Quantity : ' + data['Item Qty'],
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Reason for cancel: ' +
+                                          data['resonForCancel'],
+                                      softWrap: false,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      getTime(data['Order Date Time']),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -1026,28 +927,20 @@ class _CancelledState extends State<Cancelled> {
           },
         ),
       ),
-
-      
     );
-    
   }
-   getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-     return "${DateTime.now().difference(OrderDate).inMinutes} mins ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inMinutes} mins ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
-}
 }
