@@ -31,7 +31,7 @@ class PaymentController extends GetxController {
     }
   }
 
-  /*Future addpaymentDataToDb({
+  Future addpaymentDataToDb({
     required String userName,
     required String serviceProviderID,
     // required String discount,
@@ -65,7 +65,7 @@ class PaymentController extends GetxController {
     } catch (e) {
       print('error');
     }
-  }*/
+  }
 
   displayPaymentSheet() async {
     try {
