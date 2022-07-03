@@ -359,7 +359,7 @@ class _NavSideState extends State<NavSide> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => const PartsProviderNotifications()));
+                        builder: (_) =>  PartsProviderNotifications()));
               },
             ),
             ListTile(

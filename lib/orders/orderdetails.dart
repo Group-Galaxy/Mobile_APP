@@ -28,19 +28,6 @@ class _NewordersState extends State<Neworders> {
      bool isrejected=false;
  
   
-   
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("vehicl parts providers")
-        .doc(currentAutoPartsProvider!.uid)
-        .get()
-        .then((value) {
-      CurrentServiceprovider = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

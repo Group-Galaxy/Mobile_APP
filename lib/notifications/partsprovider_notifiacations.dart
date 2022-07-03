@@ -2,62 +2,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../usermangment/usermodel.dart';
-import '../dashboard/dashboard.dart';
+import 'package:intl/intl.dart';
 
 class PartsProviderNotifications extends StatefulWidget {
-  const PartsProviderNotifications({Key? key}) : super(key: key);
+  
 
   @override
-  State<PartsProviderNotifications> createState() =>
-      _PartsProviderNotificationsState();
+  State<PartsProviderNotifications> createState() => _PartsProviderNotificationsState();
 }
 
-class _PartsProviderNotificationsState
-    extends State<PartsProviderNotifications> {
-  final receivedmessageUser = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel CurrentUser = VehicleOwnerModel();
-
-  bool _pressed = false;
-  int count = 1;
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("vehicl parts providers")
-        .doc(receivedmessageUser!.uid)
-        .get()
-        .then((value) {
-      CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
-
+class _PartsProviderNotificationsState extends State<PartsProviderNotifications> {
   @override
   Widget build(BuildContext context) {
-    CollectionReference notifications = FirebaseFirestore.instance
-        .collection('vehicl parts providers/${receivedmessageUser?.uid}/Order');
+   final vehiclePartsProvider= FirebaseAuth.instance.currentUser;
+    CollectionReference orders =
+      FirebaseFirestore.instance.collection('Order Details');
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Notifications"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => const NavSide(
-                          title: 'Dashboard',
-                        )));
-          },
-        ),
+        title: Text('Notifications'),
       ),
-      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: Color.fromARGB(255, 254, 253, 254),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
-          future: notifications
-             
+          future: orders
+              .where('Service Provider Id', isEqualTo: vehiclePartsProvider?.uid)
+              .where('Oreder Status', isEqualTo: 'Pending').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -69,96 +38,99 @@ class _PartsProviderNotificationsState
                 child: CircularProgressIndicator(),
               );
             }
+            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
+                
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 5.0),
-                    child: InkWell(
-                      onTap: () {
-                        count = count - 1;
-                        setState(() {
-                          _pressed = true;
-                        });
-                      },
-                      child: Card(
-                        color: _pressed ? Colors.white : Colors.grey,
-                        elevation: 5.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0.0),
-                        ),
-                        child: Container(
+                    child: Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                      child: Container(
+                       
+                       
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 10.0),
-                          child: Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(width: 5.0),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                          child: 
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
+                                     
                                       Column(
                                         children: [
+                                          
                                           Row(
                                             children: [
-                                              // Text(
-                                              //   data['message'],
-                                              //   style: const TextStyle(
-                                              //       fontSize: 14,
-                                              //       fontWeight:
-                                              //           FontWeight.bold),
-                                              //   maxLines: 1,
-                                              //   overflow: TextOverflow.ellipsis,
-                                              // ),
-                                              Text('You have new order')
+                                              Text(
+                                               ' You have new order',
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(
+                                                width: 110,
+                                              ),
+                                              Text(getTime(data['Order Date Time']),
+                                               style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              
+                                              )
+
+                                              
+                                         
+                                              
+                                            ],
+                                            
+                                          ),
+                                          
+                                          Row(
+                                            children: [
+                                              Text(
+                                               '${data['Vehicle Owner Name']} Order ${data['Item Name']}',
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ],
                                           ),
+
+                                           
+                                          
                                         ],
+                                        
                                       ),
                                       const SizedBox(
-                                        width: 50,
+                                        width: 80,
                                       ),
+                                       
+                                         
+                                          
+                                           
+                                        
+                                       
                                     ],
                                   ),
-                                  Row(
-                                    children:  [
-                                      Text(
-                                         data['Vehicle Owner Name']+' ordered '+data['Item Name'],
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        getTime(data['Order Date Time']),
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                                 
+                            
+                        
+                      )
                     ),
                   );
                 },
@@ -167,20 +139,33 @@ class _PartsProviderNotificationsState
           },
         ),
       ),
+
+      
     );
-  }
 
-  getTime(Timestamp Time) {
-    DateTime OrderDate = Time.toDate();
+    
+}
+getTime( Timestamp Time) {
+    
+    
+DateTime OrderDate = Time.toDate();
+   
+    
+    
 
-    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-      return "a few seconds ago";
-    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-      return "${DateTime.now().difference(OrderDate).inHours} min ago";
-    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-      return "${DateTime.now().difference(OrderDate).inDays} days ago";
-    }
+
+  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+    return "a few seconds ago";
+  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+    return "${DateTime.now().difference(OrderDate).inDays} days ago";
   }
 }
+}
+
+
+
+  
