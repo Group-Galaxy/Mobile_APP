@@ -134,7 +134,7 @@ class _NewRequestsState extends State<NewRequests> {
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   
-                                                    primary: Colors.green,
+                                                    primary: Colors.purple,
                                                     fixedSize: const Size(100, 9),
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
@@ -161,7 +161,7 @@ class _NewRequestsState extends State<NewRequests> {
                                                           )));
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                    primary: Colors.red,
+                                                    primary: Colors.purple,
                                                     fixedSize: const Size(100, 9),
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
