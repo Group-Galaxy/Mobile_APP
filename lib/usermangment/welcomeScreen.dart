@@ -34,7 +34,7 @@ class _WelcomePageState extends State<WelcomePage> {
       return const DriverHome();
     }
     if (ismechanicn) {
-      return RepaiirDashboard(
+      return RepaiirDashboard(title: 'Dashboard',
           //title: 'Dashboard',
           );
     }
