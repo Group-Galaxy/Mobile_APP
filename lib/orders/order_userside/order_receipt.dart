@@ -65,6 +65,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
   double balanceValue = 0.0;
 
   var currentUser = {};
+  var pp_provider = {};
   @override
   void initState() {
     super.initState();

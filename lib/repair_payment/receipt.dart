@@ -118,6 +118,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _Inspection,
                   decoration: InputDecoration(
                       icon: Icon(Icons.description),
@@ -125,6 +126,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _Discount,
                   decoration: InputDecoration(
                       icon: Icon(Icons.description), labelText: 'Discount'))),
@@ -145,7 +147,7 @@ class _ReceiptsState extends State<Receipts> {
                 child: Text("Send Details"),
                 textColor: Colors.white,
                 color: Colors.purple,
-                onPressed: () {
+                onPressed: () async {
                   inspectionvalue = double.parse(_Inspection.text);
                   discountvalue = double.parse(_Discount.text);
 
@@ -179,8 +181,12 @@ class _ReceiptsState extends State<Receipts> {
                   );
 
                   print("the selected date is ${_date}");
+
+                  await Future.delayed(const Duration(seconds: 2));
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RepaiirDashboard(title: '',)));
+                      builder: (context) => RepaiirDashboard(
+                            title: '',
+                          )));
                 },
               ),
             ],

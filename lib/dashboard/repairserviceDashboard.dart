@@ -269,10 +269,12 @@ class _RepaiirDashboardState extends State<RepaiirDashboard> {
                 //receipts page....
                 Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => Receipts(
-                              booking_id: "QgletgMwmVmzk9mdATif",
-                            )));
+                    MaterialPageRoute(builder: (context) => MyJobs()
+                        // Receipts(
+                        //       booking_id: "QgletgMwmVmzk9mdATif",
+                        //     )
+
+                        ));
               },
             ),
             ListTile(
