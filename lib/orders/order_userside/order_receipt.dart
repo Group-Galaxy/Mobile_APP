@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:mypart/controller/payment_controller.dart';
 
 class OrderReceipt extends StatefulWidget {
+  DocumentSnapshot docid;
   var date;
   var price;
   var providerName;
@@ -33,7 +34,9 @@ class OrderReceipt extends StatefulWidget {
       this.providerName,
       this.qty,
       required this.item,
-      required this.service_provider_id})
+      required this.service_provider_id,
+      required this.docid
+      })
       : super(key: mykey);
 
   @override
@@ -157,8 +160,8 @@ class _OrderReceiptState extends State<OrderReceipt> {
                         int fee = total_fee.toInt();
                         await controller.makePayment(
                             amount: '${fee}', currency: 'LKR');
-                        // await controller.addpaymentDataToDb(
-                        /*userName: currentUser['firstName'],
+                        await controller.addpaymentDataToDb(
+                        userName: currentUser['firstName'],
                       serviceProviderID: widget.service_provider_id,
                       date: widget.date.toString(),
                       balance: (widget.price * widget.qty +
@@ -177,8 +180,10 @@ class _OrderReceiptState extends State<OrderReceipt> {
                                   ? 750
                                   : 1000)
                           .toString(),
-                      contactNo: currentUser['contactNo'].toString(),*/
-                        // address: _Address.text
+                      contactNo: currentUser['contactNo'].toString(),
+                      ordersNo:widget.docid
+                         //address: _Address.text
+                        );
                       })
                 ])
               ],

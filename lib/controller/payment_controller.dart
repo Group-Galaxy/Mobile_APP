@@ -41,7 +41,7 @@ class PaymentController extends GetxController {
     required String quantity,
     required String item,
     required String delivery_fee,
-    required String contactNo,
+    required String contactNo, required DocumentSnapshot<Object?> ordersNo,
     //required String address
   }) async {
     Map<String, dynamic> body = {
@@ -55,6 +55,7 @@ class PaymentController extends GetxController {
       "Item": item,
       "DeliveryFee": delivery_fee,
       "Contatctnumber": contactNo,
+      "OrderNo":ordersNo,
       //"Address": address
     };
     try {

@@ -254,21 +254,7 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 8, left: 8, top: 5),
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: Center(
-                                      child: Image.network(data['Imageurl']),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            
                             Column(
                               children: [
                                 Row(
@@ -322,7 +308,7 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      width: 50,
+                                      width: 30,
                                     ),
                                     Column(
                                       children: [
@@ -343,7 +329,26 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                 Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OrderReceipt(
+                                                      date: DateTime.now()
+                                                          .toString()
+                                                          .substring(0, 10),
+                                                      price: data['SubTotal']
+                                                          .toString(),
+                                                      providerName: data[
+                                                          'Service Provider Name'],
+                                                      qty: data['Item Qty'],
+                                                      item: data['Item Name'],
+                                                      service_provider_id: data[
+                                                          'Service Provider Id'],
+                                                           docid: data,
+                                                    )));
+                                              },
                                               child: const Text(
                                                 'Pay',
                                                 style: TextStyle(fontSize: 10),
@@ -362,79 +367,11 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Quantity : ' + data['Item Qty'],
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Total Payble fee : 2000',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
+                                
                               ],
                             ),
-                            const SizedBox(
-                              width: 50,
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      getTime(data['Order Date Time']),
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    OrderReceipt(
-                                                      date: DateTime.now()
-                                                          .toString()
-                                                          .substring(0, 10),
-                                                      price: data['SubTotal']
-                                                          .toString(),
-                                                      providerName: data[
-                                                          'Service Provider Name'],
-                                                      qty: data['Item Qty'],
-                                                      item: data['Item Name'],
-                                                      service_provider_id: data[
-                                                          'Service Provider Id'],
-                                                    )));
-                                      },
-                                      child: const Text(
-                                        'Pay',
-                                        style: TextStyle(fontSize: 10),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.purple,
-                                          fixedSize: const Size(100, 9),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(50))),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                           
+                           
                           ],
                         ),
                       ),
