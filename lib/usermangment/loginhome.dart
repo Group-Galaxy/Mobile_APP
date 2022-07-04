@@ -1,10 +1,19 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mypart/buyer/vehicle_parts_home.dart';
+import 'package:mypart/orders/order_userside/userordermain.dart';
 import 'package:mypart/repairservice/repairhome.dart';
+import 'package:mypart/repairservice/userside/Requestshome.dart';
+import 'package:mypart/usermangment/login.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/usermodel.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../reviews/review_give_screen.dart';
@@ -18,8 +27,9 @@ class DriverHome extends StatefulWidget {
 }
 
 class _DriverHomeState extends State<DriverHome> {
-  User? user = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel loggedInUser = VehicleOwnerModel();
+  var imgUrl = "";
+  final user = FirebaseAuth.instance.currentUser;
+  
   late SharedPreferences prefs;
   @override
   void initState() {
@@ -147,6 +157,124 @@ class _DriverHomeState extends State<DriverHome> {
           ),
         ),
       ),
+
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text(user?.displayName ?? ""),
+              accountEmail: Text(user?.email ?? " "),
+              currentAccountPicture: GestureDetector(
+                onTap: () async {
+                  final firebaseStorage = FirebaseStorage.instance;
+                  final imagePicker = ImagePicker();
+                  XFile? image;
+                  //Check Permissions
+                  await Permission.photos.request();
+
+                  var permissionStatus = await Permission.photos.status;
+
+                  if (permissionStatus.isGranted) {
+                    //Select Image
+                    image = await imagePicker.pickImage(
+                        source: ImageSource.gallery);
+
+                    if (image != null) {
+                      var file = File(image.path);
+                      print("*******************");
+                      print(image.path);
+                      var snapshot = await firebaseStorage
+                          .ref()
+                          .child('users/profileimg')
+                          .putFile(file);
+
+                      imgUrl = await snapshot.ref.getDownloadURL();
+                      await user?.updatePhotoURL(imgUrl);
+                      setState(() {});
+                      print(imgUrl.toString());
+                    } else {
+                      print('No Image Path Received');
+                    }
+                  } else {
+                    print(
+                        'Permission not granted. Try Again with permission access');
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 50.0,
+                  backgroundColor: Colors.grey,
+                  child: CachedNetworkImage(
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.fill,
+                    imageUrl: FirebaseAuth.instance.currentUser?.photoURL ?? "",
+                    placeholder: (context, url) => const CircleAvatar(
+                      radius: 30.0,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.account_circle_outlined),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text("Dashboard"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(CupertinoIcons.square_list),
+              title: Text("Orders"),
+              onTap: () {
+              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const Myorders()));
+
+},
+),
+
+ListTile(
+leading: Icon(Icons.chat),
+title: Text("Chat"),
+onTap: () {
+Navigator.pop(context);
+},
+),
+ListTile(
+leading: Icon(Icons.request_page_outlined),
+title: Text("Repair Service Details"),
+onTap: () {
+ Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) =>MyRequests ()));
+
+},
+),
+
+ListTile(
+leading: Icon(Icons.comment_sharp),
+title: Text("Comments & Ratings"),
+onTap: () {
+Navigator.pop(context);
+},
+),
+ListTile(
+leading: Icon(Icons.logout_sharp),
+title: Text("Log out"),
+onTap: () {
+Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) =>LoginScreen ()));
+},
+),
+],
+),
+),
     );
   }
 }

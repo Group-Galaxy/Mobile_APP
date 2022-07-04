@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:mypart/dashboard/dashboard.dart';
+import 'package:mypart/dashboard/repairserviceDashboard.dart';
+import 'package:mypart/repairservice/myjobs.dart';
+import 'package:mypart/repairservice/userside/userRequests.dart';
+import 'package:mypart/usermangment/usermodel.dart';
 
-import 'orderdetails.dart';
 
-class Myorders extends StatefulWidget {
-  const Myorders({Key? key, required int initialPage}) : super(key: key);
+class MyRequests extends StatefulWidget {
+  const MyRequests({Key? key}) : super(key: key);
 
   @override
-  State<Myorders> createState() => _MyordersState();
+  State<MyRequests> createState() => _MyRequestsState();
 }
 
-class _MyordersState extends State<Myorders> {
+class _MyRequestsState extends State<MyRequests> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Orders"),
+          title: const Text("My Jobs"),
           leading: ElevatedButton(
             onPressed: () {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => const NavSide(
+                      builder: (_) => const RepaiirDashboard(
                             title: 'Dashboard',
                           )));
             },
@@ -36,30 +39,27 @@ class _MyordersState extends State<Myorders> {
           bottom: const TabBar(
             tabs: [
               Center(
-                child: Tab(text: "New\nOrders"),
+                child: Tab(text: "New\nRequests"),
               ),
               Center(
-                child: Tab(text: "To pay"),
+                child: Tab(text: "Processing Jobs"),
               ),
               Center(
-                child: Tab(text: "to deliver"),
+                child: Tab(text: "Finished Jobs"),
               ),
               Center(
-                child: Tab(text: "finished orders"),
+                child: Tab(text: "Cancelled Jobs"),
               ),
-              Center(
-                child: Tab(text: "Cancelled orders"),
-              ),
+              
             ],
           ),
         ),
-        body: const TabBarView(
+        body:  TabBarView(
           children: [
-            Neworders(),
-            ToPayOrders(),
-            ToDeliver(),
-            Finished(),
-            Cancelled()
+           VehicleOwnerNewRequest(),
+           ProcessingRepair(),
+           FinishedService(),
+           CancelledRequest()
           ],
         ),
       ),

@@ -1,23 +1,22 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:mypart/orders/ordershome.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:mypart/repairservice/myjobshome.dart';
 
-class AcceptOrder extends StatefulWidget {
+class AcceptService extends StatefulWidget {
   DocumentSnapshot docid;
-  AcceptOrder({required this.docid});
+  AcceptService({required this.docid});
 
   @override
-  State<AcceptOrder> createState() => _AcceptOrderState();
+  State<AcceptService> createState() => _AcceptServiceState();
 }
-class _AcceptOrderState extends State<AcceptOrder> {
-  
 
+class _AcceptServiceState extends State<AcceptService> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-    appBar: AppBar(
+return Scaffold(
+   appBar: AppBar(
       
      
       title: Text(""),
@@ -29,15 +28,15 @@ class _AcceptOrderState extends State<AcceptOrder> {
 
         child:
           AlertDialog(
-            content: Text('Do you want to accept the order'),
+            content: Text('Do you want to accept the request'),
             actions: [
               FlatButton(
                 onPressed: (){
                   widget.docid.reference.update({
-                'Oreder Status':'accepted'
+                'Status':'accepted'
               }).whenComplete(() {
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => Myorders(initialPage: 2,)));
+                    context, MaterialPageRoute(builder: (_) => MyJobs()));
               });
                 },
                  child: Text('Conform'))
@@ -48,5 +47,8 @@ class _AcceptOrderState extends State<AcceptOrder> {
         
       ),
     );
+
+    
+    
   }
 }

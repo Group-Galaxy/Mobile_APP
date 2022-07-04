@@ -15,16 +15,15 @@ import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel
 import '../../usermangment/usermodel.dart';
 
 
-class NewRequests extends StatefulWidget {
-  const NewRequests({Key? key}) : super(key: key);
+class VehicleOwnerNewRequest extends StatefulWidget {
+  const VehicleOwnerNewRequest({Key? key}) : super(key: key);
 
   @override
-  State<NewRequests> createState() => _NewRequestsState();
+  State<VehicleOwnerNewRequest> createState() => _VehicleOwnerNewRequestState();
 }
 
-class _NewRequestsState extends State<NewRequests> {
-    bool isaccepted=false;
-     bool isrejected=false;
+class _VehicleOwnerNewRequestState extends State<VehicleOwnerNewRequest> {
+   
   @override
   Widget build(BuildContext context) {
     final ServiceProvider= FirebaseAuth.instance.currentUser;
@@ -118,63 +117,7 @@ class _NewRequestsState extends State<NewRequests> {
                                               
                                             ],
                                           ),
-                                          Row(
-                                             
-                                            children:<Widget> [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                   
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) => AcceptService(
-                                                            docid: data,
-                                                          )));
-                                            
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  
-                                                    primary: Colors.green,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'Accept',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            ],
-                              
-                                          ),
-                                           Row(
-                                             
-                                            children:<Widget> [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                   Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) => RejectRequests(
-                                                            docid: data, 
-                                                          )));
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: Colors.red,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'Reject',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            ],
-                              
-                                          ),
+                                        
                                          Row(
                                             
                                               crossAxisAlignment:
@@ -241,14 +184,14 @@ DateTime OrderDate = Time.toDate();
 
 //////////////////////////////////////////////////////////////////////////
 //processing Jobs
-class ProcessingJobs extends StatefulWidget {
-  const ProcessingJobs({Key? key}) : super(key: key);
+class ProcessingRepair extends StatefulWidget {
+  const ProcessingRepair({Key? key}) : super(key: key);
 
   @override
-  State<ProcessingJobs> createState() => _ProcessingJobsState();
+  State<ProcessingRepair> createState() => _ProcessingRepairState();
 }
 
-class _ProcessingJobsState extends State<ProcessingJobs> {
+class _ProcessingRepairState extends State<ProcessingRepair> {
   @override
   Widget build(BuildContext context) {
      final ServiceProvider= FirebaseAuth.instance.currentUser;
@@ -411,14 +354,14 @@ DateTime OrderDate = Time.toDate();
 
 
 ////////////////Finished Jobs
-class FinishedJobs extends StatefulWidget {
-  const FinishedJobs({Key? key}) : super(key: key);
+class FinishedService extends StatefulWidget {
+  const FinishedService({Key? key}) : super(key: key);
 
   @override
-  State<FinishedJobs> createState() => _FinishedJobsState();
+  State<FinishedService> createState() => _FinishedServiceState();
 }
 
-class _FinishedJobsState extends State<FinishedJobs> {
+class _FinishedServiceState extends State<FinishedService> {
     final ServiceProvider= FirebaseAuth.instance.currentUser;
     CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');
@@ -580,14 +523,14 @@ DateTime OrderDate = Time.toDate();
 
 ///////////cancelled Jobs
 
-class CancelledJobs extends StatefulWidget {
-  const CancelledJobs({Key? key}) : super(key: key);
+class CancelledRequest extends StatefulWidget {
+  const CancelledRequest({Key? key}) : super(key: key);
 
   @override
-  State<CancelledJobs> createState() => _CancelledJobsState();
+  State<CancelledRequest> createState() => _CancelledRequestState();
 }
 
-class _CancelledJobsState extends State<CancelledJobs> {
+class _CancelledRequestState extends State<CancelledRequest> {
    final ServiceProvider= FirebaseAuth.instance.currentUser;
     CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');

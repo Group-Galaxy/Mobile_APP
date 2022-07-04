@@ -49,7 +49,7 @@ class _MyordersState extends State<Myorders> {
             Neworders(),
             ToPayOrders(),
             ToDeliver(),
-            Finished(),
+            Finished(initialPage: 4,),
             Cancelled()
           ],
         ),

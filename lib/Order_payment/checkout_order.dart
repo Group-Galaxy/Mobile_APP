@@ -23,6 +23,7 @@ class checkoutorder extends StatefulWidget {
   var providerName;
   var qty;
   var service_provider_id;
+  var contactNO;
  
   String? item;
 
@@ -33,6 +34,7 @@ class checkoutorder extends StatefulWidget {
       this.providerName,
       this.qty,
       required this.item,
+      this.contactNO,
      
       required this.service_provider_id})
       : super(key: mykey);
@@ -120,7 +122,7 @@ class _checkoutorderState extends State<checkoutorder> {
             ),
             GFListTile(
               color: GFColors.WHITE,
-              titleText: 'Contact No : ${currentUser['contactNo']}',
+              titleText: 'Contact No : ${widget.contactNO}',
             ),
             GFListTile(
               color: GFColors.WHITE,

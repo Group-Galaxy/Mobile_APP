@@ -4,25 +4,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/orders/ordershome.dart';
 
-class RejectOrder extends StatefulWidget {
+class RejectRequests extends StatefulWidget {
   DocumentSnapshot docid;
-  final String Item_Name,Qty;
+ 
 
-  RejectOrder({required this.Item_Name,required this.Qty,required this.docid});
+  RejectRequests({required this.docid});
 
 
   @override
-  State<RejectOrder> createState() => _RejectOrderState();
+  State<RejectRequests> createState() => _RejectRequestsState();
 }
-class _RejectOrderState extends State<RejectOrder> {
+class _RejectRequestsState extends State<RejectRequests> {
   
   List<String> _reason = <String>[
-    'Enough Quantiy',
-    'Items already selles',
-    'Other',
+    'Busy at that time',
+    'Cant reach to that location',
+    'Not able to repair this vehicle type'
     
   ];
- var Selected_preason;
+ var Selected_reason;
 CollectionReference orders = FirebaseFirestore.instance.collection('Order Details');
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ CollectionReference orders = FirebaseFirestore.instance.collection('Order Detail
     appBar: AppBar(
       
      
-      title: Text("Cancelled Orders"),
+      title: Text("Cancelled request"),
        
       
       ),
@@ -58,7 +58,7 @@ CollectionReference orders = FirebaseFirestore.instance.collection('Order Detail
                                 onChanged: (value) {
                                  
                                   setState(() {
-                                    Selected_preason = value;
+                                    Selected_reason = value;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -71,10 +71,10 @@ CollectionReference orders = FirebaseFirestore.instance.collection('Order Detail
                      borderRadius: BorderRadius.circular(100.0),
                   ),
                                 ),
-                                value: Selected_preason,
+                                value: Selected_reason,
                                 isExpanded: false,
                                 hint: Text(
-                                  'Reason for delete',
+                                  'Reason for cancel',
                                   style: TextStyle(color: Colors.black),
                                   
                                 ),
@@ -84,8 +84,8 @@ CollectionReference orders = FirebaseFirestore.instance.collection('Order Detail
  ElevatedButton(
                 onPressed: (){
                   widget.docid.reference.update({
-                'Oreder Status':'cancelled',
-                'resonForCancel':Selected_preason.toString(),
+                'Status':'cancelled',
+                'resonForCancel':Selected_reason.toString(),
                  
                 
               })

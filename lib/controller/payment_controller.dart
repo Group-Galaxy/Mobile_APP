@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mypart/buyer/searchhome.dart';
+import 'package:mypart/buyer/vehicle_parts_home.dart';
+import 'package:path/path.dart';
 
 class PaymentController extends GetxController {
   Map<String, dynamic>? paymentIntentData;
@@ -25,6 +28,7 @@ class PaymentController extends GetxController {
           customerEphemeralKeySecret: paymentIntentData!['ephemeralKey'],
         ));
         displayPaymentSheet();
+        
       }
     } catch (e, s) {
       print('exception:$e$s');
@@ -72,11 +76,16 @@ class PaymentController extends GetxController {
     try {
       await Stripe.instance.presentPaymentSheet();
       Get.snackbar('Payment', 'Payment Successful',
+        
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: Colors.white,
           margin: const EdgeInsets.all(10),
-          duration: const Duration(seconds: 2));
+          duration: const Duration(seconds: 2),
+          
+          );
+        
+          
     } on Exception catch (e) {
       if (e is StripeException) {
         print("Error from Stripe: ${e.error.localizedMessage}");
@@ -104,7 +113,10 @@ class PaymentController extends GetxController {
                 'Bearer sk_test_51LDqSTEHLxB2oFbTEcOFy9yRzgpjZdAwEgPsbc2Y5xJsmeOBOeYhDcqq1PoKVR0SYOA0IOEU2Hh1Vw1I0YCLdIEW00uciG4RLv',
             'Content-Type': 'application/x-www-form-urlencoded'
           });
+          
       return jsonDecode(response.body);
+      
+
     } catch (err) {
       print('err charging user: ${err.toString()}');
     }

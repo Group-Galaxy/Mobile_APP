@@ -157,6 +157,10 @@ class _OrderReceiptState extends State<OrderReceipt> {
                       textColor: Colors.white,
                       color: Colors.purple,
                       onPressed: () async {
+
+                        
+                        await widget.docid.reference.update({
+                        'Oreder Status':'paid'});
                         int fee = total_fee.toInt();
                         await controller.makePayment(
                             amount: '${fee}', currency: 'LKR');
@@ -187,14 +191,22 @@ class _OrderReceiptState extends State<OrderReceipt> {
                       })
                 ])
               ],
+              
             ),
+          
           ),
+          
           elevation: 8,
           shadowColor: Colors.purple,
           margin: EdgeInsets.all(15),
           shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.purple, width: 2)),
-        ));
+
+
+              
+        )
+        
+        );
   }
 }
