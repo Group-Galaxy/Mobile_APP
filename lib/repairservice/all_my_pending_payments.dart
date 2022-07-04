@@ -10,6 +10,7 @@ import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:mypart/controller/payment_controller_repaire.dart';
 import 'package:mypart/gateway.dart';
+import 'package:mypart/reviews/review_give_screen.dart';
 
 class MyAllPendingPayments extends StatefulWidget {
   MyAllPendingPayments({Key? key}) : super(key: key);
@@ -121,8 +122,7 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
                                 DocID: '${chat['DocID']}',
                               );
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      MyAllPendingPayments()));
+                                  builder: (context) => ReviewGiveScreen()));
                             }
                             /* onPressed: () {
                             Navigator.push(
