@@ -187,7 +187,7 @@ class _ItemsState extends State<Items> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (_) => EditItem(
-                                                            docid: data,
+                                                            docid: data, 
                                                           )));
                                             }),
                                         const SizedBox(
@@ -199,7 +199,15 @@ class _ItemsState extends State<Items> {
                                               color: Colors.purple,
                                             ),
                                             onPressed: () {
-                                              data.reference
+                                              showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                    content: const Text(
+                                                        "Do you want to delete this?"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          data.reference
                                                   .delete()
                                                   .whenComplete(() {
                                                 Navigator.pushReplacement(
@@ -208,6 +216,39 @@ class _ItemsState extends State<Items> {
                                                         builder: (_) =>
                                                             Items()));
                                               });
+                                                        },
+                                                        child: Container(
+                                                          color: Colors.purple,
+                                                          padding: const EdgeInsets.all(14),
+                                                          child:  Text("Yes",style:  
+                                                          TextStyle(color: Colors.white
+                                                    ),
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            Items()));
+                                              };
+                                                        },
+                                                        child: Container(
+                                                          color: Colors.purple,
+                                                          padding: const EdgeInsets.all(14),
+                                                          child:  Text("No",style:  
+                                                          TextStyle(color: Colors.white
+                                                    ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              );
+                                              
                                             })
                                       ],
                                     )

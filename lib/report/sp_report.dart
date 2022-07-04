@@ -39,6 +39,7 @@ class _ReportStateSP extends State<sp_Report> {
       print("uid " + user!.uid);
       setState(() {
         currentUser = res.docs.first.data();
+        print(currentUser['firstName']);
       });
     });
     print(data);
@@ -50,9 +51,11 @@ class _ReportStateSP extends State<sp_Report> {
       CollectionReference _collectionRef =
           FirebaseFirestore.instance.collection('payments');
       QuerySnapshot querySnapshot = await _collectionRef
-          //.where('serviceProviderID', isEqualTo: '${currentUser['uid']}')
-          .where('date', isLessThan: '2022-12-02 16:53:48.054208')
-          .where('date', isGreaterThan: '2022-01-30 16:53:48.054208')
+          // .where('serviceProviderName',
+          //     isEqualTo: "${currentUser}")
+          .where('date', isLessThan: '${widget.end}')
+          .where('date', isGreaterThan: '${widget.start}')
+          // .where('is_paid', isEqualTo: true)
           .orderBy('date', descending: false)
           .get();
       List allData = querySnapshot.docs.map((doc) => doc.data()).toList();

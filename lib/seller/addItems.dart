@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -145,6 +147,51 @@ class _AddItemsState extends State<AddItems> {
             child: Column(
                 children:<Widget> [
                   Padding(
+                           padding: EdgeInsets.only(left: 10, right:10,bottom:8),
+                          
+                          child: DropdownButtonFormField(
+      
+                              dropdownColor: Colors.white,
+                              
+                              
+                              icon: Icon(Icons.keyboard_arrow_down),
+                              items: _categoryList
+                                  .map((value) => DropdownMenuItem(
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                        value: value,
+                                      ))
+                                  .toList(),
+                              onChanged: (Svalue) {
+                                
+                                setState(() {
+                                  Selected_category = Svalue;
+                                });
+                              },
+                                  decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.purple, width: 2.0),
+                    borderRadius: BorderRadius.circular(100.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, width: 2.0),
+                     borderRadius: BorderRadius.circular(100.0),
+                  ),
+                                    ),
+                              value: Selected_category,
+                              isExpanded: false,
+                              hint: Text(
+                                'Choose Item Category',
+                                style: TextStyle(color: Colors.black),
+                                
+                              ),
+                            ),
+                        ),
+                     
+                      
+                  Padding(
                     padding: EdgeInsets.only(left: 10, right:10,bottom:5,top: 20),
                     child: TextFormField( //Item Name
                       controller: Item_Name,
@@ -270,53 +317,7 @@ class _AddItemsState extends State<AddItems> {
                    SizedBox(
                   height:20,
                  ),
-                            Padding(
-                           padding: EdgeInsets.only(left: 10, right:10,bottom:8),
-                          
-                          child: DropdownButtonFormField(
-      
-                              dropdownColor: Colors.white,
-                              
-                              
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              items: _categoryList
-                                  .map((value) => DropdownMenuItem(
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        value: value,
-                                      ))
-                                  .toList(),
-                              onChanged: (Svalue) {
-                                
-                                setState(() {
-                                  Selected_category = Svalue;
-                                });
-                              },
-                                  decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple, width: 2.0),
-                    borderRadius: BorderRadius.circular(100.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepPurple, width: 2.0),
-                     borderRadius: BorderRadius.circular(100.0),
-                  ),
-                                    ),
-                              value: Selected_category,
-                              isExpanded: false,
-                              hint: Text(
-                                'Choose Item Category',
-                                style: TextStyle(color: Colors.black),
-                                
-                              ),
-                            ),
-                        ),
-                     
-                        SizedBox(
-                                    height:20,
-                                  ),
+                            
                         
                        Padding(
                             padding: EdgeInsets.only(left: 10, right:10,bottom:8),

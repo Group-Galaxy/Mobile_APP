@@ -9,6 +9,7 @@ import 'package:mypart/dashboard/themes.dart';
 import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
 import 'package:mypart/repair_payment/receipt.dart';
+import 'package:mypart/repairservice/myjobshome.dart';
 import 'package:mypart/report/sp_report_dates.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
@@ -16,7 +17,7 @@ import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
 
 class RepaiirDashboard extends StatefulWidget {
-  const RepaiirDashboard({Key? key}) : super(key: key);
+  const RepaiirDashboard({Key? key, required String title}) : super(key: key);
   @override
   _RepaiirDashboardState createState() => _RepaiirDashboardState();
 }
@@ -268,10 +269,12 @@ class _RepaiirDashboardState extends State<RepaiirDashboard> {
                 //receipts page....
                 Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => Receipts(
-                              booking_id: "QgletgMwmVmzk9mdATif",
-                            )));
+                    MaterialPageRoute(builder: (context) => MyJobs()
+                        // Receipts(
+                        //       booking_id: "QgletgMwmVmzk9mdATif",
+                        //     )
+
+                        ));
               },
             ),
             ListTile(

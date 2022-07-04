@@ -25,6 +25,7 @@ class _ReceiptsState extends State<Receipts> {
   TextEditingController _Inspection = new TextEditingController();
   TextEditingController _Discount = new TextEditingController();
   TextEditingController _balance = new TextEditingController();
+  TextEditingController _ServiceProviderID = new TextEditingController();
 
   double inspectionvalue = 0.0;
 
@@ -45,6 +46,7 @@ class _ReceiptsState extends State<Receipts> {
         _ServiceProviderName.text = value.data()!["ServiceProviderName"];
         _UserName.text = value.data()!["customerNmae"];
         _VehicleFault.text = value.data()!["vehicleFault"];
+        _ServiceProviderID.text = value.data()!["ServiceProviderID"];
       });
     });
 
@@ -116,6 +118,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _Inspection,
                   decoration: InputDecoration(
                       icon: Icon(Icons.description),
@@ -123,6 +126,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _Discount,
                   decoration: InputDecoration(
                       icon: Icon(Icons.description), labelText: 'Discount'))),
@@ -143,7 +147,7 @@ class _ReceiptsState extends State<Receipts> {
                 child: Text("Send Details"),
                 textColor: Colors.white,
                 color: Colors.purple,
-                onPressed: () {
+                onPressed: () async {
                   inspectionvalue = double.parse(_Inspection.text);
                   discountvalue = double.parse(_Discount.text);
 
@@ -163,8 +167,10 @@ class _ReceiptsState extends State<Receipts> {
                   final Discount = _Discount.text;
                   final Balance = resultValue.toString();
                   final Date = _date;
+                  final ServiceProviderID = _ServiceProviderID.text;
 
                   createUser(
+                    ServiceProviderID: ServiceProviderID,
                     ServiceProviderName: ServiceProviderName,
                     UserName: UserName,
                     VehicleFault: VehicleFault,
@@ -175,8 +181,12 @@ class _ReceiptsState extends State<Receipts> {
                   );
 
                   print("the selected date is ${_date}");
+
+                  await Future.delayed(const Duration(seconds: 2));
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RepaiirDashboard()));
+                      builder: (context) => RepaiirDashboard(
+                            title: '',
+                          )));
                 },
               ),
             ],
@@ -185,7 +195,8 @@ class _ReceiptsState extends State<Receipts> {
   }
 
   Future createUser(
-      {required String ServiceProviderName,
+      {required String ServiceProviderID,
+      ServiceProviderName,
       UserName,
       VehicleFault,
       InspectionValue,
@@ -195,6 +206,7 @@ class _ReceiptsState extends State<Receipts> {
     final docUser = FirebaseFirestore.instance.collection('payments').doc();
 
     final json = {
+      'ServiceProviderID': ServiceProviderID,
       'serviceProviderName': ServiceProviderName,
       'userName': UserName,
       'vehicleFault': VehicleFault,
