@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:getwidget/getwidget.dart';
 
 class sp_Report extends StatefulWidget {
   var start;
@@ -22,7 +23,7 @@ class _ReportStateSP extends State<sp_Report> {
   User? currentAutoPartsProvider = FirebaseAuth.instance.currentUser;
   // VehicleOwnerModel CurrentServiceprovider = VehicleOwnerModel();
   CollectionReference orders =
-      FirebaseFirestore.instance.collection('orderpayments');
+      FirebaseFirestore.instance.collection('payments');
   final user = FirebaseAuth.instance.currentUser;
   var currentUser = {};
   @override
@@ -30,7 +31,7 @@ class _ReportStateSP extends State<sp_Report> {
     super.initState();
 
     final data = FirebaseFirestore.instance
-        .collection('vehicl parts providers')
+        .collection('vehicle repair service provider')
         .where("uid", isEqualTo: user!.uid)
         .get()
         .then((res) {
@@ -44,6 +45,7 @@ class _ReportStateSP extends State<sp_Report> {
   }
 
   Widget build(BuildContext context) {
+    var total = 0.0;
     Future<List<Card>> getReport() async {
       CollectionReference _collectionRef =
           FirebaseFirestore.instance.collection('payments');
@@ -58,7 +60,9 @@ class _ReportStateSP extends State<sp_Report> {
       if (allData != null) {
         for (int i = 0; i < allData.length; i++) {
           Map data = Map<String, dynamic>.from(allData[i]);
+          total += double.parse(data['balance']);
           print(data['date']);
+
           card_data.add(Card(
             margin: EdgeInsets.all(8),
             child: Column(children: [
@@ -114,6 +118,35 @@ class _ReportStateSP extends State<sp_Report> {
                   return CircularProgressIndicator.adaptive();
                 } else {
                   final data = snapshot.data as List<Card>;
+                  final total_card = Card(
+                    child: Column(
+                      children: [
+                        GFAvatar(
+                          backgroundColor: GFColors.TRANSPARENT,
+                          child: ClipOval(
+                            child: Image.network(
+                              currentUser['imgUrl'],
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          radius: 60,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('User Name : ${currentUser['firstName']}'),
+                        Text("Total Earnings: ${total}"),
+                        // Text("Total: ${total}"),
+                      ],
+                    ),
+                    elevation: 8,
+                    shadowColor: Colors.purple,
+                    margin: EdgeInsets.all(15),
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Colors.purple, width: 2)),
+                  );
+                  data.insert(0, total_card);
                   return Column(
                     children: data,
                   );
