@@ -156,25 +156,7 @@ class _RepairListState extends State<RepairList>
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          alignment: Alignment.center,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10.0, vertical: 10.0),
-                                          child: FlatButton(
-                                            onPressed: () {},
-                                            color: const Color.fromARGB(
-                                                255, 222, 130, 238),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                            child: const Text(
-                                              "Chat",
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ),
+                                       
                                         Container(
                                           alignment: Alignment.center,
                                           padding: const EdgeInsets.symmetric(

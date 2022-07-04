@@ -35,12 +35,13 @@ class productDetails extends StatefulWidget {
 
 class _productDetailsState extends State<productDetails> {
   final FirebaseService _service = FirebaseService();
-  User? vehicleowner = FirebaseAuth.instance.currentUser;
-  VehicleOwnerModel loggedInUser = VehicleOwnerModel();
+  
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
   CollectionReference user =
       FirebaseFirestore.instance.collection('VehicleOwner');
+       CollectionReference Notifications =
+      FirebaseFirestore.instance.collection('Notifications');
 
  
 
@@ -372,7 +373,10 @@ class _productDetailsState extends State<productDetails> {
               onPressed: () {
                 today = DateTime(today.year, today.month, today.day, today.hour,
                     today.minute);
-                String message = "You have new order";
+                String messagetitle = "You have new order";
+                
+                
+                
                 final curr = FirebaseAuth.instance.currentUser;
                
               //bill details
@@ -411,13 +415,20 @@ class _productDetailsState extends State<productDetails> {
                   'Oreder Status': OrderStatus,
                   "Ordernew": true
 
+                });
+                Notifications.add
+
+                ({
+                  'senderId':curr?.uid,
+                  'receiverId':data['Service Provider Id'],
+                  'messageTitle':messagetitle,
+                  'messageBody':'${curr?.displayName} ordered ${data['Item Name']}',
+                  'SendTime': today,
+                  'Seen':false,
+
                 })
-                .
-                then((value) {
-                  String docid=value.id;
-                  
-                  
-                })
+                
+               
 
                 
                 

@@ -202,21 +202,9 @@ class _ToPayOrdersState extends State<ToPayOrders> {
   @override
   User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  final VehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,9 +215,10 @@ class _ToPayOrdersState extends State<ToPayOrders> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
               .where('Oreder Status', isEqualTo: 'accepted')
+              .orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -284,13 +273,92 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      data['Item Name'],
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                    Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 8, left: 8, top: 5),
+                                          child: Container(
+                                            height: 50,
+                                            width: 50,
+                                            child: Center(
+                                              child: Image.network(
+                                                  data['Imageurl']),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              data['Item Name'],
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Quantity : ' + data['Item Qty'],
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Total Payble fee : 2000',
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 50,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              getTime(data['Order Date Time']),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {},
+                                              child: const Text(
+                                                'Pay',
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.purple,
+                                                  fixedSize: const Size(100, 9),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50))),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -408,21 +476,9 @@ class _ToDeliverState extends State<ToDeliver> {
   @override
   User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  final VehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -433,9 +489,10 @@ class _ToDeliverState extends State<ToDeliver> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
               .where('Oreder Status', isEqualTo: 'paid')
+              .orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -595,21 +652,9 @@ class _FinishedState extends State<Finished> {
   @override
   User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  final VehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -620,9 +665,10 @@ class _FinishedState extends State<Finished> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
               .where('Oreder Status', isEqualTo: 'finished')
+              .orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -784,21 +830,9 @@ class _CancelledState extends State<Cancelled> {
   @override
   User? orderdVehicleOwner = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentUser = VehicleOwnerModel();
+  final VehicleOwner = FirebaseAuth.instance.currentUser;
   CollectionReference orders =
       FirebaseFirestore.instance.collection('Order Details');
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(orderdVehicleOwner!.uid)
-        .get()
-        .then((value) {
-      this.CurrentUser = VehicleOwnerModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -809,9 +843,10 @@ class _CancelledState extends State<Cancelled> {
           future: orders
               .where(
                 'vehicle Owner Id',
-                isEqualTo: CurrentUser.uid,
+                isEqualTo: orderdVehicleOwner?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'cancelled')
+              .where('Oreder Status', isEqualTo: 'accepted')
+              .orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

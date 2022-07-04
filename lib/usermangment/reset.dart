@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mypart/usermangment/login.dart';
 import 'package:mypart/usermangment/loginhome.dart';
 import 'package:mypart/usermangment/register.dart';
 import 'package:mypart/usermangment/welcomeScreen.dart';
@@ -121,7 +122,28 @@ class _ResetScreenState extends State<ResetScreen> {
                           onPressed: () {
                             _auth.sendPasswordResetEmail(
                                 email: emailController.text);
-                            Navigator.of(context).pop();
+                                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                        content: const Text(
+                            "Check your Email(check the spam folder"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => LoginScreen()));
+                            },
+                            child: Container(
+                              color: Colors.green,
+                              padding: const EdgeInsets.all(14),
+                              child: const Text("okay"),
+                            ),
+                          ),
+                        ]),
+                  );
+                            
                           },
                         )
                       ],
