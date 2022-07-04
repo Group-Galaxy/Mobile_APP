@@ -82,15 +82,15 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
                       child: Column(children: [
                     GFListTile(
                       color: GFColors.WHITE,
-                      title: Text(chat['date']),
+                      title: Text('Date : ${chat['date'].substring(0, 10)}'),
                     ),
                     GFListTile(
                       color: GFColors.WHITE,
-                      title: Text(chat['vehicleFault']),
+                      title: Text('Vehicle Fault : ${chat['vehicleFault']}'),
                     ),
                     GFListTile(
                       color: GFColors.WHITE,
-                      title: Text(chat['balance']),
+                      title: Text('Amount to Pay : ${chat['balance']}'),
                     ),
                     Row(
                       //crossAxisAlignment: CrossAxisAlignment.end,

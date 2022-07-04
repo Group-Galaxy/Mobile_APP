@@ -36,7 +36,7 @@ class _RepairHomeScreenState extends State<RepairHomeScreen> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Colors.purple,
-                    fixedSize: const Size(120, 40),
+                    fixedSize: const Size(200, 40),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50))),
                 onPressed: () {
@@ -45,16 +45,30 @@ class _RepairHomeScreenState extends State<RepairHomeScreen> {
                 },
                 child: Text('Next'),
               ),
-              GFButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.purple,
+                    fixedSize: const Size(200, 40),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50))),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (contex) => MyAllPendingPayments()));
                 },
-                color: GFColors.FOCUS,
-                text: "Show Pending..",
-              )
+                child: Text('Pending Payments'),
+              ),
+              // GFButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (contex) => MyAllPendingPayments()));
+              //   },
+              //   color: GFColors.FOCUS,
+              //   text: "Pending Payments",
+              // )
             ],
           ),
         ));
