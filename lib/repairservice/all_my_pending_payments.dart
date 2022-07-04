@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:mypart/gateway.dart';
 
 class MyAllPendingPayments extends StatefulWidget {
   MyAllPendingPayments({Key? key}) : super(key: key);
@@ -89,7 +90,12 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
                       //crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Gateway()));
+                          },
                           child: const Text(
                             'Pay',
                             style: TextStyle(fontSize: 10),

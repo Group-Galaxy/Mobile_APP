@@ -16,6 +16,7 @@ import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mypart/controller/payment_controller.dart';
+import 'package:mypart/usermangment/welcomeScreen.dart';
 
 class OrderReceipt extends StatefulWidget {
   var date;
@@ -172,8 +173,10 @@ class _OrderReceiptState extends State<OrderReceipt> {
                                       : 1000)
                               .toString(),
                           contactNo: currentUser['contactNo'].toString(),
-                          //address: _Address.text,
+                          address: _Address.text,
                         );
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WelcomePage()));
                       })
                 ])
               ],
