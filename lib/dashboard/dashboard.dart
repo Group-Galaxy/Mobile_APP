@@ -15,6 +15,7 @@ import 'package:mypart/dashboard/components/list_tile_custom.dart';
 import 'package:mypart/dashboard/themes.dart';
 import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
+import 'package:mypart/report/pp_report_dates.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
@@ -316,7 +317,7 @@ class _NavSideState extends State<NavSide> {
                           .putFile(file);
 
                       imgUrl = await snapshot.ref.getDownloadURL();
-                     await user?.updatePhotoURL(imgUrl);
+                      await user?.updatePhotoURL(imgUrl);
                       setState(() {});
                       print(imgUrl.toString());
                     } else {
@@ -395,6 +396,18 @@ class _NavSideState extends State<NavSide> {
               title: const Text("Comments & Ratings"),
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.report),
+              title: Text("Monthly Report"),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => pp_DateRange(
+                              title: '',
+                            )));
               },
             ),
             ListTile(
