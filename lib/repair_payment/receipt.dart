@@ -9,7 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
 class Receipts extends StatefulWidget {
-  String booking_id = "159j7G2uOjj2cs0Xa6sp";
+  //look repaireserviceDashboard to look booking_id
+  String booking_id = "QgletgMwmVmzk9mdATif";
   Receipts({required this.booking_id});
 
   @override
@@ -192,6 +193,7 @@ class _ReceiptsState extends State<Receipts> {
       Balance,
       Date}) async {
     final docUser = FirebaseFirestore.instance.collection('payments').doc();
+
     final json = {
       'serviceProviderName': ServiceProviderName,
       'userName': UserName,
@@ -200,7 +202,8 @@ class _ReceiptsState extends State<Receipts> {
       'discount': Discount,
       'balance': Balance,
       'date': Date,
-      "is_paid": false
+      "is_paid": false,
+      'DocID': docUser.id
     };
 
     /// Create doc & write data to Firebase
