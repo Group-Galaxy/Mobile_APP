@@ -26,7 +26,7 @@ class _VehicleOwnerNewRequestState extends State<VehicleOwnerNewRequest> {
    
   @override
   Widget build(BuildContext context) {
-    final ServiceProvider= FirebaseAuth.instance.currentUser;
+    final user= FirebaseAuth.instance.currentUser;
     CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');
     return Scaffold(
@@ -34,7 +34,7 @@ class _VehicleOwnerNewRequestState extends State<VehicleOwnerNewRequest> {
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-              .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
+              .where('customerID', isEqualTo: user?.uid)
               .where('Status', isEqualTo: 'Pending').orderBy('BookingDate', descending: true)
               .get(),
           builder:
@@ -194,7 +194,7 @@ class ProcessingRepair extends StatefulWidget {
 class _ProcessingRepairState extends State<ProcessingRepair> {
   @override
   Widget build(BuildContext context) {
-     final ServiceProvider= FirebaseAuth.instance.currentUser;
+     final user= FirebaseAuth.instance.currentUser;
     CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');
     return Scaffold(
@@ -202,7 +202,7 @@ class _ProcessingRepairState extends State<ProcessingRepair> {
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-              .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
+              .where('customerID', isEqualTo: user?.uid)
               .where('Status', isEqualTo: 'accepted').orderBy('BookingDate', descending: true)
               .get(),
           builder:
@@ -362,7 +362,7 @@ class FinishedService extends StatefulWidget {
 }
 
 class _FinishedServiceState extends State<FinishedService> {
-    final ServiceProvider= FirebaseAuth.instance.currentUser;
+    final user= FirebaseAuth.instance.currentUser;
     CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');
   @override
@@ -372,7 +372,7 @@ class _FinishedServiceState extends State<FinishedService> {
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-              .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
+              .where('customerID', isEqualTo: user?.uid)
               .where('Status', isEqualTo: 'finished').orderBy('BookingDate', descending: true)
               .get(),
           builder:
@@ -531,7 +531,7 @@ class CancelledRequest extends StatefulWidget {
 }
 
 class _CancelledRequestState extends State<CancelledRequest> {
-   final ServiceProvider= FirebaseAuth.instance.currentUser;
+   final user= FirebaseAuth.instance.currentUser;
     CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');
   @override
@@ -541,7 +541,7 @@ class _CancelledRequestState extends State<CancelledRequest> {
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
-              .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
+               .where('customerID', isEqualTo: user?.uid)
               .where('Status', isEqualTo: 'cancelled').orderBy('BookingDate', descending: true)
               .get(),
           builder:

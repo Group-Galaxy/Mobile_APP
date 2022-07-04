@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/orders/ordershome.dart';
+import 'package:mypart/repairservice/myjobshome.dart';
 
 class RejectRequests extends StatefulWidget {
   DocumentSnapshot docid;
@@ -92,7 +93,7 @@ CollectionReference orders = FirebaseFirestore.instance.collection('Order Detail
                
               .whenComplete(() {
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => Myorders(initialPage: 5,)));
+                    context, MaterialPageRoute(builder: (_) => MyJobs()));
               });
                 },
                  child: Text('Conform'))
