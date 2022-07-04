@@ -200,7 +200,7 @@ class _RepairServiceProviderLoginState
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => RepaiirDashboard())),
+                      builder: (context) => RepaiirDashboard(title: '',))),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

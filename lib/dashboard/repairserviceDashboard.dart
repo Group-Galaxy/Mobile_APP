@@ -8,15 +8,14 @@ import 'package:mypart/dashboard/components/list_tile_custom.dart';
 import 'package:mypart/dashboard/themes.dart';
 import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
-import 'package:mypart/repair_payment/receipt.dart';
-import 'package:mypart/report/sp_report_dates.dart';
+import 'package:mypart/repairservice/myjobshome.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproLogin.dart';
 
 class RepaiirDashboard extends StatefulWidget {
-  const RepaiirDashboard({Key? key}) : super(key: key);
+  const RepaiirDashboard({Key? key, required String title}) : super(key: key);
   @override
   _RepaiirDashboardState createState() => _RepaiirDashboardState();
 }
@@ -252,60 +251,46 @@ class _RepaiirDashboardState extends State<RepaiirDashboard> {
                 /* Navigator.pushReplacement(
   
                 context, MaterialPageRoute(builder: (_) =>PartsProviderNotifications ()));*/
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.chat),
-              title: Text("Chat"),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.shop_outlined),
-              title: Text("My jobs"),
-              onTap: () {
-                //receipts page....
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Receipts(
-                              booking_id: "rCAjTTUNJz8RieCiHnE5",
-                            )));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.comment_sharp),
-              title: Text("Comments & Ratings"),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.report),
-              title: Text("Monthly Report"),
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => sp_DateRange(
-                              title: '',
-                            )));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout_sharp),
-              title: Text("Log out"),
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => RepairServiceProviderLogin()));
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
+},
+),
+
+ListTile(
+leading: Icon(Icons.chat),
+title: Text("Chat"),
+onTap: () {
+Navigator.pop(context);
+},
+),
+ListTile(
+leading: Icon(Icons.shop_outlined),
+title: Text("My jobs"),
+onTap: () {
+ Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) =>MyJobs ()));
+
+},
+),
+
+ListTile(
+leading: Icon(Icons.comment_sharp),
+title: Text("Comments & Ratings"),
+onTap: () {
+Navigator.pop(context);
+},
+),
+ListTile(
+leading: Icon(Icons.logout_sharp),
+title: Text("Log out"),
+onTap: () {
+Navigator.pushReplacement(
+  
+                context, MaterialPageRoute(builder: (_) =>RepairServiceProviderLogin ()));
+},
+),
+],
+),
+),
+);
 }
