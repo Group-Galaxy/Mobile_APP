@@ -66,7 +66,10 @@ class _BookingState extends State<Booking> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                         
+                        
                       ),
+                      color: Color.fromARGB(255, 239, 175, 244),
+                      elevation: 10,
                       child: Column(children: [
                             GFListTile(
                   color: GFColors.WHITE,

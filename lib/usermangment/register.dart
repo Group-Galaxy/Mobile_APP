@@ -300,7 +300,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: Center(child: CircularProgressIndicator()),
                             ),
                             errorWidget: (context, url, error) =>
-                                const Icon(Icons.account_circle_outlined),
+                                const Icon(Icons.camera_enhance_sharp),
                           ),
                         ),
                       ),
