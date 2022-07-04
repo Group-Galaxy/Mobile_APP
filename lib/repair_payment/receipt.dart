@@ -25,6 +25,7 @@ class _ReceiptsState extends State<Receipts> {
   TextEditingController _Inspection = new TextEditingController();
   TextEditingController _Discount = new TextEditingController();
   TextEditingController _balance = new TextEditingController();
+  TextEditingController _ServiceProviderID = new TextEditingController();
 
   double inspectionvalue = 0.0;
 
@@ -45,6 +46,7 @@ class _ReceiptsState extends State<Receipts> {
         _ServiceProviderName.text = value.data()!["ServiceProviderName"];
         _UserName.text = value.data()!["customerNmae"];
         _VehicleFault.text = value.data()!["vehicleFault"];
+        _ServiceProviderID.text = value.data()!["ServiceProviderID"];
       });
     });
 
@@ -163,8 +165,10 @@ class _ReceiptsState extends State<Receipts> {
                   final Discount = _Discount.text;
                   final Balance = resultValue.toString();
                   final Date = _date;
+                  final ServiceProviderID = _ServiceProviderID.text;
 
                   createUser(
+                    ServiceProviderID: ServiceProviderID,
                     ServiceProviderName: ServiceProviderName,
                     UserName: UserName,
                     VehicleFault: VehicleFault,
@@ -185,7 +189,8 @@ class _ReceiptsState extends State<Receipts> {
   }
 
   Future createUser(
-      {required String ServiceProviderName,
+      {required String ServiceProviderID,
+      ServiceProviderName,
       UserName,
       VehicleFault,
       InspectionValue,
@@ -195,6 +200,7 @@ class _ReceiptsState extends State<Receipts> {
     final docUser = FirebaseFirestore.instance.collection('payments').doc();
 
     final json = {
+      'ServiceProviderID': ServiceProviderID,
       'serviceProviderName': ServiceProviderName,
       'userName': UserName,
       'vehicleFault': VehicleFault,
