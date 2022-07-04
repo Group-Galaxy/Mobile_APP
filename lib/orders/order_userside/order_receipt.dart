@@ -86,7 +86,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
     final PaymentController controller = Get.put(PaymentController());
 
     final delivery_fee = 500;
-    final total_fee = double.parse(widget.price) * int.parse(widget.qty) +
+    final total_fee = double.parse(widget.price) +
         ((widget.qty == 1)
             ? delivery_fee
             : (widget.qty == 2)
@@ -132,7 +132,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
                 GFListTile(
                   color: GFColors.WHITE,
                   titleText:
-                      'Unit Price : ${(widget.price == null) ? "Rs.1000/=" : widget.price}',
+                      'Unit Price : ${(widget.price == null) ? "Rs.1000/=" : (double.parse(widget.price) / double.parse(widget.qty))}',
                 ),
                 GFListTile(
                   color: GFColors.WHITE,
@@ -157,28 +157,23 @@ class _OrderReceiptState extends State<OrderReceipt> {
                         int fee = total_fee.toInt();
                         await controller.makePayment(
                             amount: '${fee}', currency: 'LKR');
-                        // await controller.addpaymentDataToDb(
-                        /*userName: currentUser['firstName'],
-                      serviceProviderID: widget.service_provider_id,
-                      date: widget.date.toString(),
-                      balance: (widget.price * widget.qty +
-                              ((widget.qty == 1)
+                        await controller.addpaymentDataToDb(
+                          userName: currentUser['firstName'],
+                          serviceProviderID: widget.service_provider_id,
+                          date: widget.date.toString(),
+                          balance: '${total_fee}'.toString(),
+                          subTotal: widget.price.toString(),
+                          quantity: widget.qty.toString(),
+                          item: widget.item.toString(),
+                          delivery_fee: ((widget.qty == 1)
                                   ? delivery_fee
                                   : (widget.qty == 2)
                                       ? 750
-                                      : 1000))
-                          .toString(),
-                      subTotal: widget.price.toString(),
-                      quantity: widget.qty.toString(),
-                      item: widget.item!,
-                      delivery_fee: ((widget.qty == 1)
-                              ? delivery_fee
-                              : (widget.qty == 2)
-                                  ? 750
-                                  : 1000)
-                          .toString(),
-                      contactNo: currentUser['contactNo'].toString(),*/
-                        // address: _Address.text
+                                      : 1000)
+                              .toString(),
+                          contactNo: currentUser['contactNo'].toString(),
+                          //address: _Address.text,
+                        );
                       })
                 ])
               ],
