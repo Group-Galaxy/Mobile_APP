@@ -75,13 +75,126 @@ class _NewRequestsState extends State<NewRequests> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text(
-                                        data['vehicleFault'],
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data['vehicleFault'],
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        width: 50,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                getTime(data['BookingDate']),
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              AcceptService(
+                                                                docid: data,
+                                                              )));
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.purple,
+                                                    fixedSize: const Size(
+                                                        100, 9),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50))),
+                                                child: const Text(
+                                                  'Accept',
+                                                  style:
+                                                      TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              RejectRequests(
+                                                                docid: data,
+                                                              )));
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.purple,
+                                                    fixedSize: const Size(
+                                                        100, 9),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50))),
+                                                child: const Text(
+                                                  'Reject',
+                                                  style:
+                                                      TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.purple,
+                                                    fixedSize: const Size(
+                                                        100, 9),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50))),
+                                                child: const Text(
+                                                  'View More',
+                                                  style:
+                                                      TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
