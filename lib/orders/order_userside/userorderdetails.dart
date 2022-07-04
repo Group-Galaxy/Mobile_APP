@@ -271,94 +271,106 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                             ),
                             Column(
                               children: [
+                                // Row(
+                                //   children: [
+                                //     // Column(
+                                //     //   children: [
+                                //     //     Padding(
+                                //     //       padding: const EdgeInsets.only(
+                                //     //           right: 8, left: 8, top: 5),
+                                //     //       child: Container(
+                                //     //         height: 50,
+                                //     //         width: 50,
+                                //     //         child: Center(
+                                //     //           child: Image.network(
+                                //     //               data['Imageurl']),
+                                //     //         ),
+                                //     //       ),
+                                //     //     ),
+                                //     //   ],
+                                //     // ),
+                                //     // Column(
+                                //     //   children: [
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           data['Item Name'],
+                                //     //           style: TextStyle(
+                                //     //               fontSize: 12,
+                                //     //               fontWeight: FontWeight.bold),
+                                //     //           maxLines: 1,
+                                //     //           overflow: TextOverflow.ellipsis,
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           'Quantity : ' + data['Item Qty'],
+                                //     //           style: TextStyle(fontSize: 12),
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           'Total Payble fee : 2000',
+                                //     //           style: TextStyle(fontSize: 12),
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //   ],
+                                //     // ),
+                                //     // const SizedBox(
+                                //     //   width: 50,
+                                //     // ),
+                                //     // Column(
+                                //     //   children: [
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           getTime(data['Order Date Time']),
+                                //     //           style: TextStyle(
+                                //     //               fontSize: 12,
+                                //     //               fontWeight: FontWeight.bold),
+                                //     //           maxLines: 1,
+                                //     //           overflow: TextOverflow.ellipsis,
+                                //     //         )
+                                //     //       ],
+                                //     //     ),
+                                //     //     Row(
+                                //     //       crossAxisAlignment:
+                                //     //           CrossAxisAlignment.start,
+                                //     //       children: [
+                                //     //         ElevatedButton(
+                                //     //           onPressed: () {},
+                                //     //           child: const Text(
+                                //     //             'Pay',
+                                //     //             style: TextStyle(fontSize: 10),
+                                //     //           ),
+                                //     //           style: ElevatedButton.styleFrom(
+                                //     //               primary: Colors.purple,
+                                //     //               fixedSize: const Size(100, 9),
+                                //     //               shape: RoundedRectangleBorder(
+                                //     //                   borderRadius:
+                                //     //                       BorderRadius.circular(
+                                //     //                           50))),
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //   ],
+                                //     // ),
+                                //   ],
+                                // ),
                                 Row(
                                   children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8, left: 8, top: 5),
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Center(
-                                              child: Image.network(
-                                                  data['Imageurl']),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Total Payble fee : 2000',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 50,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              getTime(data['Order Date Time']),
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            )
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'Pay',
-                                                style: TextStyle(fontSize: 10),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.purple,
-                                                  fixedSize: const Size(100, 9),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50))),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Text(
+                                      data['Item Name'],
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
