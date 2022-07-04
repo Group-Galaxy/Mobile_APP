@@ -102,12 +102,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         controller: contactNoEditingController,
         keyboardType: TextInputType.number,
         validator: (value) {
-          RegExp regex = RegExp(r'^.{3,}$');
+          RegExp regex = RegExp(r'^.{10,}$');
           if (value!.isEmpty) {
             return ("Contact number cannot be Empty");
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid phone number(Min. 10 Character)");
+            return ("Enter Valid phone number");
           }
           return null;
         },
@@ -123,6 +123,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             borderRadius: BorderRadius.circular(10),
           ),
         ));
+        
 
     //location field
     final locationField = TextFormField(
@@ -302,7 +303,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: Center(child: CircularProgressIndicator()),
                             ),
                             errorWidget: (context, url, error) =>
-                                const Icon(Icons.account_circle_outlined),
+                                const Icon(Icons.camera_enhance_sharp),
                           ),
                         ),
                       ),
