@@ -75,9 +75,9 @@ class _ReportStateSP extends State<sp_Report> {
                     10,
                   )}'),
 
-              Text('User Name : ${data['userName'].toString()}'),
+              Text('Vehicle Owner Name : ${data['userName'].toString()}'),
               Text('Discount : ${data['discount'].toString()}'),
-              Text('Balance : ${data['balance'].toString()}'),
+              Text('Total : ${data['balance'].toString()}'),
               //Text(data['serviceProviderName'].toString()),
               // Text(data['vehicleFault'].toString()),
 
@@ -134,7 +134,8 @@ class _ReportStateSP extends State<sp_Report> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text('User Name : ${currentUser['firstName']}'),
+                        Text(
+                            'Service Provider Name : ${currentUser['firstName']}'),
                         Text("Total Earnings: ${total}"),
                         // Text("Total: ${total}"),
                       ],

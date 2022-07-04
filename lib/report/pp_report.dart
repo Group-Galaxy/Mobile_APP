@@ -79,8 +79,8 @@ class _ReportState extends State<pp_Report> {
                     10,
                   )}'),
 
-              Text('User Name : ${data['userName'].toString()}'),
-              Text('Balance : ${data['balance'].toString()}'),
+              Text('Vehicle Owner Name : ${data['userName'].toString()}'),
+              Text('Total : ${data['balance'].toString()}'),
               //Text(data['serviceProviderName'].toString()),
               // Text(data['vehicleFault'].toString()),
 
@@ -145,8 +145,9 @@ class _ReportState extends State<pp_Report> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text('User Name : ${currentUser['firstName']}'),
-                        Text("Total: ${total}"),
+                        Text(
+                            'Parts Provider Name : ${currentUser['firstName']}'),
+                        Text("Total Earnings: ${total}"),
                         // Text("Total: ${total}"),
                       ],
                     ),
