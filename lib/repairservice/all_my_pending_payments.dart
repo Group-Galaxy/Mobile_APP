@@ -41,7 +41,14 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
         .where('userName', isEqualTo: currentUser['firstName'])
         .where("is_paid", isEqualTo: false)
         .snapshots();
+
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 245, 213, 249),
+      appBar: AppBar(
+        title: Text('To pay'),
+        centerTitle: true,
+        backgroundColor: Colors.purple,
+      ),
       body: SafeArea(
           child: StreamBuilder(
         stream: _paymetStream,
@@ -62,10 +69,49 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
             children: snap.data!.docs.map((value) {
               var en_chat = jsonEncode(value.data());
               var chat = jsonDecode(en_chat);
-              return GFListTile(
-                color: GFColors.LIGHT,
-                title: Text(chat['vehicleFault']),
-                subTitle: Text("To pay: ${chat['balance']}"),
+              return Center(
+                child: Card(
+                  child: SingleChildScrollView(
+                      child: Column(children: [
+                    GFListTile(
+                      color: GFColors.WHITE,
+                      title: Text(chat['date']),
+                    ),
+                    GFListTile(
+                      color: GFColors.WHITE,
+                      title: Text(chat['vehicleFault']),
+                    ),
+                    GFListTile(
+                      color: GFColors.WHITE,
+                      title: Text(chat['balance']),
+                    ),
+                    Row(
+                      //crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Pay',
+                            style: TextStyle(fontSize: 10),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.purple,
+                              fixedSize: const Size(90, 9),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50))),
+                        ),
+                      ],
+                    ),
+                  ])),
+                  // title: Text(chat['vehicleFault']),
+                  // subTitle: Text("To pay: ${chat['balance']}"),
+                  elevation: 8,
+                  shadowColor: Colors.purple,
+                  margin: EdgeInsets.all(15),
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.purple, width: 2)),
+                ),
               );
             }).toList(),
           );

@@ -98,7 +98,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 245, 213, 249),
         appBar: AppBar(
-          title: Text('Checkout Order'),
+          title: Text('Order Receipt'),
           centerTitle: true,
           backgroundColor: Colors.purple,
         ),
