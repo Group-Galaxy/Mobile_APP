@@ -62,7 +62,7 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
             print("waiting....");
             return CircularProgressIndicator.adaptive();
           }
-          print(snap.data!.docs.first.data());
+          //print(snap.data!.docs.first.data());
           //return Text("data fetched!");
           var snap_data = snap.data!.docs;
           return ListView(
