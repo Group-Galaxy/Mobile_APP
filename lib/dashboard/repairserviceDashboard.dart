@@ -268,7 +268,7 @@ title: Text("My jobs"),
 onTap: () {
  Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) =>MyJobs ()));
+                context, MaterialPageRoute(builder: (_) =>MyJobs()));
 
 },
 ),

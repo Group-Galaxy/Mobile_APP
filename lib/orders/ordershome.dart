@@ -4,7 +4,7 @@ import 'package:mypart/dashboard/dashboard.dart';
 import 'orderdetails.dart';
 
 class Myorders extends StatefulWidget {
-  const Myorders({Key? key}) : super(key: key);
+  const Myorders({Key? key, required int initialPage}) : super(key: key);
 
   @override
   State<Myorders> createState() => _MyordersState();

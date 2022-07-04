@@ -380,7 +380,7 @@ class _NavSideState extends State<NavSide> {
               title: const Text("My orders"),
               onTap: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const Myorders()));
+                    MaterialPageRoute(builder: (_) => const Myorders(initialPage: 1,)));
               },
             ),
             ListTile(
