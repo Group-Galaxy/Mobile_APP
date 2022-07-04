@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
 class Receipts extends StatefulWidget {
-  String booking_id = "rCAjTTUNJz8RieCiHnE5";
+  String booking_id = "159j7G2uOjj2cs0Xa6sp";
   Receipts({required this.booking_id});
 
   @override
@@ -42,12 +42,12 @@ class _ReceiptsState extends State<Receipts> {
       print(value.data());
       setState(() {
         _ServiceProviderName.text = value.data()!["ServiceProviderName"];
-        _UserName.text = value.data()!["customerName"];
-        _VehicleFault.text = value.data()!["VehicleFault"];
+        _UserName.text = value.data()!["customerNmae"];
+        _VehicleFault.text = value.data()!["vehicleFault"];
       });
     });
 
-    //print(res);
+    print(res);
   }
 
   @override
