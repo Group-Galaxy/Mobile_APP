@@ -79,8 +79,8 @@ class _ReportState extends State<pp_Report> {
                     10,
                   )}'),
 
-              Text('User Name : ${data['userName'].toString()}'),
-              Text('Balance : ${data['balance'].toString()}'),
+              Text('Vehicle Owner Name : ${data['userName'].toString()}'),
+              Text('Total : ${data['balance'].toString()}'),
               //Text(data['serviceProviderName'].toString()),
               // Text(data['vehicleFault'].toString()),
 
@@ -129,6 +129,13 @@ class _ReportState extends State<pp_Report> {
                   return CircularProgressIndicator.adaptive();
                 } else {
                   final data = snapshot.data as List<Card>;
+                  if (data.isEmpty) {
+                    return Center(
+                      child: Card(
+                        child: Text("No Data"),
+                      ),
+                    );
+                  }
                   final total_card = Card(
                     child: Column(
                       children: [
@@ -142,9 +149,21 @@ class _ReportState extends State<pp_Report> {
                           ),
                           radius: 60,
                         ),
-                        Text("Total: ${total}"),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                            'Parts Provider Name : ${currentUser['firstName']}'),
+                        Text("Total Earnings: ${total}"),
+                        // Text("Total: ${total}"),
                       ],
                     ),
+                    elevation: 8,
+                    shadowColor: Colors.purple,
+                    margin: EdgeInsets.all(15),
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Colors.purple, width: 2)),
                   );
                   data.insert(0, total_card);
                   return Column(

@@ -15,6 +15,7 @@ class pp_DateRange extends StatefulWidget {
 }
 
 class _DateRangeState extends State<pp_DateRange> {
+  var _date = DateTime.now().toString();
   User? currentAutoPartsProvider = FirebaseAuth.instance.currentUser;
   // VehicleOwnerModel CurrentServiceprovider = VehicleOwnerModel();
   CollectionReference orders =

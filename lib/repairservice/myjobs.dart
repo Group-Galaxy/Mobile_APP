@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:mypart/orders/cancelledorders.dart';
 import 'package:mypart/orders/updateacceptedorders.dart';
+import 'package:mypart/repair_payment/receipt.dart';
 import 'package:mypart/repairservice/acceptservice.dart';
 import 'package:mypart/repairservice/rejectRequest.dart';
 import 'package:mypart/services/searchService.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
 import '../../usermangment/usermodel.dart';
-
 
 class NewRequests extends StatefulWidget {
   const NewRequests({Key? key}) : super(key: key);
@@ -23,20 +22,21 @@ class NewRequests extends StatefulWidget {
 }
 
 class _NewRequestsState extends State<NewRequests> {
-    bool isaccepted=false;
-     bool isrejected=false;
+  bool isaccepted = false;
+  bool isrejected = false;
   @override
   Widget build(BuildContext context) {
-    final ServiceProvider= FirebaseAuth.instance.currentUser;
+    final ServiceProvider = FirebaseAuth.instance.currentUser;
     CollectionReference orders =
-      FirebaseFirestore.instance.collection('BookingDetails');
+        FirebaseFirestore.instance.collection('BookingDetails');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
               .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
-              .where('Status', isEqualTo: 'Pending').orderBy('BookingDate', descending: true)
+              .where('Status', isEqualTo: 'Pending')
+              .orderBy('BookingDate', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -48,39 +48,33 @@ class _NewRequestsState extends State<NewRequests> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
 
-                   
-               
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 5.0),
                     child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      child: Container(
-                       
-                       
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0.0),
+                        ),
+                        child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 10.0),
-                          child: 
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      
                                       Column(
                                         children: [
                                           Row(
@@ -89,124 +83,213 @@ class _NewRequestsState extends State<NewRequests> {
                                                 data['vehicleFault'],
                                                 style: const TextStyle(
                                                     fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ],
                                           ),
-                                          
                                         ],
                                       ),
                                       const SizedBox(
                                         width: 50,
                                       ),
-                                       Column(
+                                      Column(
                                         children: [
                                           Row(
-                                           
                                             children: [
-                                              Text(getTime(data['BookingDate']),
-                                               style: const TextStyle(
+                                              Text(
+                                                getTime(data['BookingDate']),
+                                                style: const TextStyle(
                                                     fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
-                                              
                                               )
-
-                                              
                                             ],
                                           ),
                                           Row(
-                                             
-                                            children:<Widget> [
+                                            children: <Widget>[
                                               ElevatedButton(
                                                 onPressed: () {
-                                                   
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) => AcceptService(
-                                                            docid: data,
-                                                          )));
-                                            
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              AcceptService(
+                                                                docid: data,
+                                                              )));
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  
                                                     primary: Colors.purple,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
+                                                    fixedSize: const Size(
+                                                        100, 9),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50))),
                                                 child: const Text(
                                                   'Accept',
-                                                  style: TextStyle(fontSize: 10),
+                                                  style:
+                                                      TextStyle(fontSize: 10),
                                                 ),
                                               ),
                                             ],
-                              
                                           ),
-                                           Row(
-                                             
-                                            children:<Widget> [
+                                          Row(
+                                            children: <Widget>[
                                               ElevatedButton(
                                                 onPressed: () {
-                                                   Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) => RejectRequests(
-                                                            docid: data, 
-                                                          )));
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              RejectRequests(
+                                                                docid: data,
+                                                              )));
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                     primary: Colors.purple,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
+                                                    fixedSize: const Size(
+                                                        100, 9),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50))),
                                                 child: const Text(
                                                   'Reject',
-                                                  style: TextStyle(fontSize: 10),
+                                                  style:
+                                                      TextStyle(fontSize: 10),
                                                 ),
                                               ),
                                             ],
-                              
                                           ),
-                                         Row(
-                                            
-                                              crossAxisAlignment:
+                                          Row(
+                                            crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               ElevatedButton(
                                                 onPressed: () {},
                                                 style: ElevatedButton.styleFrom(
                                                     primary: Colors.purple,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
+                                                    fixedSize: const Size(
+                                                        100, 9),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50))),
                                                 child: const Text(
                                                   'View More',
-                                                  style: TextStyle(fontSize: 10),
+                                                  style:
+                                                      TextStyle(fontSize: 10),
                                                 ),
                                               ),
-                                            
                                             ],
                                           ),
-                                         
                                         ],
                                       ),
                                     ],
                                   ),
-                                 
-                            
-                        
-                      )
-                    ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 50,
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        getTime(data['BookingDate']),
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) => AcceptService(
+                                                        docid: data,
+                                                      )));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.green,
+                                            fixedSize: const Size(100, 9),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50))),
+                                        child: const Text(
+                                          'Accept',
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      RejectRequests(
+                                                        docid: data,
+                                                      )));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.red,
+                                            fixedSize: const Size(100, 9),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50))),
+                                        child: const Text(
+                                          'Reject',
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.purple,
+                                            fixedSize: const Size(100, 9),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50))),
+                                        child: const Text(
+                                          'View More',
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
                   );
                 },
               ),
@@ -214,29 +297,22 @@ class _NewRequestsState extends State<NewRequests> {
           },
         ),
       ),
-
-      
     );
   }
-   getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
-}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -251,16 +327,17 @@ class ProcessingJobs extends StatefulWidget {
 class _ProcessingJobsState extends State<ProcessingJobs> {
   @override
   Widget build(BuildContext context) {
-     final ServiceProvider= FirebaseAuth.instance.currentUser;
+    final ServiceProvider = FirebaseAuth.instance.currentUser;
     CollectionReference orders =
-      FirebaseFirestore.instance.collection('BookingDetails');
+        FirebaseFirestore.instance.collection('BookingDetails');
     return Scaffold(
-         backgroundColor: const Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
               .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
-              .where('Status', isEqualTo: 'accepted').orderBy('BookingDate', descending: true)
+              .where('Status', isEqualTo: 'accepted')
+              .orderBy('BookingDate', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -272,109 +349,95 @@ class _ProcessingJobsState extends State<ProcessingJobs> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
 
-                   
-               
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 5.0),
                     child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      child: Container(
-                       
-                       
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0.0),
+                        ),
+                        child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 10.0),
-                          child: 
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                data['vehicleFault'],
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                          
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 50,
-                                      ),
-                                       Column(
-                                        children: [
-                                          Row(
-                                           
-                                            children: [
-                                              Text(getTime(data['BookingDate']),
-                                               style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              
-                                              )
-
-                                              
-                                            ],
-                                          ),
-                                          
-                                         Row(
-                                            
-                                              crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: Colors.purple,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'View More',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            
-                                            ],
-                                          ),
-                                         
-                                        ],
+                                      Text(
+                                        data['vehicleFault'],
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
-                                 
-                            
-                        
-                      )
-                    ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 50,
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        getTime(data['BookingDate']),
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          print(data.id);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Receipts(
+                                                        booking_id: data.id,
+                                                      )));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.purple,
+                                            fixedSize: const Size(100, 9),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50))),
+                                        child: const Text(
+                                          'View More',
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
                   );
                 },
               ),
@@ -382,33 +445,23 @@ class _ProcessingJobsState extends State<ProcessingJobs> {
           },
         ),
       ),
-
     );
   }
-  getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
 }
-}
-
-   
-
-
 
 ////////////////Finished Jobs
 class FinishedJobs extends StatefulWidget {
@@ -419,18 +472,19 @@ class FinishedJobs extends StatefulWidget {
 }
 
 class _FinishedJobsState extends State<FinishedJobs> {
-    final ServiceProvider= FirebaseAuth.instance.currentUser;
-    CollectionReference orders =
+  final ServiceProvider = FirebaseAuth.instance.currentUser;
+  CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
- backgroundColor: const Color.fromARGB(255, 235, 231, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 231, 235),
       body: Container(
         child: FutureBuilder<QuerySnapshot>(
           future: orders
               .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
-              .where('Status', isEqualTo: 'finished').orderBy('BookingDate', descending: true)
+              .where('Status', isEqualTo: 'finished')
+              .orderBy('BookingDate', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -442,109 +496,86 @@ class _FinishedJobsState extends State<FinishedJobs> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
 
-                   
-               
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 5.0),
                     child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      child: Container(
-                       
-                       
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0.0),
+                        ),
+                        child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 10.0),
-                          child: 
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                data['vehicleFault'],
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                          
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 50,
-                                      ),
-                                       Column(
-                                        children: [
-                                          Row(
-                                           
-                                            children: [
-                                              Text(getTime(data['BookingDate']),
-                                               style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              
-                                              )
-
-                                              
-                                            ],
-                                          ),
-                                         
-                                         Row(
-                                            
-                                              crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: Colors.purple,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'View More',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            
-                                            ],
-                                          ),
-                                         
-                                        ],
+                                      Text(
+                                        data['vehicleFault'],
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
-                                 
-                            
-                        
-                      )
-                    ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 50,
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        getTime(data['BookingDate']),
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.purple,
+                                            fixedSize: const Size(100, 9),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50))),
+                                        child: const Text(
+                                          'View More',
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
                   );
                 },
               ),
@@ -552,31 +583,23 @@ class _FinishedJobsState extends State<FinishedJobs> {
           },
         ),
       ),
-
     );
-    
   }
-  getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
 }
-}
-
 
 ///////////cancelled Jobs
 
@@ -588,8 +611,8 @@ class CancelledJobs extends StatefulWidget {
 }
 
 class _CancelledJobsState extends State<CancelledJobs> {
-   final ServiceProvider= FirebaseAuth.instance.currentUser;
-    CollectionReference orders =
+  final ServiceProvider = FirebaseAuth.instance.currentUser;
+  CollectionReference orders =
       FirebaseFirestore.instance.collection('BookingDetails');
   @override
   Widget build(BuildContext context) {
@@ -599,7 +622,8 @@ class _CancelledJobsState extends State<CancelledJobs> {
         child: FutureBuilder<QuerySnapshot>(
           future: orders
               .where('ServiceProviderID', isEqualTo: ServiceProvider?.uid)
-              .where('Status', isEqualTo: 'cancelled').orderBy('BookingDate', descending: true)
+              .where('Status', isEqualTo: 'cancelled')
+              .orderBy('BookingDate', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -611,109 +635,86 @@ class _CancelledJobsState extends State<CancelledJobs> {
                 child: CircularProgressIndicator(),
               );
             }
-            
 
             return Container(
               child: ListView.builder(
                 itemCount: snapshot.data!.size,
                 itemBuilder: (BuildContext context, int i) {
                   var data = snapshot.data!.docs[i];
-                
-                
-                  
 
-                   
-               
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 5.0),
                     child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      child: Container(
-                       
-                       
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0.0),
+                        ),
+                        child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 10.0),
-                          child: 
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                data['vehicleFault'],
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                          
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 50,
-                                      ),
-                                       Column(
-                                        children: [
-                                          Row(
-                                           
-                                            children: [
-                                              Text(getTime(data['BookingDate']),
-                                               style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              
-                                              )
-
-                                              
-                                            ],
-                                          ),
-                                          
-                                         Row(
-                                            
-                                              crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: Colors.purple,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'View More',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            
-                                            ],
-                                          ),
-                                         
-                                        ],
+                                      Text(
+                                        data['vehicleFault'],
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
-                                 
-                            
-                        
-                      )
-                    ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 50,
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        getTime(data['BookingDate']),
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.purple,
+                                            fixedSize: const Size(100, 9),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50))),
+                                        child: const Text(
+                                          'View More',
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
                   );
                 },
               ),
@@ -721,28 +722,20 @@ class _CancelledJobsState extends State<CancelledJobs> {
           },
         ),
       ),
-
-
     );
-    
   }
-  getTime( Timestamp Time) {
-    
-    
-DateTime OrderDate = Time.toDate();
-   
-    
-    
 
+  getTime(Timestamp Time) {
+    DateTime OrderDate = Time.toDate();
 
-  if (DateTime.now().difference(OrderDate).inMinutes < 2) {
-    return "a few seconds ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
-    return "${DateTime.now().difference(OrderDate).inHours} hours ago";
-  } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
-    return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    if (DateTime.now().difference(OrderDate).inMinutes < 2) {
+      return "a few seconds ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
+      return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
+      return "${DateTime.now().difference(OrderDate).inHours} hours ago";
+    } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
+      return "${DateTime.now().difference(OrderDate).inDays} days ago";
+    }
   }
-}
 }

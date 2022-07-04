@@ -53,7 +53,7 @@ class PaymentPage extends StatelessWidget {
                     MaterialStateProperty.all<Color>(Colors.purple),
               ),
               onPressed: () {
-                controller.makePayment(amount: '10', currency: 'USD');
+                controller.makePayment(amount: '10', currency: 'LKR');
               },
               child: const Text(
                 'Make Payment',

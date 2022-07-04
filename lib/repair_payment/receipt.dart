@@ -9,7 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
 class Receipts extends StatefulWidget {
-  String booking_id = "rCAjTTUNJz8RieCiHnE5";
+  //look repaireserviceDashboard to look booking_id
+  String booking_id = "QgletgMwmVmzk9mdATif";
   Receipts({required this.booking_id});
 
   @override
@@ -24,6 +25,7 @@ class _ReceiptsState extends State<Receipts> {
   TextEditingController _Inspection = new TextEditingController();
   TextEditingController _Discount = new TextEditingController();
   TextEditingController _balance = new TextEditingController();
+  TextEditingController _ServiceProviderID = new TextEditingController();
 
   double inspectionvalue = 0.0;
 
@@ -42,12 +44,13 @@ class _ReceiptsState extends State<Receipts> {
       print(value.data());
       setState(() {
         _ServiceProviderName.text = value.data()!["ServiceProviderName"];
-        _UserName.text = value.data()!["customerName"];
-        _VehicleFault.text = value.data()!["VehicleFault"];
+        _UserName.text = value.data()!["customerNmae"];
+        _VehicleFault.text = value.data()!["vehicleFault"];
+        _ServiceProviderID.text = value.data()!["ServiceProviderID"];
       });
     });
 
-    //print(res);
+    print(res);
   }
 
   @override
@@ -115,6 +118,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _Inspection,
                   decoration: InputDecoration(
                       icon: Icon(Icons.description),
@@ -122,6 +126,7 @@ class _ReceiptsState extends State<Receipts> {
           Padding(
               padding: const EdgeInsets.all(0.0),
               child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _Discount,
                   decoration: InputDecoration(
                       icon: Icon(Icons.description), labelText: 'Discount'))),
@@ -142,7 +147,7 @@ class _ReceiptsState extends State<Receipts> {
                 child: Text("Send Details"),
                 textColor: Colors.white,
                 color: Colors.purple,
-                onPressed: () {
+                onPressed: () async {
                   inspectionvalue = double.parse(_Inspection.text);
                   discountvalue = double.parse(_Discount.text);
 
@@ -162,8 +167,10 @@ class _ReceiptsState extends State<Receipts> {
                   final Discount = _Discount.text;
                   final Balance = resultValue.toString();
                   final Date = _date;
+                  final ServiceProviderID = _ServiceProviderID.text;
 
                   createUser(
+                    ServiceProviderID: ServiceProviderID,
                     ServiceProviderName: ServiceProviderName,
                     UserName: UserName,
                     VehicleFault: VehicleFault,
@@ -174,8 +181,12 @@ class _ReceiptsState extends State<Receipts> {
                   );
 
                   print("the selected date is ${_date}");
+
+                  await Future.delayed(const Duration(seconds: 2));
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RepaiirDashboard(title: '',)));
+                      builder: (context) => RepaiirDashboard(
+                            title: '',
+                          )));
                 },
               ),
             ],
@@ -184,7 +195,8 @@ class _ReceiptsState extends State<Receipts> {
   }
 
   Future createUser(
-      {required String ServiceProviderName,
+      {required String ServiceProviderID,
+      ServiceProviderName,
       UserName,
       VehicleFault,
       InspectionValue,
@@ -192,7 +204,9 @@ class _ReceiptsState extends State<Receipts> {
       Balance,
       Date}) async {
     final docUser = FirebaseFirestore.instance.collection('payments').doc();
+
     final json = {
+      'ServiceProviderID': ServiceProviderID,
       'serviceProviderName': ServiceProviderName,
       'userName': UserName,
       'vehicleFault': VehicleFault,
@@ -200,7 +214,8 @@ class _ReceiptsState extends State<Receipts> {
       'discount': Discount,
       'balance': Balance,
       'date': Date,
-      "is_paid": false
+      "is_paid": false,
+      'DocID': docUser.id
     };
 
     /// Create doc & write data to Firebase

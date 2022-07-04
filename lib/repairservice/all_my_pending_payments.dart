@@ -3,8 +3,14 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/utils.dart';
+import 'package:get/utils.dart';
 import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:mypart/controller/payment_controller_repaire.dart';
+import 'package:mypart/gateway.dart';
+import 'package:mypart/reviews/review_give_screen.dart';
 
 class MyAllPendingPayments extends StatefulWidget {
   MyAllPendingPayments({Key? key}) : super(key: key);
@@ -35,6 +41,7 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
 
   @override
   Widget build(BuildContext context) {
+    final PaymentController2 controller = Get.put(PaymentController2());
     print(currentUser);
     final Stream<QuerySnapshot> _paymetStream = FirebaseFirestore.instance
         .collection('payments')
@@ -75,31 +82,56 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
                       child: Column(children: [
                     GFListTile(
                       color: GFColors.WHITE,
-                      title: Text(chat['date']),
+                      title: Text('Date : ${chat['date'].substring(0, 10)}'),
                     ),
                     GFListTile(
                       color: GFColors.WHITE,
-                      title: Text(chat['vehicleFault']),
+                      title: Text('Vehicle Fault : ${chat['vehicleFault']}'),
                     ),
                     GFListTile(
                       color: GFColors.WHITE,
-                      title: Text(chat['balance']),
+                      title: Text('Amount to Pay : ${chat['balance']}'),
                     ),
                     Row(
                       //crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Pay',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.purple,
-                              fixedSize: const Size(90, 9),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
-                        ),
+                            child: Text(
+                              'Pay',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.purple,
+                                fixedSize: const Size(90, 9),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50))),
+                            onPressed: () async {
+                              int fee = double.parse(chat['balance']).toInt();
+                              await controller.makePayment(
+                                  amount: '${fee}', currency: 'LKR');
+                              await controller.addpaymentDataToDb(
+                                is_paid: true,
+                                balance: '${chat['balance']}',
+                                date: '${chat['date']}',
+                                discount: '${chat['discount']}',
+                                inspectionValue: '${chat['inspectionValue']}',
+                                serviceProviderName:
+                                    '${chat['serviceProviderName']}',
+                                userName: '${chat['userName']}',
+                                vehicleFault: '${chat['vehicleFault']}',
+                                DocID: '${chat['DocID']}',
+                              );
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ReviewGiveScreen()));
+                            }
+                            /* onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Gateway()));
+                          }, */
+
+                            ),
                       ],
                     ),
                   ])),

@@ -107,7 +107,7 @@ class _NewordersState extends State<Neworders> {
                                         Row(
                                           children: [
                                             Text(
-                                               'Rs ${data['Total'].toString()}',
+                                              'Rs ${data['Total'].toString()}',
                                               style: TextStyle(fontSize: 12),
                                             ),
                                           ],
@@ -254,9 +254,99 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            
                             Column(
                               children: [
+                                // Row(
+                                //   children: [
+                                //     // Column(
+                                //     //   children: [
+                                //     //     Padding(
+                                //     //       padding: const EdgeInsets.only(
+                                //     //           right: 8, left: 8, top: 5),
+                                //     //       child: Container(
+                                //     //         height: 50,
+                                //     //         width: 50,
+                                //     //         child: Center(
+                                //     //           child: Image.network(
+                                //     //               data['Imageurl']),
+                                //     //         ),
+                                //     //       ),
+                                //     //     ),
+                                //     //   ],
+                                //     // ),
+                                //     // Column(
+                                //     //   children: [
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           data['Item Name'],
+                                //     //           style: TextStyle(
+                                //     //               fontSize: 12,
+                                //     //               fontWeight: FontWeight.bold),
+                                //     //           maxLines: 1,
+                                //     //           overflow: TextOverflow.ellipsis,
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           'Quantity : ' + data['Item Qty'],
+                                //     //           style: TextStyle(fontSize: 12),
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           'Total Payble fee : 2000',
+                                //     //           style: TextStyle(fontSize: 12),
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //   ],
+                                //     // ),
+                                //     // const SizedBox(
+                                //     //   width: 50,
+                                //     // ),
+                                //     // Column(
+                                //     //   children: [
+                                //     //     Row(
+                                //     //       children: [
+                                //     //         Text(
+                                //     //           getTime(data['Order Date Time']),
+                                //     //           style: TextStyle(
+                                //     //               fontSize: 12,
+                                //     //               fontWeight: FontWeight.bold),
+                                //     //           maxLines: 1,
+                                //     //           overflow: TextOverflow.ellipsis,
+                                //     //         )
+                                //     //       ],
+                                //     //     ),
+                                //     //     Row(
+                                //     //       crossAxisAlignment:
+                                //     //           CrossAxisAlignment.start,
+                                //     //       children: [
+                                //     //         ElevatedButton(
+                                //     //           onPressed: () {},
+                                //     //           child: const Text(
+                                //     //             'Pay',
+                                //     //             style: TextStyle(fontSize: 10),
+                                //     //           ),
+                                //     //           style: ElevatedButton.styleFrom(
+                                //     //               primary: Colors.purple,
+                                //     //               fixedSize: const Size(100, 9),
+                                //     //               shape: RoundedRectangleBorder(
+                                //     //                   borderRadius:
+                                //     //                       BorderRadius.circular(
+                                //     //                           50))),
+                                //     //         ),
+                                //     //       ],
+                                //     //     ),
+                                //     //   ],
+                                //     // ),
+                                //   ],
+                                // ),
                                 Row(
                                   children: [
                                     Column(
@@ -300,7 +390,7 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                         Row(
                                           children: [
                                             Text(
-                                               'Rs ${data['Total'].toString()}',
+                                              'Rs ${data['Total'].toString()}',
                                               style: TextStyle(fontSize: 12),
                                             ),
                                           ],
@@ -330,24 +420,30 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {
-                                                 Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    OrderReceipt(
-                                                      date: DateTime.now()
-                                                          .toString()
-                                                          .substring(0, 10),
-                                                      price: data['SubTotal']
-                                                          .toString(),
-                                                      providerName: data[
-                                                          'Service Provider Name'],
-                                                      qty: data['Item Qty'],
-                                                      item: data['Item Name'],
-                                                      service_provider_id: data[
-                                                          'Service Provider Id'],
-                                                           docid: data,
-                                                    )));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            OrderReceipt(
+                                                              date: DateTime
+                                                                      .now()
+                                                                  .toString()
+                                                                  .substring(
+                                                                      0, 10),
+                                                              price: data[
+                                                                      'SubTotal']
+                                                                  .toString(),
+                                                              providerName: data[
+                                                                  'Service Provider Name'],
+                                                              qty: data[
+                                                                  'Item Qty'],
+                                                              item: data[
+                                                                  'Item Name'],
+                                                              service_provider_id:
+                                                                  data[
+                                                                      'Service Provider Id'],
+                                                              docid: data,
+                                                            )));
                                               },
                                               child: const Text(
                                                 'Pay',
@@ -367,11 +463,8 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                     ),
                                   ],
                                 ),
-                                
                               ],
                             ),
-                           
-                           
                           ],
                         ),
                       ),
@@ -504,7 +597,7 @@ class _ToDeliverState extends State<ToDeliver> {
                                 Row(
                                   children: [
                                     Text(
-                                       'Rs ${data['Total'].toString()}',
+                                      'Rs ${data['Total'].toString()}',
                                       style: TextStyle(fontSize: 12),
                                     ),
                                   ],
@@ -680,7 +773,7 @@ class _FinishedState extends State<Finished> {
                                 Row(
                                   children: [
                                     Text(
-                                       'Rs ${data['Total'].toString()}',
+                                      'Rs ${data['Total'].toString()}',
                                       style: TextStyle(fontSize: 12),
                                     ),
                                   ],
@@ -838,8 +931,7 @@ class _CancelledState extends State<Cancelled> {
                                 Row(
                                   children: [
                                     Container(
-                                      
-                                    width: 80,
+                                      width: 80,
                                       child: Text(
                                         data['Item Name'],
                                         style: TextStyle(
@@ -867,7 +959,6 @@ class _CancelledState extends State<Cancelled> {
                                     Container(
                                       width: 150,
                                       child: Text(
-                                        
                                         'Reason for cancel: ' +
                                             data['resonForCancel'],
                                         softWrap: false,
