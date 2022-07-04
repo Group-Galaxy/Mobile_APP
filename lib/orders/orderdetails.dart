@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:mypart/orders/cancelledorders.dart';
 import 'package:mypart/orders/updateacceptedorders.dart';
+import 'package:mypart/orders/viewMap.dart';
 import 'package:mypart/services/searchService.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 
@@ -123,9 +124,9 @@ class _NewordersState extends State<Neworders> {
                                             ],
                                           ),
                                           Row(
-                                            children: const [
+                                            children:  [
                                               Text(
-                                                'Total Payble fee : 2000',
+                                                'Rs${data['Total'].toString()}',
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                             ],
@@ -265,7 +266,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
@@ -310,7 +311,7 @@ class _ToPayOrdersState extends State<ToPayOrders> {
           future: orders
               .where('Service Provider Id', isEqualTo: PartsProvider?.uid)
               
-              .where('Oreder Status', isEqualTo: 'accepted')
+              .where('Oreder Status', isEqualTo: 'accepted').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -389,9 +390,9 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                             ],
                                           ),
                                           Row(
-                                            children: const [
+                                            children:  [
                                               Text(
-                                                'Total Payble fee : 2000',
+                                                'Rs ${data['Total'].toString()}',
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                             ],
@@ -402,6 +403,7 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                         width: 50,
                                       ),
                                        Column(
+                                        
                                         children: [
                                           Row(
                                            
@@ -475,7 +477,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
@@ -528,7 +530,7 @@ class _ToDeliverState extends State<ToDeliver> {
                 'Service Provider Id',
                 isEqualTo: CurrentServiceprovider.uid,
               )
-              .where('Oreder Status', isEqualTo: 'paid')
+              .where('Oreder Status', isEqualTo: 'paid').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -609,9 +611,9 @@ class _ToDeliverState extends State<ToDeliver> {
                                           ],
                                         ),
                                         Row(
-                                          children: const [
+                                          children:  [
                                             Text(
-                                              'Total Payble fee : 2000',
+                                               'Rs ${data['Total'].toString()}',
                                               style: TextStyle(fontSize: 12),
                                             ),
                                           ],
@@ -661,7 +663,35 @@ class _ToDeliverState extends State<ToDeliver> {
                                           
                                           ],
                                         ),
-                                       
+                                       Row(
+                                          
+                                            crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) => ViewMap(
+                                                            docid: data,
+                                                          )));
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.purple,
+                                                  fixedSize: const Size(100, 9),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50))),
+                                              child: const Text(
+                                                'View Map',
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ),
+                                          
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -694,7 +724,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
@@ -748,7 +778,7 @@ class _FinishedState extends State<Finished> {
                 'Service Provider Id',
                 isEqualTo: CurrentServiceprovider.uid,
               )
-              .where('Oreder Status', isEqualTo: 'accepted')
+              .where('Oreder Status', isEqualTo: 'finished').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -829,9 +859,9 @@ class _FinishedState extends State<Finished> {
                                           ],
                                         ),
                                         Row(
-                                          children: const [
+                                          children:  [
                                             Text(
-                                              'Total Payble fee : 2000',
+                                               'Rs ${data['Total'].toString()}',
                                               style: TextStyle(fontSize: 12),
                                             ),
                                           ],
@@ -874,7 +904,7 @@ class _FinishedState extends State<Finished> {
                                                           BorderRadius.circular(
                                                               50))),
                                               child: const Text(
-                                                'View More',
+                                                'View more',
                                                 style: TextStyle(fontSize: 10),
                                               ),
                                             ),
@@ -914,7 +944,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {
@@ -958,7 +988,7 @@ class _CancelledState extends State<Cancelled> {
                 'Service Provider Id',
                 isEqualTo: vehiclePartsProvider?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'cancelled')
+              .where('Oreder Status', isEqualTo: 'cancelled').orderBy('Order Date Time', descending: true)
               .get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1052,7 +1082,7 @@ class _CancelledState extends State<Cancelled> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      width: 50,
+                                      width: 20,
                                     ),
                                      Column(
                                       children: [
@@ -1106,7 +1136,7 @@ DateTime OrderDate = Time.toDate();
   if (DateTime.now().difference(OrderDate).inMinutes < 2) {
     return "a few seconds ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 60) {
-    return "${DateTime.now().difference(OrderDate).inHours} min ago";
+    return "${DateTime.now().difference(OrderDate).inMinutes} min ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes < 1440) {
     return "${DateTime.now().difference(OrderDate).inHours} hours ago";
   } else if (DateTime.now().difference(OrderDate).inMinutes > 1440) {

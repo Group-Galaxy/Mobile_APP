@@ -34,7 +34,7 @@ class _WelcomePageState extends State<WelcomePage> {
       return const DriverHome();
     }
     if (ismechanicn) {
-      return RepaiirDashboard(
+      return RepaiirDashboard(title: 'Dashboard',
           //title: 'Dashboard',
           );
     }
@@ -43,7 +43,7 @@ class _WelcomePageState extends State<WelcomePage> {
         title: 'Dashboard',
       );
     } else {
-      return Scaffold(
+return Scaffold(
         body: Center(
           child: Container(
             color: Colors.white,
@@ -71,13 +71,13 @@ class _WelcomePageState extends State<WelcomePage> {
                     const Text(
                       'Choose the user Type',
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 15,
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.italic),
                     ),
                     const SizedBox(
-                      height: 80,
+                      height: 00,
                     ),
                     SizedBox(
                       height: 500,
@@ -111,13 +111,13 @@ class _WelcomePageState extends State<WelcomePage> {
                                     )),
                               ),
                               const Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(00),
                                 child: SizedBox(
                                   child: Text(
                                     'vehicle owner',
                                     style: TextStyle(
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ),
@@ -126,19 +126,19 @@ class _WelcomePageState extends State<WelcomePage> {
                                   child: Text(
                                 'Do you need to repair your vehicle?',
                                 style: TextStyle(
-                                    fontSize: 8, fontStyle: FontStyle.italic),
+                                    fontSize: 11, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
                               )),
                               const SizedBox(
                                   child: Text(
                                 'Do you need to buy vehicle parts?',
                                 style: TextStyle(
-                                    fontSize: 8, fontStyle: FontStyle.italic),
+                                    fontSize: 11, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
                               )),
                               const SizedBox(
                                   child: Text(
                                 'Log from here...',
                                 style: TextStyle(
-                                    fontSize: 8, fontStyle: FontStyle.italic),
+                                    fontSize: 11, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
                               )),
                             ],
                           ),
@@ -175,13 +175,13 @@ class _WelcomePageState extends State<WelcomePage> {
                                     )),
                               ),
                               const Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(00),
                                 child: SizedBox(
                                   child: Text(
                                     'vehicle parts provider',
                                     style: TextStyle(
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ),
@@ -190,13 +190,13 @@ class _WelcomePageState extends State<WelcomePage> {
                                   child: Text(
                                 'Do you wish to give your service \n by providing vehicle parts?',
                                 style: TextStyle(
-                                    fontSize: 8, fontStyle: FontStyle.italic),
+                                    fontSize: 11, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
                               )),
                               const SizedBox(
                                   child: Text(
                                 'Log from here...',
                                 style: TextStyle(
-                                    fontSize: 8, fontStyle: FontStyle.italic),
+                                    fontSize: 11, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
                               )),
                             ],
                           ),
@@ -231,13 +231,13 @@ class _WelcomePageState extends State<WelcomePage> {
                                     )),
                               ),
                               const Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(00),
                                 child: SizedBox(
                                   child: Text(
                                     'vehicle repair service provider',
                                     style: TextStyle(
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ),
@@ -246,13 +246,13 @@ class _WelcomePageState extends State<WelcomePage> {
                                   child: Text(
                                 'Do you wish to give your service \n by repairing vehicles?',
                                 style: TextStyle(
-                                    fontSize: 8, fontStyle: FontStyle.italic),
+                                    fontSize: 11, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
                               )),
                               const SizedBox(
                                   child: Text(
                                 'Log from here...',
                                 style: TextStyle(
-                                    fontSize: 8, fontStyle: FontStyle.italic),
+                                    fontSize: 11, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500),
                               )),
                             ],
                           ),

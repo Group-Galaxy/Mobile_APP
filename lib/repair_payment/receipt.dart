@@ -180,7 +180,7 @@ class _ReceiptsState extends State<Receipts> {
 
                   print("the selected date is ${_date}");
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RepaiirDashboard()));
+                      builder: (context) => RepaiirDashboard(title: '',)));
                 },
               ),
             ],

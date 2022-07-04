@@ -19,6 +19,7 @@ import 'package:mypart/controller/payment_controller.dart';
 import 'package:mypart/usermangment/welcomeScreen.dart';
 
 class OrderReceipt extends StatefulWidget {
+  DocumentSnapshot docid;
   var date;
   var price;
   var providerName;
@@ -34,7 +35,8 @@ class OrderReceipt extends StatefulWidget {
       this.providerName,
       this.qty,
       required this.item,
-      required this.service_provider_id})
+      required this.service_provider_id,
+      required this.docid})
       : super(key: mykey);
 
   @override
@@ -155,6 +157,8 @@ class _OrderReceiptState extends State<OrderReceipt> {
                       textColor: Colors.white,
                       color: Colors.purple,
                       onPressed: () async {
+                        await widget.docid.reference
+                            .update({'Oreder Status': 'paid'});
                         int fee = total_fee.toInt();
                         await controller.makePayment(
                             amount: '${fee}', currency: 'LKR');
@@ -173,6 +177,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
                                       : 1000)
                               .toString(),
                           contactNo: currentUser['contactNo'].toString(),
+                          ordersNo: widget.docid,
                           address: _Address.text,
                         );
                         Navigator.of(context).push(MaterialPageRoute(

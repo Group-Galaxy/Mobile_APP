@@ -301,6 +301,10 @@ class _productDetailsState extends State<productDetails> {
       /*floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomBar(),*/
       bottomSheet: BottomAppBar(
+
+
+
+        
           child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16),
         child: Row(
@@ -450,6 +454,7 @@ class _productDetailsState extends State<productDetails> {
                               qty: OrderQuantity,
                               item: data['Item Name'],
                               service_provider_id: data['Service Provider Id'],
+                              contactNO: data['ServiceProviderContactNo'],
                               
                              
                             )));

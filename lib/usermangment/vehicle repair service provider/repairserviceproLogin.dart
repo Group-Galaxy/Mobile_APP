@@ -5,6 +5,7 @@ import 'package:mypart/dashboard/repairserviceDashboard.dart';
 import 'package:mypart/seller/Items.dart';
 
 import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproregister.dart';
+import 'package:mypart/usermangment/vehicle%20repair%20service%20provider/repairserviceproresetpw.dart';
 
 import '../reset.dart';
 
@@ -153,7 +154,7 @@ class _RepairServiceProviderLoginState
                           child: const Text('Forgot Pasword?'),
                           onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => const ResetScreen()),
+                                builder: (context) => const serviceproresetScreen()),
                           ),
                         ),
                       ],
@@ -199,7 +200,7 @@ class _RepairServiceProviderLoginState
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => RepaiirDashboard())),
+                      builder: (context) => RepaiirDashboard(title: '',))),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

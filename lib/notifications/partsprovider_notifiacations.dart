@@ -67,7 +67,7 @@ class _PartsProviderNotificationsState extends State<PartsProviderNotifications>
                               onTap: () async {
                                 data['Seen']==true? Colors.pink :Colors.amber;
                                 Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const Myorders()));
+                      MaterialPageRoute(builder: (_) => const Myorders(initialPage: 1,)));
                                
                                     },
                              

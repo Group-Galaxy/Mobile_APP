@@ -4,7 +4,7 @@ import 'package:mypart/dashboard/dashboard.dart';
 import 'orderdetails.dart';
 
 class Myorders extends StatefulWidget {
-  const Myorders({Key? key}) : super(key: key);
+  const Myorders({Key? key, required int initialPage}) : super(key: key);
 
   @override
   State<Myorders> createState() => _MyordersState();
@@ -67,73 +67,3 @@ class _MyordersState extends State<Myorders> {
   }
 }
 
-class Request extends StatelessWidget {
-  const Request({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 229, 170, 240),
-      body: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (BuildContext context, int index) => Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-          child: Card(
-            elevation: 5.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0.0),
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 5.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: const [
-                              Text("Saman Silva",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 150,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                "1 day ago",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text("", style: TextStyle(color: Colors.grey)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

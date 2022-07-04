@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mypart/dashboard/dashboard.dart';
+import 'package:mypart/usermangment/vehicle%20parts%20provider/partsproresetpw.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsproviregister.dart';
 
 import '../reset.dart';
@@ -150,7 +151,7 @@ class _PartsProviderLoginState extends State<PartsProviderLogin> {
                           child: const Text('Forgot Pasword?'),
                           onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => const ResetScreen()),
+                                builder: (context) => const partsproresetScreen()),
                           ),
                         ),
                       ],

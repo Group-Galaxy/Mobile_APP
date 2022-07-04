@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:mypart/dashboard/dashboard.dart';
 import 'package:mypart/dashboard/repairserviceDashboard.dart';
 import 'package:mypart/repairservice/myjobs.dart';
+import 'package:mypart/repairservice/userside/userRequests.dart';
+import 'package:mypart/usermangment/loginhome.dart';
+import 'package:mypart/usermangment/usermodel.dart';
 
 
-class MyJobs extends StatefulWidget {
-  const MyJobs({Key? key}) : super(key: key);
+class MyRequests extends StatefulWidget {
+  const MyRequests({Key? key}) : super(key: key);
 
   @override
-  State<MyJobs> createState() => _MyJobsState();
+  State<MyRequests> createState() => _MyRequestsState();
 }
 
-class _MyJobsState extends State<MyJobs> {
+class _MyRequestsState extends State<MyRequests> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -24,8 +27,8 @@ class _MyJobsState extends State<MyJobs> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => const RepaiirDashboard(
-                            title: 'Dashboard',
+                      builder: (_) => const DriverHome(
+                            
                           )));
             },
             child: const Icon(
@@ -54,10 +57,10 @@ class _MyJobsState extends State<MyJobs> {
         ),
         body:  TabBarView(
           children: [
-           NewRequests(),
-           ProcessingJobs(),
-           FinishedJobs(),
-           CancelledJobs(),
+           VehicleOwnerNewRequest(),
+           ProcessingRepair(),
+           FinishedService(),
+           CancelledRequest()
           ],
         ),
       ),
