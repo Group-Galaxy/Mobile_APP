@@ -8,6 +8,7 @@ import 'package:mypart/dashboard/components/list_tile_custom.dart';
 import 'package:mypart/dashboard/themes.dart';
 import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
+import 'package:mypart/repairservice/myjobshome.dart';
 import 'package:mypart/seller/Items.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsProviderLogin.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
@@ -265,9 +266,9 @@ ListTile(
 leading: Icon(Icons.shop_outlined),
 title: Text("My jobs"),
 onTap: () {
- /* Navigator.pushReplacement(
+ Navigator.pushReplacement(
   
-                context, MaterialPageRoute(builder: (_) =>Myorders ()));*/
+                context, MaterialPageRoute(builder: (_) =>MyJobs ()));
 
 },
 ),

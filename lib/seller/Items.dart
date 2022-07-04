@@ -187,7 +187,7 @@ class _ItemsState extends State<Items> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (_) => EditItem(
-                                                            docid: data,
+                                                            docid: data, 
                                                           )));
                                             }),
                                         const SizedBox(
