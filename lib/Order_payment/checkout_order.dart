@@ -24,7 +24,6 @@ class checkoutorder extends StatefulWidget {
   var qty;
   var service_provider_id;
   var contactNO;
-
   String? item;
 
   checkoutorder(
