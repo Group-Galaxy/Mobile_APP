@@ -29,6 +29,12 @@ import 'package:provider/provider.dart';
 import '../chat/chat_page.dart';
 
 class productDetails extends StatefulWidget {
+ /* DocumentSnapshot docid;
+  var StockQty;*/
+
+  //productDetails({this.StockQty,required this.docid});
+
+ 
   @override
   State<productDetails> createState() => _productDetailsState();
 }
@@ -56,6 +62,8 @@ class _productDetailsState extends State<productDetails> {
     var _productProvider = Provider.of<ProductProvider>(context);
     var data = _productProvider.ProductData;
     var _price = int.parse(data['Item Price']);
+    var stockQty=int.parse(data['StockQty']);
+    var RemainnigQty=stockQty-1;
     print(data);
     String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
@@ -106,11 +114,14 @@ class _productDetailsState extends State<productDetails> {
                       children: [
                         Column(
                           children: [
-                            Text(data['Item Name'],
-                                style: const TextStyle(fontSize: 16)),
+                            Container(
+                              width: 180,
+                              child: Text(data['Item Name'],
+                                  style: const TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
-                        SizedBox(width: 5),
+                        SizedBox(width: 10),
                         Column(
                           children: [
                             QuantityInput(
@@ -207,7 +218,7 @@ class _productDetailsState extends State<productDetails> {
                           const SizedBox(
                             width: 20,
                           ),
-                                                  Expanded(
+                         Expanded(
                               child: Text(
                                 data['SuitableTypes'],
                                 style: TextStyle(fontSize: 12),
@@ -304,7 +315,7 @@ class _productDetailsState extends State<productDetails> {
 
 
 
-        
+
           child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16),
         child: Row(
@@ -399,7 +410,7 @@ class _productDetailsState extends State<productDetails> {
       print(total_fee);
                 if(OrderQuantity>0){
                
-                
+                print('itemcode${data.id}');
 
                 orders.add
 
@@ -417,7 +428,12 @@ class _productDetailsState extends State<productDetails> {
                   'SubTotal':sub_total,
                   'Total':total_fee,
                   'Oreder Status': OrderStatus,
-                  "Ordernew": true
+                  "Ordernew": true,
+                 "ItemCode":data.id
+                  
+                 
+                  
+                  
 
                 });
                 Notifications.add
@@ -430,11 +446,18 @@ class _productDetailsState extends State<productDetails> {
                   'SendTime': today,
                   'Seen':false,
 
-                })
-                
+                });
+                 
+           
                
 
-                
+                var collection = FirebaseFirestore.instance.collection('VehicleParts');
+                  collection 
+                      .doc(data.id) 
+                      .update({'StockQty' : RemainnigQty.toString()}) 
+                      .then((_) => print('Success'))
+                      .catchError((error) => print('Failed: $error')).
+                  
                 
                 
               
@@ -442,7 +465,7 @@ class _productDetailsState extends State<productDetails> {
              
 
 
-              .whenComplete(() {
+              whenComplete(() {
                    
                    Navigator.push(
                     context,
@@ -455,11 +478,13 @@ class _productDetailsState extends State<productDetails> {
                               item: data['Item Name'],
                               service_provider_id: data['Service Provider Id'],
                               contactNO: data['ServiceProviderContactNo'],
+                            
                               
                              
                             )));
                   
                 });
+
                
               }
               

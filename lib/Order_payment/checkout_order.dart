@@ -25,6 +25,7 @@ class checkoutorder extends StatefulWidget {
   var service_provider_id;
   var contactNO;
  
+ 
   String? item;
 
   checkoutorder(
@@ -35,6 +36,7 @@ class checkoutorder extends StatefulWidget {
       this.qty,
       required this.item,
       this.contactNO,
+     
      
       required this.service_provider_id})
       : super(key: mykey);
@@ -172,6 +174,7 @@ class _checkoutorderState extends State<checkoutorder> {
                         actions: <Widget>[
                           TextButton(
                             onPressed: () {
+
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(

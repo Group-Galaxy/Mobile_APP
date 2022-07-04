@@ -8,9 +8,20 @@ import 'package:mypart/firebaseservice.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ProductList extends StatelessWidget {
+class ProductList extends StatefulWidget {
   final bool Proscreen;
+ 
+  
   ProductList(this.Proscreen);
+  
+
+  @override
+  State<ProductList> createState() => _ProductListState();
+}
+ 
+class _ProductListState extends State<ProductList> {
+   bool _isLiked=false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +29,10 @@ class ProductList extends StatelessWidget {
     var _catProvider = Provider.of<categoryprovider>(context);
 
     final _PriceFormat = NumberFormat('##,##,##0');
+    
 
     return Container(
+      
       width: MediaQuery.of(context).size.width,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
@@ -50,11 +63,12 @@ class ProductList extends StatelessWidget {
             }
 
             return Column(
+               
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (Proscreen == false)
+                if (widget.Proscreen == false)
                   Container(
-                    child: Text(
+                    child: const Text(
                       'Recomoned For You',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -76,6 +90,7 @@ class ProductList extends StatelessWidget {
                     itemBuilder: (BuildContext context, int i) {
                       var data = snapshot.data!.docs[i];
                       var _price = int.parse(data['Item Price']);
+                      var qty=int.parse(data['StockQty']);
 
                       String _FormatedPrice =
                           '\Rs. ${_PriceFormat.format(_price)}';
@@ -142,25 +157,14 @@ class ProductList extends StatelessWidget {
                               ),
                               Positioned(
                                 right: 0.0,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: LikeButton(
-                                    circleColor: CircleColor(
-                                        start: Color(0xff00ddff),
-                                        end: Color(0xff0099cc)),
-                                    bubblesColor: BubblesColor(
-                                      dotPrimaryColor: Color(0xff33b5e5),
-                                      dotSecondaryColor: Color(0xff0099cc),
-                                    ),
-                                    likeBuilder: (bool isLiked) {
-                                      return Icon(
-                                        Icons.favorite,
-                                        color: isLiked
-                                            ? Colors.purple
-                                            : Colors.grey,
-                                      );
-                                    },
-                                  ),
+                                                      child: LikeButton(
+                                  likeBuilder: (bool isLiked) {
+                                    return Icon(
+                                      Icons.favorite,
+                                      color: isLiked ? Colors.purple : Colors.grey,
+                                      
+                                    );
+                                  },
                                 ),
                               ),
                             ],
@@ -181,9 +185,6 @@ class ProductList extends StatelessWidget {
       ),
     );
   }
-
-
-  
 }
 
 

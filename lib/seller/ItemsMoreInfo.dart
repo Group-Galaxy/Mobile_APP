@@ -38,6 +38,7 @@ class _ItemsDetailsState extends State<ItemsDetails> {
     var _productProvider = Provider.of<ItemProvider>(context);
     var data = _productProvider.ItemtData;
     var _price = int.parse(data['Item Price']);
+      var qty = int.parse(data['StockQty']);
 
     String _FormatedPrice = '\Rs. ${_PriceFormat.format(_price)}';
 
@@ -76,12 +77,34 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                       children: [
                         Column(
                           children: [
-                            Text(data['Item Name'],
-                                style: TextStyle(fontSize: 16)),
+                            Container(
+                              width: 200,
+                              child: Text(data['Item Name'],
+                                  style: TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
-                        SizedBox(width: 30),
-                        
+                        SizedBox(width: 70),
+                     
+                      if(qty>0)...[
+                        Text(
+                          
+                        'Stock Qty:  ${qty}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                            fontSize: 12),
+                      ),
+                      ]
+                      else...[
+                        Text(
+                          
+                        'Sold Out',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.red),
+                      ),
+                      ]
                       ],
                     ),
                     
@@ -151,23 +174,35 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                         ],
                       ),
                     ),
-                    Divider(color: Colors.grey),
+                  
                    
                     
+                    const Divider(color: Colors.grey),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Ratings & Comments: ',
+                          const Text('Suitable Vehicle Types: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                   color: Color.fromARGB(255, 115, 113, 113))),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                         Expanded(
+                              child: Text(
+                                data['SuitableTypes'],
+                                style: TextStyle(fontSize: 12),
+                                softWrap: false,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis, // new
+                              ),
+                            ),
                         ],
                       ),
                     ),
-                    Divider(color: Colors.grey),
                   ],
                 ),
               ),
