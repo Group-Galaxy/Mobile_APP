@@ -121,16 +121,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     //contact number field
     final contactNoField = TextFormField(
+
         autofocus: false,
         controller: contactNoEditingController,
         keyboardType: TextInputType.number,
+        
         validator: (value) {
-          RegExp regex = RegExp(r'^.{3,}$');
+          RegExp regex = RegExp(r'^.{10,}$');
           if (value!.isEmpty) {
             return ("Contact number cannot be Empty");
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid phone number(Min. 10 Character)");
+            return ("Enter Valid phone number");
           }
           return null;
         },

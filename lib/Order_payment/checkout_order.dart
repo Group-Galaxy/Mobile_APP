@@ -24,8 +24,6 @@ class checkoutorder extends StatefulWidget {
   var qty;
   var service_provider_id;
   var contactNO;
- 
- 
   String? item;
 
   checkoutorder(
@@ -36,8 +34,6 @@ class checkoutorder extends StatefulWidget {
       this.qty,
       required this.item,
       this.contactNO,
-     
-     
       required this.service_provider_id})
       : super(key: mykey);
 
@@ -67,6 +63,7 @@ class _checkoutorderState extends State<checkoutorder> {
   double balanceValue = 0.0;
 
   var currentUser = {};
+  var pp_provider = {};
   @override
   void initState() {
     super.initState();
@@ -81,7 +78,17 @@ class _checkoutorderState extends State<checkoutorder> {
         currentUser = res.docs.first.data();
       });
     });
-    print(data);
+    final pp_data = FirebaseFirestore.instance
+        .collection('vehicl parts providers')
+        .where("uid", isEqualTo: widget.service_provider_id)
+        .get()
+        .then((res) {
+      //print(res.docs.first.data()['firstName']);
+      setState(() {
+        pp_provider = res.docs.first.data();
+      });
+    });
+    print(pp_provider);
   }
   // void getUser()async{
 
@@ -165,30 +172,28 @@ class _checkoutorderState extends State<checkoutorder> {
                   child: Text("Confrorm Order"),
                   textColor: Colors.white,
                   color: Colors.purple,
-                  onPressed: ()  {
+                  onPressed: () {
                     showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                        content: const Text(
-                            "Your order is placed sucessfully , Please waiting for seller response"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => VehiclePartsHome()));
-                            },
-                            child: Container(
-                              color: Colors.green,
-                              padding: const EdgeInsets.all(14),
-                              child: const Text("okay"),
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                          content: const Text(
+                              "Your order is placed sucessfully , Please waiting for seller response"),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => VehiclePartsHome()));
+                              },
+                              child: Container(
+                                color: Colors.green,
+                                padding: const EdgeInsets.all(14),
+                                child: const Text("okay"),
+                              ),
                             ),
-                          ),
-                        ]),
-                  );
-                    
+                          ]),
+                    );
                   },
                 ),
               ],

@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:mypart/buyer/searchhome.dart';
-import 'package:mypart/buyer/vehicle_parts_home.dart';
-import 'package:path/path.dart';
 
-class PaymentController extends GetxController {
+class PaymentController2 extends GetxController {
   Map<String, dynamic>? paymentIntentData;
 
   Future<void> makePayment(
@@ -36,35 +33,36 @@ class PaymentController extends GetxController {
 
   Future addpaymentDataToDb(
       {required String userName,
-      required String serviceProviderID,
-      // required String discount,
+      // required String serviceProviderID,
+      required String discount,
       required String date,
       required String balance,
-      required String subTotal,
-      required String quantity,
-      required String item,
-      required String delivery_fee,
-      required String contactNo,
-      required DocumentSnapshot<Object?> ordersNo,
-      required String address}) async {
+      required String inspectionValue,
+      required String serviceProviderName,
+      required String vehicleFault,
+      // required String delivery_fee,
+      // required String contactNo,
+      // required String address,
+      required String DocID,
+      required bool is_paid}) async {
     Map<String, dynamic> body = {
-      "userName": userName,
-      "serviceProviderID": serviceProviderID,
-      // "discount": discount,
-      "date": date,
+      "is_paid": is_paid,
       "balance": balance,
-      "subTotal": subTotal,
-      "Quantity": quantity,
-      "Item": item,
-      "DeliveryFee": delivery_fee,
-      "Contatctnumber": contactNo,
-      "OrderNo": ordersNo,
-      "Address": address
+      "date": date,
+      "discount": discount,
+      "inspectionValue": inspectionValue,
+      "serviceProviderName": serviceProviderName,
+      "userName": userName,
+      "vehicleFault": vehicleFault,
     };
     try {
+      // await FirebaseFirestore.instance
+      //     .collection('payments')
+      //     .doc('DocID')
+      //     .update({'is_paid': true});
       await FirebaseFirestore.instance
-          .collection('orderpayments')
-          .doc()
+          .collection('payments')
+          .doc(DocID)
           .set(body);
     } catch (e) {
       print('error');
@@ -74,15 +72,12 @@ class PaymentController extends GetxController {
   displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      Get.snackbar(
-        'Payment',
-        'Payment Successful',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(10),
-        duration: const Duration(seconds: 2),
-      );
+      Get.snackbar('Payment', 'Payment Successful',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(10),
+          duration: const Duration(seconds: 2));
     } on Exception catch (e) {
       if (e is StripeException) {
         print("Error from Stripe: ${e.error.localizedMessage}");
@@ -110,7 +105,6 @@ class PaymentController extends GetxController {
                 'Bearer sk_test_51LDqSTEHLxB2oFbTEcOFy9yRzgpjZdAwEgPsbc2Y5xJsmeOBOeYhDcqq1PoKVR0SYOA0IOEU2Hh1Vw1I0YCLdIEW00uciG4RLv',
             'Content-Type': 'application/x-www-form-urlencoded'
           });
-
       return jsonDecode(response.body);
     } catch (err) {
       print('err charging user: ${err.toString()}');

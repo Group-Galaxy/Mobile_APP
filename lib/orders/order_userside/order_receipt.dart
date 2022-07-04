@@ -16,6 +16,7 @@ import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mypart/controller/payment_controller.dart';
+import 'package:mypart/usermangment/welcomeScreen.dart';
 
 class OrderReceipt extends StatefulWidget {
   DocumentSnapshot docid;
@@ -35,8 +36,7 @@ class OrderReceipt extends StatefulWidget {
       this.qty,
       required this.item,
       required this.service_provider_id,
-      required this.docid
-      })
+      required this.docid})
       : super(key: mykey);
 
   @override
@@ -65,6 +65,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
   double balanceValue = 0.0;
 
   var currentUser = {};
+  var pp_provider = {};
   @override
   void initState() {
     super.initState();
@@ -89,7 +90,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
     final PaymentController controller = Get.put(PaymentController());
 
     final delivery_fee = 500;
-    final total_fee = double.parse(widget.price) * int.parse(widget.qty) +
+    final total_fee = double.parse(widget.price) +
         ((widget.qty == 1)
             ? delivery_fee
             : (widget.qty == 2)
@@ -135,7 +136,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
                 GFListTile(
                   color: GFColors.WHITE,
                   titleText:
-                      'Unit Price : ${(widget.price == null) ? "Rs.1000/=" : widget.price}',
+                      'Unit Price : ${(widget.price == null) ? "Rs.1000/=" : (double.parse(widget.price) / double.parse(widget.qty))}',
                 ),
                 GFListTile(
                   color: GFColors.WHITE,
@@ -157,56 +158,42 @@ class _OrderReceiptState extends State<OrderReceipt> {
                       textColor: Colors.white,
                       color: Colors.purple,
                       onPressed: () async {
-
-                        
-                        await widget.docid.reference.update({
-                        'Oreder Status':'paid'});
+                        await widget.docid.reference
+                            .update({'Oreder Status': 'paid'});
                         int fee = total_fee.toInt();
                         await controller.makePayment(
                             amount: '${fee}', currency: 'LKR');
                         await controller.addpaymentDataToDb(
-                        userName: currentUser['firstName'],
-                      serviceProviderID: widget.service_provider_id,
-                      date: widget.date.toString(),
-                      balance: (widget.price * widget.qty +
-                              ((widget.qty == 1)
+                          userName: currentUser['firstName'],
+                          serviceProviderID: widget.service_provider_id,
+                          date: widget.date.toString(),
+                          balance: '${total_fee}'.toString(),
+                          subTotal: widget.price.toString(),
+                          quantity: widget.qty.toString(),
+                          item: widget.item.toString(),
+                          delivery_fee: ((widget.qty == 1)
                                   ? delivery_fee
                                   : (widget.qty == 2)
                                       ? 750
-                                      : 1000))
-                          .toString(),
-                      subTotal: widget.price.toString(),
-                      quantity: widget.qty.toString(),
-                      item: widget.item!,
-                      delivery_fee: ((widget.qty == 1)
-                              ? delivery_fee
-                              : (widget.qty == 2)
-                                  ? 750
-                                  : 1000)
-                          .toString(),
-                      contactNo: currentUser['contactNo'].toString(),
-                      ordersNo:widget.docid
-                         //address: _Address.text
+                                      : 1000)
+                              .toString(),
+                          contactNo: currentUser['contactNo'].toString(),
+                          ordersNo: widget.docid,
+                          address: _Address.text,
                         );
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WelcomePage()));
                       })
                 ])
               ],
-              
             ),
-          
           ),
-          
           elevation: 8,
           shadowColor: Colors.purple,
           margin: EdgeInsets.all(15),
           shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.purple, width: 2)),
-
-
-              
-        )
-        
-        );
+        ));
   }
 }

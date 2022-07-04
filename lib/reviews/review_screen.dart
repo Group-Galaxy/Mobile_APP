@@ -67,7 +67,8 @@ class _ReviewGiveScreenState extends State<ReviewGiveScreen> {
                 controller: _textEditingController,
                 decoration: const InputDecoration(border: OutlineInputBorder()),
               ),
-              ElevatedButton(onPressed: addReview, child: const Text("Submit"))
+              ElevatedButton(onPressed: addReview, child: const Text("Submit")
+              )
             ],
           ),
         ),
