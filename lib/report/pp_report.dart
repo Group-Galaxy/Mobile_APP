@@ -142,9 +142,20 @@ class _ReportState extends State<pp_Report> {
                           ),
                           radius: 60,
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('User Name : ${currentUser['firstName']}'),
                         Text("Total: ${total}"),
+                        // Text("Total: ${total}"),
                       ],
                     ),
+                    elevation: 8,
+                    shadowColor: Colors.purple,
+                    margin: EdgeInsets.all(15),
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Colors.purple, width: 2)),
                   );
                   data.insert(0, total_card);
                   return Column(
