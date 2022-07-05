@@ -58,7 +58,8 @@ class _checkoutorderState extends State<checkoutorder> {
 
   var _date = DateTime.now().toString();
 
-  final addressEditingController = TextEditingController();
+  TextEditingController _Address = new TextEditingController();
+
   double subTotal = 0.0;
 
   double diliveryFee = 0.0;
@@ -162,6 +163,19 @@ class _checkoutorderState extends State<checkoutorder> {
               color: GFColors.WHITE,
               titleText: 'Total : ${total_fee}/=',
             ),
+
+            Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: TextField(
+                    //style: TextStyle(color: Colors.black),
+                    controller: _Address,
+                    decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.description,
+                          color: Colors.black,
+                        ),
+                        labelText: 'Address ',
+                        labelStyle: TextStyle(color: Colors.black)))),
 
             /* final addressField = TextFormField(
         autofocus: false,
