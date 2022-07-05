@@ -121,6 +121,13 @@ class _ReportStateSP extends State<sp_Report> {
                   return CircularProgressIndicator.adaptive();
                 } else {
                   final data = snapshot.data as List<Card>;
+                  if (data.isEmpty) {
+                    return Center(
+                      child: Card(
+                        child: Text("No Data"),
+                      ),
+                    );
+                  }
                   final total_card = Card(
                     child: Column(
                       children: [
