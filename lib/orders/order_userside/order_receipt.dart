@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mypart/Order_payment/checkout_receipt.dart';
 import 'package:mypart/buyer/vehicle_parts_home.dart';
 import 'package:mypart/gateway.dart';
+import 'package:mypart/reviews/review_give_screen.dart';
 import 'package:mypart/usermangment/usermodel.dart';
 import 'package:getwidget/getwidget.dart';
 
@@ -181,8 +182,9 @@ class _OrderReceiptState extends State<OrderReceipt> {
                           ordersNo: widget.docid,
                           address: _Address.text,
                         );
+                        await Future.delayed(const Duration(seconds: 10));
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WelcomePage()));
+                            builder: (context) => ReviewGiveScreen()));
                       })
                 ])
               ],
