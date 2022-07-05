@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/orders/order_userside/userordermain.dart';
+import 'package:mypart/usermangment/loginhome.dart';
 
 import '../chat/chat_home.dart';
 
@@ -30,10 +31,15 @@ class BottomBar extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           IconButton(
-                            icon: const Icon(Icons.person),
+                            icon: const Icon(Icons.home),
                             color: Colors.white,
-                            tooltip: ' profile',
-                            onPressed: () {},
+                            tooltip: ' Home',
+                            onPressed: () {
+                               Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const DriverHome()));
+                            },
                           ),
                           IconButton(
                             icon: const Icon(CupertinoIcons.square_list),

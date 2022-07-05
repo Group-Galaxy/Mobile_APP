@@ -80,6 +80,7 @@ class _productDetailsState extends State<productDetails> {
                 context, MaterialPageRoute(builder: (_) => VehiclePartsHome()));
           },
         ),
+        
         actions: [
           LikeButton(
             likeBuilder: (bool isLiked) {
@@ -122,15 +123,29 @@ class _productDetailsState extends State<productDetails> {
                           ],
                         ),
                         SizedBox(width: 10),
+                         
                         Column(
                           children: [
-                            QuantityInput(
+                            if(stockQty>0)...[
+                         QuantityInput(
                               label: 'Qty',
                               value: OrderQuantity,
                               onChanged: (value) => setState(() =>
                                   OrderQuantity =
                                       int.parse(value.replaceAll(',', ''))),
                             ),
+                      ]
+                       else...[
+                        Text(
+                          
+                        'Sold Out',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.red),
+                      ),
+                      ]
+                           
                           ],
                         ),
                       ],
@@ -319,7 +334,9 @@ class _productDetailsState extends State<productDetails> {
           child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16),
         child: Row(
+          
           children: [
+            
             Expanded(
                 child: NeumorphicButton(
               style: const NeumorphicStyle(color: Colors.purple),
@@ -429,7 +446,8 @@ class _productDetailsState extends State<productDetails> {
                   'Total':total_fee,
                   'Oreder Status': OrderStatus,
                   "Ordernew": true,
-                 "ItemCode":data.id
+                 "ItemCode":data.id,
+                 "ContactNo":data['ServiceProviderContactNo']
                   
                  
                   

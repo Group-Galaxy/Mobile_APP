@@ -12,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mypart/dashboard/components/card_custom.dart';
 import 'package:mypart/dashboard/components/circle_progress.dart';
 import 'package:mypart/dashboard/components/list_tile_custom.dart';
+import 'package:mypart/dashboard/designs/sales_chart.dart';
+import 'package:mypart/dashboard/designs/sales_statical.dart';
 import 'package:mypart/dashboard/themes.dart';
 import 'package:mypart/notifications/partsprovider_notifiacations.dart';
 import 'package:mypart/orders/ordershome.dart';
@@ -21,6 +23,8 @@ import 'package:mypart/usermangment/splashScreen.dart';
 import 'package:mypart/usermangment/vehicle%20parts%20provider/partsprousermodel.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
 
 import '../chat/chat_home.dart';
 
@@ -29,7 +33,45 @@ class NavSide extends StatefulWidget {
   @override
   _NavSideState createState() => _NavSideState();
 }
-
+final List<SalesStatical> data = [
+    SalesStatical(
+      Week: "Mon",
+      Sales: 12000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SalesStatical(
+      Week: "Tues",
+      Sales: 9000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SalesStatical(
+      Week: "Wed",
+      Sales: 25000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SalesStatical(
+      Week: "Thurs",
+      Sales: 8050,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SalesStatical(
+      Week: "Fri",
+      Sales: 30000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SalesStatical(
+      Week: "Satur",
+      Sales: 45600,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SalesStatical(
+      Week: "Sun",
+      Sales: 55000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+  ];
+  
+  get dateRange => null;
 class _NavSideState extends State<NavSide> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
@@ -96,194 +138,117 @@ class _NavSideState extends State<NavSide> {
   Widget build(BuildContext context) {
     final fs = FirebaseFirestore.instance;
     final curr = FirebaseAuth.instance.currentUser;
+    var size = MediaQuery.of(context).size;
+    DateTimeRange dateRange = DateTimeRange(
+      start: DateTime(2022, 01, 01),
+      end: DateTime(2022, 12, 31),
+    );
+    final start = dateRange.start;
+    final end = dateRange.end;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dashboard"),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 2.20,
-                        child: Column(
-                          children: [
-                            CustomPaint(
-                              foregroundPainter: CircleProgress(),
-                              child: SizedBox(
-                                width: 180,
-                                height: 147,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Text("LKR 65000",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    const Text(
-                                      "Total earnings",
+      body:  SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Center(
+                          child: RichText(
+                            text: TextSpan(
+                                text: "Overveiw of",
+                                style: GoogleFonts.montserrat().copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: purple1),
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: " this week",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.arrow_upward_outlined,
-                                          color: green,
-                                          size: 14,
-                                        ),
-                                        const Text("per week",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      ],
-                                    )
-                                  ],
-                                ),
+                                          fontWeight: FontWeight.bold))
+                                ]),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            CardCustom(
+                              mLeft: 0,
+                              mRight: 3,
+                              width: size.width / 2.5,
+                              height: 88,
+                              child: ListTileCustom(
+                                bgColor: Color.fromARGB(255, 247, 219, 80),
+                                pathIcon: "line.svg",
+                                title: "New Requests",
+                                subTitle: "30",
                               ),
                             ),
-                            const Text("NEW ACHIEVMENT",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            //Text(
-                            // "Social Star",
-                            // style: textBold3,
-                            // ),
+                            CardCustom(
+                              width: size.width / 2.5,
+                              height: 88,
+                              mLeft: 3,
+                              mRight: 0,
+                              child: ListTileCustom(
+                                bgColor: Colors.indigo,
+                                pathIcon: "thumb_up.svg",
+                                title: "Selling items",
+                                subTitle: "654",
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      /* Container(
-                        width: size.width / 2 - 20,
-                        height: 180,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                              //  image: AssetImage("assets/bd.jpeg"))),
-                      )*/
-                    ],
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 5,
-                  color: sparatorColor,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                            text: "Overveiw of",
-                            style: GoogleFonts.montserrat().copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: purple1),
-                            children: const <TextSpan>[
-                              TextSpan(
-                                  text: " this week",
-                                  style: TextStyle(fontWeight: FontWeight.bold))
-                            ]),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          CardCustom(
-                            width: MediaQuery.of(context).size.width * .42,
-                            height: 88,
-                            mLeft: 0,
-                            mRight: 3,
-                            child: ListTileCustom(
-                              bgColor: green,
-                              pathIcon: "line.svg",
-                              title: "New Requests",
-                              subTitle: "30",
-                            ),
-                          ),
-                          CardCustom(
-                            width: MediaQuery.of(context).size.width * .42,
-                            height: 88,
-                            mLeft: 3,
-                            mRight: 0,
-                            child: ListTileCustom(
-                              bgColor: greenLight,
-                              pathIcon: "thumb_up.svg",
-                              title: "Selling items",
-                              subTitle: "654",
-                            ),
-                          ),
-                        ],
-                      ),
-                      CardCustom(
-                          mLeft: 0,
-                          mRight: 0,
-                          width: MediaQuery.of(context).size.width * .42,
-                          height: 211,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        /*SizedBox(height: 20),
+                        Text(
+                          'Date Range',
+                        ),
+                        const SizedBox(height: 10),*/
+                        /*Padding(
+                          padding: const EdgeInsets.all(50.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Row(
-                                  children: const [
-                                    /* Container(
-                                    width: 8,
-                                    height: 9.71,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: blueLight
-                                    ),
-                                  ),*/
-                                    //SizedBox(
-                                    //  width: 5,
-                                    //),
-                                    // Text("Users",
-                                    //  style: label,
-                                    // ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      /*decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: green
-                                    ),*/
-                                    ),
-                                    // SizedBox(
-                                    //   width: 3,
-                                    // ),
-                                    //Text("Selling Items",
-                                    // style: label,
-                                    // ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                  ],
+                              Expanded(
+                                child: ElevatedButton(
+                                  child: Text(
+                                      '${start.year}/${start.month}/${start.day}'),
+                                  onPressed: pickDateRange,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              const SizedBox(width: 30),
+                              Expanded(
+                                child: ElevatedButton(
+                                  child: Text(
+                                      '${end.year}/${end.month}/${end.day}'),
+                                  onPressed: pickDateRange,
                                 ),
                               ),
                             ],
-                          )),
-                    ],
+                          ),
+                        ),*/
+                        Center(child: SalesChart(data: data)),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  //  ),
+                ],
+              ),
             ),
           ),
-        ),
       ),
       drawer: Drawer(
         child: ListView(

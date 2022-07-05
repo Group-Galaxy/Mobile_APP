@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:mypart/orders/SpViewMore.dart';
 import 'package:mypart/orders/cancelledorders.dart';
 import 'package:mypart/orders/updateacceptedorders.dart';
 import 'package:mypart/orders/viewMap.dart';
@@ -83,158 +84,194 @@ class _NewordersState extends State<Neworders> {
                               horizontal: 10.0, vertical: 10.0),
                           child: 
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8, left: 8, top: 5),
-                                            child: SizedBox(
-                                              height: 50,
-                                              width: 50,
-                                              child: Center(
-                                                child: Image.network(
-                                                    data['Imageurl']),
+                                          Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 8, left: 8, top: 5),
+                                                child: SizedBox(
+                                                  height: 50,
+                                                  width: 50,
+                                                  child: Center(
+                                                    child: Image.network(
+                                                        data['Imageurl']),
+                                                  ),
+                                                ),
                                               ),
+                                            ],
+                                          ),
+                                          Container(
+                                            width: 120,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width:120,
+                                                      child: Text(
+                                                        
+                                                        data['Item Name'],
+                                                        style: const TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight: FontWeight.bold),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Quantity : ' + data['Item Qty'],
+                                                      style: const TextStyle(fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children:  [
+                                                    Text(
+                                                      'Rs${data['Total'].toString()}',
+                                                      style: TextStyle(fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
+                                          const SizedBox(
+                                            width: 50,
+                                          ),
+                                           Column(
                                             children: [
-                                              Text(
-                                                data['Item Name'],
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Quantity : ' + data['Item Qty'],
-                                                style: const TextStyle(fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children:  [
-                                              Text(
-                                                'Rs${data['Total'].toString()}',
-                                                style: TextStyle(fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 50,
-                                      ),
-                                       Column(
-                                        children: [
-                                          Row(
-                                           
-                                            children: [
-                                              Text(getTime(data['Order Date Time']),
-                                               style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              
-                                              )
-
-                                              
-                                            ],
-                                          ),
-                                          Row(
-                                             
-                                            children:<Widget> [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                   
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) => AcceptOrder(
-                                                            docid: data,
-                                                          )));
-                                            
-                                                },
-                                                style: ElevatedButton.styleFrom(
+                                              Row(
+                                               
+                                                children: [
+                                                  Text(getTime(data['Order Date Time']),
+                                                   style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.bold),
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
                                                   
-                                                    primary: Colors.green,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'Accept',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
+                                                  )
+
+                                                  
+                                                ],
                                               ),
-                                            ],
+                                              Row(
+                                                 
+                                                children:<Widget> [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                       
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) => AcceptOrder(
+                                                                docid: data,
+                                                              )));
+                                                
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                      
+                                                        primary: Colors.purple,
+                                                        fixedSize: const Size(100, 9),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    50))),
+                                                    child: const Text(
+                                                      'Accept',
+                                                      style: TextStyle(fontSize: 10),
+                                                    ),
+                                                  ),
+                                                ],
                               
-                                          ),
-                                           Row(
+                                              ),
+                                               Row(
+                                                 
+                                                children:<Widget> [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                       Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) => RejectOrder(
+                                                                docid: data, Item_Name: data['Item Name'], Qty:  data['Item Qty'], 
+                                                              )));
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                        primary: Colors.purple,
+                                                        fixedSize: const Size(100, 9),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    50))),
+                                                    child: const Text(
+                                                      'Reject',
+                                                      style: TextStyle(fontSize: 10),
+                                                    ),
+                                                  ),
+                                                ],
+                              
+                                              ),
+                                             Row(
+                                                
+                                                  crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      
+                        builder: (context) => SpViewMore(
+                          
+                              date: (data['Order Date Time'].toDate),
+                              price: data['Item Price'],
+                             
+                              qty:data['Item Qty'],
+                              item: data['Item Name'],
+                              CustomerName: data['Vehicle Owner Name'],
+                              total_fee:data['Total'],
+                              deliveryfee: data['DeliveryFee'],
+                              Imageurl:data['Imageurl'],
+                              contactNO: data['ContactNo'],
+                              OrderStatus:data['Oreder Status'], 
+                              CustomerId: ['vehicle Owner Id'],
+                            
+                              
+                             
+                            )));
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                        primary: Colors.purple,
+                                                        fixedSize: const Size(100, 9),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    50))),
+                                                    child: const Text(
+                                                      'View More',
+                                                      style: TextStyle(fontSize: 10),
+                                                    ),
+                                                  ),
+                                                
+                                                ],
+                                              ),
                                              
-                                            children:<Widget> [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                   Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) => RejectOrder(
-                                                            docid: data, Item_Name: data['Item Name'], Qty:  data['Item Qty'], 
-                                                          )));
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: Colors.red,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'Reject',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            ],
-                              
-                                          ),
-                                         Row(
-                                            
-                                              crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: Colors.purple,
-                                                    fixedSize: const Size(100, 9),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                50))),
-                                                child: const Text(
-                                                  'View More',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            
                                             ],
                                           ),
-                                         
                                         ],
                                       ),
+                                     
+                                      
                                     ],
                                   ),
                                  
@@ -367,37 +404,43 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                           ),
                                         ],
                                       ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                data['Item Name'],
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Quantity : ' + data['Item Qty'],
-                                                style: const TextStyle(fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children:  [
-                                              Text(
-                                                'Rs ${data['Total'].toString()}',
-                                                style: TextStyle(fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                      Container(
+                                        width: 120,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 120,
+                                                  child: Text(
+                                                    data['Item Name'],
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.bold),
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Quantity : ' + data['Item Qty'],
+                                                  style: const TextStyle(fontSize: 12),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children:  [
+                                                Text(
+                                                  'Rs ${data['Total'].toString()}',
+                                                  style: TextStyle(fontSize: 12),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       const SizedBox(
                                         width: 50,
@@ -427,7 +470,30 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                   Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      
+                        builder: (context) => SpViewMore(
+                          
+                              date: (data['Order Date Time'].toDate),
+                              price: data['Item Price'],
+                             
+                              qty:data['Item Qty'],
+                              item: data['Item Name'],
+                              CustomerName: data['Vehicle Owner Name'],
+                              total_fee:data['Total'],
+                              deliveryfee: data['DeliveryFee'],
+                              Imageurl:data['Imageurl'],
+                              contactNO: data['ContactNo'],
+                              OrderStatus:data['Oreder Status'], 
+                              CustomerId: ['vehicle Owner Id'],
+                            
+                              
+                             
+                            )));
+                                                },
                                                 style: ElevatedButton.styleFrom(
                                                     primary: Colors.purple,
                                                     fixedSize: const Size(100, 9),
@@ -647,7 +713,31 @@ class _ToDeliverState extends State<ToDeliver> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+
+                                                 Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      
+                        builder: (context) => SpViewMore(
+                          
+                              date: (data['Order Date Time'].toDate),
+                              price: data['Item Price'],
+                             
+                              qty:data['Item Qty'],
+                              item: data['Item Name'],
+                              CustomerName: data['Vehicle Owner Name'],
+                              total_fee:data['Total'],
+                              deliveryfee: data['DeliveryFee'],
+                              Imageurl:data['Imageurl'],
+                              contactNO: data['ContactNo'],
+                              OrderStatus:data['Oreder Status'], 
+                              CustomerId: ['vehicle Owner Id'],
+                            
+                              
+                             
+                            )));
+                                              },
                                               style: ElevatedButton.styleFrom(
                                                   primary: Colors.purple,
                                                   fixedSize: const Size(100, 9),
@@ -895,7 +985,30 @@ class _FinishedState extends State<Finished> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                 Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      
+                        builder: (context) => SpViewMore(
+                          
+                              date: (data['Order Date Time'].toDate),
+                              price: data['Item Price'],
+                             
+                              qty:data['Item Qty'],
+                              item: data['Item Name'],
+                              CustomerName: data['Vehicle Owner Name'],
+                              total_fee:data['Total'],
+                              deliveryfee: data['DeliveryFee'],
+                              Imageurl:data['Imageurl'],
+                              contactNO: data['ContactNo'],
+                              OrderStatus:data['Oreder Status'], 
+                              CustomerId: ['vehicle Owner Id'],
+                            
+                              
+                             
+                            )));
+                                              },
                                               style: ElevatedButton.styleFrom(
                                                   primary: Colors.purple,
                                                   fixedSize: const Size(100, 9),
@@ -1046,40 +1159,46 @@ class _CancelledState extends State<Cancelled> {
                                         ),
                                       ],
                                     ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: const TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children:  [
-                                            Text(
-                                              'Reason for cancel '+data['resonForCancel'],
-                                              softWrap: false,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Container(
+                                      width: 170,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data['Item Name'],
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Quantity : ' + data['Item Qty'],
+                                                style: const TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children:  [
+                                              Container(
+                                                width: 130,
+                                                child: Text(
+                                                  'Reason for cancel '+data['resonForCancel'],
+                                                  softWrap: false,
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(fontSize: 12),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 20,
