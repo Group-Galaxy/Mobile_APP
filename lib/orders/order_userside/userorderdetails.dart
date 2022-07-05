@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypart/orders/order_userside/order_receipt.dart';
+import 'package:mypart/orders/order_userside/viewmoreorders.dart';
 
 import '../../usermangment/usermodel.dart';
 
@@ -132,14 +133,36 @@ class _NewordersState extends State<Neworders> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 50,
+                                          height: 20,
                                         ),
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+
+                                                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewMoreOrders(
+                              date: (data['Order Date Time']),
+                              price: data['Item Price'],
+                              providerName: data['Service Provider Name'],
+                              qty:data['Item Qty'],
+                              item: data['Item Name'],
+                              service_provider_id: data['Service Provider Id'],
+                              total_fee:data['Total'],
+                              deliveryfee: data['DeliveryFee'],
+                              Imageurl:data['Imageurl'],
+                              contactNO: data['ContactNo'],
+                              OrderStatus:data['Oreder Status'],
+                           
+                            
+                              
+                             
+                            )));
+                                              },
                                               child: const Text(
                                                 'View More',
                                                 style: TextStyle(fontSize: 10),
@@ -365,37 +388,40 @@ class _ToPayOrdersState extends State<ToPayOrders> {
                                         ),
                                       ],
                                     ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data['Item Name'],
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Quantity : ' + data['Item Qty'],
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Rs ${data['Total'].toString()}',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Container(
+                                      width: 150,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data['Item Name'],
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Quantity : ' + data['Item Qty'],
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Rs ${data['Total'].toString()}',
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 30,
@@ -521,7 +547,7 @@ class _ToDeliverState extends State<ToDeliver> {
                 'vehicle Owner Id',
                 isEqualTo: orderdVehicleOwner?.uid,
               )
-              .where('Oreder Status', isEqualTo: 'paid')
+              .where('Oreder Status', isEqualTo:'paid')
               .orderBy('Order Date Time', descending: true)
               .get(),
           builder:
@@ -801,7 +827,29 @@ class _FinishedState extends State<Finished> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+
+                                           Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewMoreOrders(
+                              date: (data['Order Date Time']),
+                              price: data['Item Price'],
+                              providerName: data['Service Provider Name'],
+                              qty:data['Item Qty'],
+                              item: data['Item Name'],
+                              service_provider_id: data['Service Provider Id'],
+                              total_fee:data['Total'],
+                              deliveryfee: data['DeliveryFee'],
+                              Imageurl:data['Imageurl'],
+                              contactNO: data['ContactNo'],
+                              OrderStatus:data['Oreder Status'],
+                           
+                            
+                              
+                             
+                            )));
+                                      },
                                       child: const Text(
                                         'View More',
                                         style: TextStyle(fontSize: 10),
@@ -926,50 +974,53 @@ class _CancelledState extends State<Cancelled> {
                                 ),
                               ],
                             ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 80,
-                                      child: Text(
-                                        data['Item Name'],
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                            Container(
+                              width: 160,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        child: Text(
+                                          data['Item Name'],
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 80,
-                                      child: Text(
-                                        'Quantity : ' + data['Item Qty'],
-                                        style: TextStyle(fontSize: 12),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        child: Text(
+                                          'Quantity : ' + data['Item Qty'],
+                                          style: TextStyle(fontSize: 12),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 150,
-                                      child: Text(
-                                        'Reason for cancel: ' +
-                                            data['resonForCancel'],
-                                        softWrap: false,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontSize: 12),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 150,
+                                        child: Text(
+                                          'Reason for cancel: ' +
+                                              data['resonForCancel'],
+                                          softWrap: false,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(fontSize: 12),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             const SizedBox(
                               width: 40,
