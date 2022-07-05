@@ -206,27 +206,29 @@ class _checkoutorderState extends State<checkoutorder> {
                   textColor: Colors.white,
                   color: Colors.purple,
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                          content: const Text(
-                              "Your order is placed sucessfully , Please waiting for seller response"),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => VehiclePartsHome()));
-                              },
-                              child: Container(
-                                color: Colors.green,
-                                padding: const EdgeInsets.all(14),
-                                child: const Text("okay"),
+                    if (Address != null) {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                            content: const Text(
+                                "Your order is placed sucessfully , Please waiting for seller response"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => VehiclePartsHome()));
+                                },
+                                child: Container(
+                                  color: Colors.green,
+                                  padding: const EdgeInsets.all(14),
+                                  child: const Text("okay"),
+                                ),
                               ),
-                            ),
-                          ]),
-                    );
+                            ]),
+                      );
+                    }
                   },
                 ),
               ],
