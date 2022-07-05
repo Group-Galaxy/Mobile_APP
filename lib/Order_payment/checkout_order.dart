@@ -43,6 +43,13 @@ class checkoutorder extends StatefulWidget {
 }
 
 class _checkoutorderState extends State<checkoutorder> {
+  final _auth = FirebaseAuth.instance;
+
+  // string for displaying the error Message
+  String? errorMessage;
+
+  // our form key
+  final _formKey = GlobalKey<FormState>();
   User? currentAutoPartsProvider = FirebaseAuth.instance.currentUser;
   VehicleOwnerModel CurrentServiceprovider = VehicleOwnerModel();
   CollectionReference orders =
@@ -51,8 +58,7 @@ class _checkoutorderState extends State<checkoutorder> {
 
   var _date = DateTime.now().toString();
 
-  TextEditingController _Address = new TextEditingController();
-
+  final addressEditingController = TextEditingController();
   double subTotal = 0.0;
 
   double diliveryFee = 0.0;
@@ -116,6 +122,7 @@ class _checkoutorderState extends State<checkoutorder> {
           backgroundColor: Colors.purple,
         ),
         body: Card(
+          // ignore: sort_child_properties_last
           child: SingleChildScrollView(
               child: Column(children: [
             GFListTile(
@@ -155,18 +162,29 @@ class _checkoutorderState extends State<checkoutorder> {
               color: GFColors.WHITE,
               titleText: 'Total : ${total_fee}/=',
             ),
-            Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: TextField(
-                    //style: TextStyle(color: Colors.black),
-                    controller: _Address,
-                    decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.description,
-                          color: Colors.black,
-                        ),
-                        labelText: 'Address ',
-                        labelStyle: TextStyle(color: Colors.black)))),
+
+            /* final addressField = TextFormField(
+        autofocus: false,
+        controller: addressEditingController,
+        keyboardType: TextInputType.name,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Address cannot be Empty");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          secondNameEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.account_circle),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Address",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ));*/
             ButtonBar(
               children: [
                 RaisedButton(
@@ -199,6 +217,7 @@ class _checkoutorderState extends State<checkoutorder> {
                 ),
               ],
             ),
+            // addressField,
           ])),
           elevation: 8,
           shadowColor: Colors.purple,
