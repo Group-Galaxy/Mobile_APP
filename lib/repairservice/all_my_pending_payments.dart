@@ -121,7 +121,7 @@ class _MyAllPendingPaymentsState extends State<MyAllPendingPayments> {
                                 vehicleFault: '${chat['vehicleFault']}',
                                 DocID: '${chat['DocID']}',
                               );
-                              await Future.delayed(const Duration(seconds: 10));
+                              await Future.delayed(const Duration(seconds: 15));
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ReviewGiveScreen()));
                             }

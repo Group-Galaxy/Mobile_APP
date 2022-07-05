@@ -182,7 +182,7 @@ class _OrderReceiptState extends State<OrderReceipt> {
                           ordersNo: widget.docid,
                           address: _Address.text,
                         );
-                        await Future.delayed(const Duration(seconds: 10));
+                        await Future.delayed(const Duration(seconds: 15));
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ReviewGiveScreen()));
                       })
